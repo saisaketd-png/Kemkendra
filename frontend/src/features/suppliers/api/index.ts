@@ -27,7 +27,7 @@ export async function getSuppliers(params: SupplierSearchParams): Promise<Suppli
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "no-store", // public discovery should be fresh
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) {
@@ -45,7 +45,7 @@ export async function getSupplierPublicProfile(id: string | number): Promise<Sup
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "no-store",
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) {
@@ -90,7 +90,7 @@ export async function getSupplierProducts(
       headers: {
         "Content-Type": "application/json",
       },
-      cache: "no-store",
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) {

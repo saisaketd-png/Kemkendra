@@ -11,7 +11,7 @@ import { ChevronRight, ChevronLeft, Building2, ShieldCheck, RefreshCw } from "lu
 import { PageHeader, EmptyState, ErrorState } from "@/shared/components/ui/KemkendraUI";
 import { serializeJsonLd } from "@/shared/utils/security";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kemkendra.online";
 

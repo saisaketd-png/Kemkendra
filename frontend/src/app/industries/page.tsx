@@ -5,7 +5,7 @@ import { IndustryGrid } from "@/features/home/components/IndustryGrid";
 import Link from "next/link";
 import { ArrowRight, Clock } from "lucide-react";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kemkendra.online";
 

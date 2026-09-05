@@ -15,7 +15,7 @@ import { ChevronRight, Clock, Factory, Layers, ArrowLeft } from "lucide-react";
 
 import { serializeJsonLd } from "@/shared/utils/security";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kemkendra.online";
 

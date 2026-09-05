@@ -3,7 +3,7 @@ import { Navbar } from "@/features/home/components/Navbar";
 import { Footer } from "@/features/home/components/Footer";
 import { ResourcesSection } from "@/features/home/components/ResourcesSection";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kemkendra.online";
 
