@@ -53,13 +53,13 @@ export function Hero() {
             </p>
 
             {/* Global Search Bar */}
-            <form action="/products" method="GET" className="bg-[#F8FAFC] p-2 rounded-2xl border border-[#CBD5E1] shadow-sm flex flex-col sm:flex-row gap-2">
+            <form action="/search" method="GET" className="bg-[#F8FAFC] p-2 rounded-2xl border border-[#CBD5E1] shadow-sm flex flex-col sm:flex-row gap-2">
               <div className="relative flex-1 flex items-center min-h-[46px]">
                 <Search className="w-4 h-4 text-[#64748B] absolute left-3.5" />
                 <input
                   type="text"
-                  name="search"
-                  placeholder="Search chemical name, CAS # (e.g. 103-90-2), or formula..."
+                  name="q"
+                  placeholder="Search chemical name, CAS # (e.g. 103-90-2), formula or supplier..."
                   className="w-full pl-10 pr-3 py-2 text-sm text-[#091E42] placeholder-[#64748B] bg-transparent rounded-xl focus:outline-none focus:bg-white transition-all font-medium"
                   aria-label="Search chemical database"
                 />

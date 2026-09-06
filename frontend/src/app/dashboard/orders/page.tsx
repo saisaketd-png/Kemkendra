@@ -8,7 +8,18 @@ import { getBuyerOrders } from "@/features/order/api/getBuyerOrders";
 import { PurchaseOrderResponse } from "@/features/order/api/createOrder";
 import { PageHeader, StatusBadge } from "@/shared/components/ui/KemkendraUI";
 
-type StatusFilter = "ALL" | "PLACED" | "CONFIRMED" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "COMPLETED" | "CANCELLED";
+type StatusFilter =
+  | "ALL"
+  | "PLACED"
+  | "CONFIRMED"
+  | "PROCESSING"
+  | "READY_FOR_DISPATCH"
+  | "DISPATCHED"
+  | "IN_TRANSIT"
+  | "DELIVERED"
+  | "COMPLETED"
+  | "CANCELLED"
+  | "DISPUTED";
 type SortOption = "DATE_DESC" | "DATE_ASC" | "VALUE_DESC" | "VALUE_ASC";
 
 export default function BuyerOrdersPage() {
@@ -40,19 +51,19 @@ export default function BuyerOrdersPage() {
   }, []);
 
   const totalCount = orders.length;
-  const placedCount = useMemo(() => orders.filter((o) => o.status === "PLACED").length, [orders]);
+  const placedCount = useMemo(() => orders.filter((o) => o.status === "PLACED" || o.status === "PENDING_CONFIRMATION").length, [orders]);
   const confirmedCount = useMemo(() => orders.filter((o) => o.status === "CONFIRMED").length, [orders]);
-  const processingCount = useMemo(() => orders.filter((o) => o.status === "PROCESSING").length, [orders]);
-  const shippedCount = useMemo(() => orders.filter((o) => o.status === "SHIPPED").length, [orders]);
-  const deliveredCount = useMemo(() => orders.filter((o) => o.status === "DELIVERED").length, [orders]);
-  const completedCount = useMemo(() => orders.filter((o) => o.status === "COMPLETED").length, [orders]);
+  const processingCount = useMemo(() => orders.filter((o) => o.status === "PROCESSING" || o.status === "READY_FOR_DISPATCH").length, [orders]);
+  const transitCount = useMemo(() => orders.filter((o) => o.status === "SHIPPED" || o.status === "DISPATCHED" || o.status === "IN_TRANSIT").length, [orders]);
+  const deliveredCount = useMemo(() => orders.filter((o) => o.status === "DELIVERED" || o.status === "COMPLETED").length, [orders]);
+  const disputedCount = useMemo(() => orders.filter((o) => o.status === "DISPUTED").length, [orders]);
 
   // Total active commercial volume
   const totalActiveValueFormatted = useMemo(() => {
     let total = 0;
     let currency = "INR";
     orders.forEach((o) => {
-      if (o.status !== "CANCELLED") {
+      if (o.status !== "CANCELLED" && o.status !== "REJECTED") {
         total += o.totalAmount;
         if (o.currency) currency = o.currency;
       }
@@ -63,7 +74,15 @@ export default function BuyerOrdersPage() {
   const filteredOrders = useMemo(() => {
     return orders
       .filter((order) => {
-        if (statusFilter !== "ALL" && order.status !== statusFilter) return false;
+        if (statusFilter !== "ALL") {
+          if (statusFilter === "PLACED" && (order.status === "PLACED" || order.status === "PENDING_CONFIRMATION")) {
+            // matches
+          } else if (statusFilter === "DISPATCHED" && (order.status === "DISPATCHED" || order.status === "SHIPPED")) {
+            // matches
+          } else if (order.status !== statusFilter) {
+            return false;
+          }
+        }
 
         if (searchQuery.trim()) {
           const q = searchQuery.toLowerCase().trim();
@@ -92,36 +111,36 @@ export default function BuyerOrdersPage() {
     {
       label: "Total Orders",
       value: totalCount,
-      subtext: `${totalActiveValueFormatted} volume`,
+      subtext: `${totalActiveValueFormatted} active`,
       active: statusFilter === "ALL",
       onClick: () => setStatusFilter("ALL"),
     },
     {
       label: "Awaiting Confirmation",
       value: placedCount,
-      subtext: placedCount > 0 ? "Pending supplier" : "All acknowledged",
+      subtext: placedCount > 0 ? "Pending supplier" : "All confirmed",
       active: statusFilter === "PLACED",
       onClick: () => setStatusFilter("PLACED"),
     },
     {
-      label: "Confirmed Orders",
-      value: confirmedCount,
-      subtext: "Accepted commitments",
-      active: statusFilter === "CONFIRMED",
-      onClick: () => setStatusFilter("CONFIRMED"),
-    },
-    {
-      label: "In Fulfillment",
-      value: processingCount + shippedCount,
-      subtext: `${shippedCount} dispatched`,
-      active: statusFilter === "PROCESSING" || statusFilter === "SHIPPED",
+      label: "In Preparation",
+      value: confirmedCount + processingCount,
+      subtext: "Batch synthesis & QC",
+      active: statusFilter === "CONFIRMED" || statusFilter === "PROCESSING",
       onClick: () => setStatusFilter("PROCESSING"),
     },
     {
-      label: "Delivered",
+      label: "In Transit",
+      value: transitCount,
+      subtext: `${transitCount} consignments moving`,
+      active: statusFilter === "DISPATCHED" || statusFilter === "IN_TRANSIT",
+      onClick: () => setStatusFilter("DISPATCHED"),
+    },
+    {
+      label: "Delivered / Closed",
       value: deliveredCount,
-      subtext: "Ready for completion",
-      active: statusFilter === "DELIVERED",
+      subtext: "Fulfillment complete",
+      active: statusFilter === "DELIVERED" || statusFilter === "COMPLETED",
       onClick: () => setStatusFilter("DELIVERED"),
     },
   ];

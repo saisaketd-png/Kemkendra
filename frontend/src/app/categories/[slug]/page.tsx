@@ -35,13 +35,39 @@ export async function generateMetadata({
 
   if (!categoryMeta) {
     return {
-      title: "Chemical Category | KemKendra",
+      title: "Chemical Categories | Chemical Suppliers | KemKendra",
+      description: "Explore industrial and pharmaceutical chemical categories on KemKendra.",
       robots: { index: false, follow: true },
     };
   }
 
-  const title = `${categoryMeta.name} Chemicals | Verified Suppliers & B2B Sourcing | KemKendra`;
-  const description = `Explore verified suppliers and commercial offerings for ${categoryMeta.name} chemicals on KemKendra. Request quotes, view specifications, and source bulk chemicals.`;
+  let title = `${categoryMeta.name} Suppliers | B2B Sourcing | KemKendra`;
+  let description = `Explore ${categoryMeta.name} from suppliers on KemKendra. Find product specifications, supplier offerings, and sourcing options for bulk requirements.`;
+
+  switch (categoryMeta.id) {
+    case "api":
+      title = "Pharmaceutical API Suppliers | Bulk Chemical Sourcing | KemKendra";
+      description = "Find pharmaceutical API suppliers on KemKendra. Explore verified offerings, review specifications, and request quotations for bulk API procurement.";
+      break;
+    case "intermediate":
+      title = "Chemical Intermediates Suppliers | B2B Sourcing | KemKendra";
+      description = "Source chemical intermediates from suppliers on KemKendra. Compare product specifications, explore available offerings, and submit a bulk RFQ.";
+      break;
+    case "solvent":
+      title = "Industrial Solvent Suppliers | Bulk Chemical Marketplace | KemKendra";
+      description = "Discover industrial solvent suppliers on KemKendra. Review specifications, packaging, and indicative pricing, then request a quotation.";
+      break;
+    case "specialty-chemical":
+      title = "Specialty Chemical Suppliers | B2B Chemical Marketplace | KemKendra";
+      description = "Explore specialty chemicals from suppliers on KemKendra. Find product specifications, supplier offerings, and sourcing options for bulk requirements.";
+      break;
+    case "excipient":
+      title = "Pharmaceutical Excipient Suppliers | B2B Sourcing | KemKendra";
+      description = "Source pharmaceutical excipients from verified suppliers on KemKendra. Review functional grades, specifications, and request bulk quotations.";
+      break;
+    default:
+      break;
+  }
 
   const filterKeys = ["search", "casNumber", "country", "verified", "purityMin", "purityMax", "moqMin", "moqMax", "inStock", "coa", "msds", "exportReady", "sort", "page"];
   const hasFilters = filterKeys.some((k) => !!resolvedSearchParams?.[k]);

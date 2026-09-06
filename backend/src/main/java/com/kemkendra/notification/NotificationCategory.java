@@ -11,6 +11,9 @@ public enum NotificationCategory {
     QUOTATION,
     PURCHASE_ORDER,
     SHIPMENT,
+    INVOICE,
+    PAYMENT,
+    DISPUTE,
     CATALOG,
     GOVERNANCE,
     SYSTEM;

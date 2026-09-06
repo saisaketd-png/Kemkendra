@@ -21,11 +21,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://kemkendra.online"),
   title: {
-    default: "KemKendra | Global B2B Chemical Marketplace",
+    default: "B2B Chemical Marketplace | Verified Chemical Suppliers | KemKendra",
     template: "%s",
   },
   description:
-    "Global sourcing for pharmaceutical intermediates, APIs, specialty chemicals, and industrial raw materials with verified supplier documentation.",
+    "Find verified chemical suppliers on KemKendra. Source APIs, intermediates, industrial solvents, and specialty chemicals, compare offerings, and request bulk quotations.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },

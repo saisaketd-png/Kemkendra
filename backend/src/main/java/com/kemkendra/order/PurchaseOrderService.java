@@ -6,9 +6,13 @@ import com.kemkendra.identity.UserRepository;
 import com.kemkendra.identity.UserStatus;
 import com.kemkendra.order.dto.CancelPurchaseOrderRequest;
 import com.kemkendra.order.dto.CreatePurchaseOrderRequest;
+import com.kemkendra.order.dto.DispatchOrderRequest;
+import com.kemkendra.order.dto.OrderInvoiceSummaryDto;
+import com.kemkendra.order.dto.OrderTimelineEventDto;
 import com.kemkendra.order.dto.PurchaseOrderResponse;
 import com.kemkendra.order.dto.RejectPurchaseOrderRequest;
 import com.kemkendra.order.dto.ShipmentResponse;
+import com.kemkendra.order.dto.UpdateShipmentStatusRequest;
 import com.kemkendra.product.*;
 import com.kemkendra.rfq.Rfq;
 import com.kemkendra.rfq.RfqRepository;
@@ -26,6 +30,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,6 +50,9 @@ public class PurchaseOrderService {
     private final ApplicationEventPublisher eventPublisher;
     private com.kemkendra.admin.config.FeatureToggleService featureToggleService;
     private com.kemkendra.admin.audit.AuditService auditService;
+    private com.kemkendra.invoice.InvoiceRepository invoiceRepository;
+    private com.kemkendra.invoice.InvoicePaymentRecordRepository paymentRecordRepository;
+    private com.kemkendra.dispute.DisputeRepository disputeRepository;
 
     public PurchaseOrderService(
             PurchaseOrderRepository purchaseOrderRepository,
@@ -77,6 +85,21 @@ public class PurchaseOrderService {
     @org.springframework.beans.factory.annotation.Autowired(required = false)
     public void setAuditService(com.kemkendra.admin.audit.AuditService auditService) {
         this.auditService = auditService;
+    }
+
+    @org.springframework.beans.factory.annotation.Autowired(required = false)
+    public void setInvoiceRepository(com.kemkendra.invoice.InvoiceRepository invoiceRepository) {
+        this.invoiceRepository = invoiceRepository;
+    }
+
+    @org.springframework.beans.factory.annotation.Autowired(required = false)
+    public void setPaymentRecordRepository(com.kemkendra.invoice.InvoicePaymentRecordRepository paymentRecordRepository) {
+        this.paymentRecordRepository = paymentRecordRepository;
+    }
+
+    @org.springframework.beans.factory.annotation.Autowired(required = false)
+    public void setDisputeRepository(com.kemkendra.dispute.DisputeRepository disputeRepository) {
+        this.disputeRepository = disputeRepository;
     }
 
     public PurchaseOrderResponse createPurchaseOrder(
@@ -173,10 +196,17 @@ public class PurchaseOrderService {
                     .orElse("Chemical Product");
         }
 
-        // Calculate total amount = quantity * unitPrice
-        BigDecimal totalAmount = rfq.getQuantity()
-                .multiply(quotation.getUnitPrice())
-                .setScale(4, RoundingMode.HALF_UP);
+        // Calculate subtotal = quantity * unitPrice
+        BigDecimal subtotal = request.subtotal() != null
+                ? request.subtotal()
+                : rfq.getQuantity().multiply(quotation.getUnitPrice()).setScale(4, RoundingMode.HALF_UP);
+        BigDecimal taxAmount = request.taxAmount() != null ? request.taxAmount() : BigDecimal.ZERO;
+        BigDecimal totalAmount = subtotal.add(taxAmount).setScale(4, RoundingMode.HALF_UP);
+
+        LocalDate expectedDeliveryDate = request.expectedDeliveryDate();
+        if (expectedDeliveryDate == null && quotation.getLeadTimeDays() != null && quotation.getLeadTimeDays() > 0) {
+            expectedDeliveryDate = LocalDate.now().plusDays(quotation.getLeadTimeDays());
+        }
 
         // Generate Human-Readable PO Number
         Long seqVal = purchaseOrderRepository.getNextPoSequenceValue();
@@ -208,9 +238,12 @@ public class PurchaseOrderService {
         po.setQuantity(rfq.getQuantity());
         po.setUnit(rfq.getUnit());
         po.setUnitPrice(quotation.getUnitPrice());
+        po.setSubtotal(subtotal);
+        po.setTaxAmount(taxAmount);
         po.setTotalAmount(totalAmount);
         po.setCurrency(quotation.getCurrency());
         po.setAgreedLeadTimeDays(quotation.getLeadTimeDays());
+        po.setExpectedDeliveryDate(expectedDeliveryDate);
         po.setPaymentTerms(request.paymentTerms() != null && !request.paymentTerms().isBlank() ? request.paymentTerms().trim() : "Standard Terms");
         po.setDeliveryTerms(request.deliveryTerms() != null && !request.deliveryTerms().isBlank() ? request.deliveryTerms().trim() : "Standard Delivery");
         po.setIncoterms(request.incoterms() != null && !request.incoterms().isBlank() ? request.incoterms().trim() : null);
@@ -462,12 +495,47 @@ public class PurchaseOrderService {
         return mapToResponse(updated);
     }
 
-    public PurchaseOrderResponse shipSupplierOrder(UUID orderId, String carrier, String trackingNumber, LocalDate estimatedDeliveryDate, Authentication authentication) {
-        if (carrier == null || carrier.isBlank()) {
-            throw new IllegalArgumentException("Carrier must not be blank");
+    public PurchaseOrderResponse markReadyForDispatchSupplierOrder(UUID orderId, Authentication authentication) {
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        Supplier supplier = supplierRepository.findByUser(user)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier profile not found"));
+
+        PurchaseOrder order = purchaseOrderRepository.findByIdAndSupplierId(orderId, supplier.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+
+        if (order.getStatus() != OrderStatus.PROCESSING) {
+            throw new IllegalStateException("Cannot mark order ready for dispatch in status: " + order.getStatus() + ". Order must be in PROCESSING status.");
         }
-        if (trackingNumber == null || trackingNumber.isBlank()) {
-            throw new IllegalArgumentException("Tracking number must not be blank");
+
+        order.setStatus(OrderStatus.READY_FOR_DISPATCH);
+        order.setReadyForDispatchAt(LocalDateTime.now());
+        PurchaseOrder updated = purchaseOrderRepository.save(order);
+
+        if (auditService != null) {
+            auditService.recordUserAction(
+                    user,
+                    com.kemkendra.admin.audit.AuditAction.PO_PROCESSING_STARTED,
+                    com.kemkendra.admin.audit.AuditTargetType.PURCHASE_ORDER,
+                    updated.getId().toString(),
+                    "Order " + updated.getPoNumber() + " marked ready for dispatch"
+            );
+        }
+
+        eventPublisher.publishEvent(new OrderReadyForDispatchEvent(
+                updated.getId(),
+                updated.getBuyerId(),
+                updated.getSupplierId()
+        ));
+
+        return mapToResponse(updated);
+    }
+
+    public PurchaseOrderResponse dispatchSupplierOrder(UUID orderId, DispatchOrderRequest request, Authentication authentication) {
+        if (request == null || request.trackingNumber() == null || request.trackingNumber().isBlank()) {
+            throw new IllegalArgumentException("Tracking number is required for dispatch");
         }
 
         String email = authentication.getName();
@@ -480,25 +548,32 @@ public class PurchaseOrderService {
         PurchaseOrder order = purchaseOrderRepository.findByIdAndSupplierId(orderId, supplier.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
-        if (order.getStatus() != OrderStatus.PROCESSING) {
-            throw new IllegalStateException("Cannot ship order in status: " + order.getStatus());
+        if (order.getStatus() != OrderStatus.PROCESSING && order.getStatus() != OrderStatus.READY_FOR_DISPATCH) {
+            throw new IllegalStateException("Cannot dispatch order in status: " + order.getStatus() + ". Order must be PROCESSING or READY_FOR_DISPATCH.");
         }
 
-        if (shipmentRepository.findByPurchaseOrderId(orderId).isPresent()) {
-            throw new IllegalStateException("A shipment already exists for this order");
-        }
+        LocalDateTime dispatchTime = request.dispatchDate() != null ? request.dispatchDate() : LocalDateTime.now();
+        Shipment shipment = shipmentRepository.findByPurchaseOrderId(orderId).orElseGet(() -> {
+            Shipment s = new Shipment();
+            s.setPurchaseOrder(order);
+            return s;
+        });
 
-        LocalDateTime shippedTime = LocalDateTime.now();
-        Shipment shipment = new Shipment();
-        shipment.setPurchaseOrder(order);
-        shipment.setCarrier(carrier.trim());
-        shipment.setTrackingNumber(trackingNumber.trim());
-        shipment.setEstimatedDeliveryDate(estimatedDeliveryDate);
-        shipment.setShippedAt(shippedTime);
+        shipment.setCarrier(request.carrier() != null && !request.carrier().isBlank() ? request.carrier().trim() : null);
+        shipment.setTrackingNumber(request.trackingNumber().trim());
+        shipment.setDispatchDate(dispatchTime);
+        shipment.setShippedAt(dispatchTime);
+        if (request.estimatedDeliveryDate() != null) {
+            shipment.setEstimatedDeliveryDate(request.estimatedDeliveryDate());
+        }
+        if (request.deliveryNotes() != null && !request.deliveryNotes().isBlank()) {
+            shipment.setDeliveryNotes(request.deliveryNotes().trim());
+        }
+        shipment.setShipmentStatus(ShipmentStatus.DISPATCHED);
         Shipment savedShipment = shipmentRepository.save(shipment);
 
-        order.setStatus(OrderStatus.SHIPPED);
-        order.setShippedAt(shippedTime);
+        order.setStatus(OrderStatus.DISPATCHED);
+        order.setShippedAt(dispatchTime);
         PurchaseOrder updated = purchaseOrderRepository.save(order);
 
         if (auditService != null) {
@@ -507,7 +582,7 @@ public class PurchaseOrderService {
                     com.kemkendra.admin.audit.AuditAction.PO_SHIPPED,
                     com.kemkendra.admin.audit.AuditTargetType.PURCHASE_ORDER,
                     updated.getId().toString(),
-                    "Shipment dispatched for Order " + updated.getPoNumber() + " via " + carrier.trim() + " (Tracking: " + trackingNumber.trim() + ")"
+                    "Order " + updated.getPoNumber() + " dispatched (Tracking: " + request.trackingNumber().trim() + ")"
             );
         }
 
@@ -521,6 +596,138 @@ public class PurchaseOrderService {
         return mapToResponse(updated);
     }
 
+    public PurchaseOrderResponse shipSupplierOrder(UUID orderId, String carrier, String trackingNumber, LocalDate estimatedDeliveryDate, Authentication authentication) {
+        if (carrier == null || carrier.trim().isEmpty()) {
+            throw new IllegalArgumentException("Carrier is required");
+        }
+        if (trackingNumber == null || trackingNumber.trim().isEmpty()) {
+            throw new IllegalArgumentException("Tracking number is required");
+        }
+
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        Supplier supplier = supplierRepository.findByUser(user)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier profile not found"));
+
+        PurchaseOrder order = purchaseOrderRepository.findByIdAndSupplierId(orderId, supplier.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+
+        if (order.getStatus() != OrderStatus.PROCESSING) {
+            throw new IllegalStateException("Cannot ship order in status: " + order.getStatus() + ". Order must be in PROCESSING status to be shipped.");
+        }
+
+        if (shipmentRepository.findByPurchaseOrderId(orderId).isPresent()) {
+            throw new IllegalStateException("Shipment already exists for order: " + orderId);
+        }
+
+        LocalDateTime shippedTime = LocalDateTime.now();
+        Shipment shipment = new Shipment();
+        shipment.setPurchaseOrder(order);
+        shipment.setCarrier(carrier.trim());
+        shipment.setTrackingNumber(trackingNumber.trim());
+        shipment.setEstimatedDeliveryDate(estimatedDeliveryDate);
+        shipment.setShippedAt(shippedTime);
+        shipment.setDispatchDate(shippedTime);
+        shipment.setShipmentStatus(ShipmentStatus.DISPATCHED);
+        Shipment savedShipment = shipmentRepository.save(shipment);
+
+        order.setStatus(OrderStatus.SHIPPED);
+        order.setShippedAt(shippedTime);
+        PurchaseOrder updated = purchaseOrderRepository.save(order);
+
+        if (auditService != null) {
+            auditService.recordUserAction(
+                    user,
+                    com.kemkendra.admin.audit.AuditAction.PO_SHIPPED,
+                    com.kemkendra.admin.audit.AuditTargetType.PURCHASE_ORDER,
+                    updated.getId().toString(),
+                    "Supplier shipped Purchase Order " + updated.getPoNumber() + " via " + carrier.trim() + " (Tracking: " + trackingNumber.trim() + ")"
+            );
+        }
+
+        eventPublisher.publishEvent(new OrderShippedEvent(
+                updated.getId(),
+                updated.getBuyerId(),
+                updated.getSupplierId(),
+                savedShipment.getId()
+        ));
+
+        return mapToResponse(updated);
+    }
+
+    public ShipmentResponse updateShipmentStatus(UUID orderId, UpdateShipmentStatusRequest request, Authentication authentication) {
+        if (request == null || request.shipmentStatus() == null) {
+            throw new IllegalArgumentException("Shipment status is required");
+        }
+
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        Supplier supplier = supplierRepository.findByUser(user)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier profile not found"));
+
+        PurchaseOrder order = purchaseOrderRepository.findByIdAndSupplierId(orderId, supplier.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+
+        Shipment shipment = shipmentRepository.findByPurchaseOrderId(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Shipment not found for order"));
+
+        shipment.setShipmentStatus(request.shipmentStatus());
+        if (request.carrier() != null && !request.carrier().isBlank()) {
+            shipment.setCarrier(request.carrier().trim());
+        }
+        if (request.trackingNumber() != null && !request.trackingNumber().isBlank()) {
+            shipment.setTrackingNumber(request.trackingNumber().trim());
+        }
+        if (request.estimatedDeliveryDate() != null) {
+            shipment.setEstimatedDeliveryDate(request.estimatedDeliveryDate());
+        }
+        if (request.deliveryNotes() != null && !request.deliveryNotes().isBlank()) {
+            shipment.setDeliveryNotes(request.deliveryNotes().trim());
+        }
+
+        if (request.shipmentStatus() == ShipmentStatus.IN_TRANSIT) {
+            if (order.getStatus() == OrderStatus.DISPATCHED || order.getStatus() == OrderStatus.SHIPPED) {
+                order.setStatus(OrderStatus.IN_TRANSIT);
+                order.setInTransitAt(LocalDateTime.now());
+                purchaseOrderRepository.save(order);
+            }
+        } else if (request.shipmentStatus() == ShipmentStatus.DELIVERED) {
+            shipment.setDeliveredAt(LocalDateTime.now());
+            if (order.getStatus() != OrderStatus.DELIVERED && order.getStatus() != OrderStatus.COMPLETED) {
+                order.setStatus(OrderStatus.DELIVERED);
+                order.setDeliveredAt(LocalDateTime.now());
+                purchaseOrderRepository.save(order);
+            }
+        }
+
+        Shipment updated = shipmentRepository.save(shipment);
+
+        eventPublisher.publishEvent(new ShipmentStatusUpdatedEvent(
+                order.getId(),
+                order.getBuyerId(),
+                order.getSupplierId(),
+                updated.getShipmentStatus().name(),
+                updated.getCarrier(),
+                updated.getTrackingNumber()
+        ));
+
+        return new ShipmentResponse(
+                updated.getId(),
+                updated.getCarrier(),
+                updated.getTrackingNumber(),
+                updated.getShipmentStatus(),
+                updated.getDispatchDate(),
+                updated.getEstimatedDeliveryDate(),
+                updated.getShippedAt(),
+                updated.getDeliveredAt(),
+                updated.getDeliveryNotes()
+        );
+    }
+
     public PurchaseOrderResponse confirmReceiptBuyerOrder(UUID orderId, Authentication authentication) {
         String email = authentication.getName();
         User buyer = userRepository.findByEmail(email)
@@ -529,13 +736,20 @@ public class PurchaseOrderService {
         PurchaseOrder order = purchaseOrderRepository.findByIdAndBuyerId(orderId, buyer.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
-        if (order.getStatus() != OrderStatus.SHIPPED) {
-            throw new IllegalStateException("Cannot confirm receipt for order in status: " + order.getStatus() + ". Order must be SHIPPED.");
+        if (order.getStatus() != OrderStatus.SHIPPED && order.getStatus() != OrderStatus.DISPATCHED && order.getStatus() != OrderStatus.IN_TRANSIT) {
+            throw new IllegalStateException("Cannot confirm receipt for order in status: " + order.getStatus() + ". Order must be SHIPPED, DISPATCHED, or IN_TRANSIT.");
         }
 
+        LocalDateTime deliveredTime = LocalDateTime.now();
         order.setStatus(OrderStatus.DELIVERED);
-        order.setDeliveredAt(LocalDateTime.now());
+        order.setDeliveredAt(deliveredTime);
         PurchaseOrder updated = purchaseOrderRepository.save(order);
+
+        shipmentRepository.findByPurchaseOrderId(orderId).ifPresent(s -> {
+            s.setShipmentStatus(ShipmentStatus.DELIVERED);
+            s.setDeliveredAt(deliveredTime);
+            shipmentRepository.save(s);
+        });
 
         if (auditService != null) {
             auditService.recordUserAction(
@@ -567,17 +781,24 @@ public class PurchaseOrderService {
         PurchaseOrder order = purchaseOrderRepository.findByIdAndSupplierId(orderId, supplier.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
-        if (order.getStatus() != OrderStatus.SHIPPED) {
-            throw new IllegalStateException("Cannot mark delivered order in status: " + order.getStatus());
+        if (order.getStatus() != OrderStatus.SHIPPED && order.getStatus() != OrderStatus.DISPATCHED && order.getStatus() != OrderStatus.IN_TRANSIT) {
+            throw new IllegalStateException("Cannot mark delivered order in status: " + order.getStatus() + ". Order must be SHIPPED, DISPATCHED, or IN_TRANSIT.");
         }
 
         if (shipmentRepository.findByPurchaseOrderId(orderId).isEmpty()) {
             throw new IllegalStateException("Cannot mark delivered: Shipment record not found for this order");
         }
 
+        LocalDateTime deliveredTime = LocalDateTime.now();
         order.setStatus(OrderStatus.DELIVERED);
-        order.setDeliveredAt(LocalDateTime.now());
+        order.setDeliveredAt(deliveredTime);
         PurchaseOrder updated = purchaseOrderRepository.save(order);
+
+        shipmentRepository.findByPurchaseOrderId(orderId).ifPresent(s -> {
+            s.setShipmentStatus(ShipmentStatus.DELIVERED);
+            s.setDeliveredAt(deliveredTime);
+            shipmentRepository.save(s);
+        });
 
         if (auditService != null) {
             auditService.recordUserAction(
@@ -666,8 +887,263 @@ public class PurchaseOrderService {
                 shipment.getId(),
                 shipment.getCarrier(),
                 shipment.getTrackingNumber(),
+                shipment.getShipmentStatus(),
+                shipment.getDispatchDate(),
                 shipment.getEstimatedDeliveryDate(),
-                shipment.getShippedAt()
+                shipment.getShippedAt(),
+                shipment.getDeliveredAt(),
+                shipment.getDeliveryNotes()
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public List<OrderTimelineEventDto> getOrderTimeline(UUID orderId, Authentication authentication) {
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        PurchaseOrder order = purchaseOrderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+
+        Supplier supplier = supplierRepository.findByUser(user).orElse(null);
+        boolean isBuyer = order.getBuyerId().equals(user.getId());
+        boolean isSupplier = supplier != null && order.getSupplierId().equals(supplier.getId());
+        boolean isAdmin = user.getRole() == com.kemkendra.identity.UserRole.ADMIN;
+
+        if (!isBuyer && !isSupplier && !isAdmin) {
+            throw new ResourceNotFoundException("Order not found");
+        }
+
+        List<OrderTimelineEventDto> timeline = new ArrayList<>();
+
+        // 1. Quotation Accepted
+        timeline.add(new OrderTimelineEventDto(
+                "QUOTATION_ACCEPTED",
+                "Quotation Accepted",
+                "Buyer accepted quotation v" + (order.getQuotationVersion() != null ? order.getQuotationVersion() : 1),
+                "BUYER",
+                "Buyer",
+                order.getPlacedAt(),
+                true,
+                false
+        ));
+
+        // 2. Order Placed / Created
+        boolean isPlacedCurrent = order.getStatus() == OrderStatus.PLACED || order.getStatus() == OrderStatus.PENDING_CONFIRMATION;
+        timeline.add(new OrderTimelineEventDto(
+                "ORDER_CREATED",
+                "Order Created",
+                "Purchase order " + order.getPoNumber() + " issued to supplier",
+                "BUYER",
+                "Buyer",
+                order.getPlacedAt(),
+                true,
+                isPlacedCurrent
+        ));
+
+        // 3. Order Confirmed
+        if (order.getConfirmedAt() != null) {
+            boolean isConfirmedCurrent = order.getStatus() == OrderStatus.CONFIRMED;
+            timeline.add(new OrderTimelineEventDto(
+                    "ORDER_CONFIRMED",
+                    "Order Confirmed",
+                    "Supplier confirmed purchase order execution",
+                    "SUPPLIER",
+                    order.getConfirmedBy() != null ? order.getConfirmedBy() : "Supplier",
+                    order.getConfirmedAt(),
+                    true,
+                    isConfirmedCurrent
+            ));
+        }
+
+        // 4. Processing Started
+        if (order.getProcessingAt() != null) {
+            boolean isProcessingCurrent = order.getStatus() == OrderStatus.PROCESSING;
+            timeline.add(new OrderTimelineEventDto(
+                    "PROCESSING_STARTED",
+                    "Processing Started",
+                    "Batch preparation and quality control in progress",
+                    "SUPPLIER",
+                    "Supplier",
+                    order.getProcessingAt(),
+                    true,
+                    isProcessingCurrent
+            ));
+        }
+
+        // 5. Ready for Dispatch
+        if (order.getReadyForDispatchAt() != null) {
+            boolean isReadyCurrent = order.getStatus() == OrderStatus.READY_FOR_DISPATCH;
+            timeline.add(new OrderTimelineEventDto(
+                    "READY_FOR_DISPATCH",
+                    "Ready for Dispatch",
+                    "Consignment packaged and prepared for shipping handover",
+                    "SUPPLIER",
+                    "Supplier",
+                    order.getReadyForDispatchAt(),
+                    true,
+                    isReadyCurrent
+            ));
+        }
+
+        // 6. Dispatched
+        if (order.getShippedAt() != null) {
+            boolean isDispatchedCurrent = order.getStatus() == OrderStatus.DISPATCHED || order.getStatus() == OrderStatus.SHIPPED;
+            Shipment shipment = shipmentRepository.findByPurchaseOrderId(order.getId()).orElse(null);
+            String desc = "Consignment handed over to logistics carrier";
+            if (shipment != null && shipment.getTrackingNumber() != null) {
+                desc += " (Tracking: " + shipment.getTrackingNumber() + (shipment.getCarrier() != null ? ", Carrier: " + shipment.getCarrier() : "") + ")";
+            }
+            timeline.add(new OrderTimelineEventDto(
+                    "DISPATCHED",
+                    "Dispatched",
+                    desc,
+                    "SUPPLIER",
+                    "Supplier",
+                    order.getShippedAt(),
+                    true,
+                    isDispatchedCurrent
+            ));
+        }
+
+        // 7. In Transit
+        if (order.getInTransitAt() != null) {
+            boolean isInTransitCurrent = order.getStatus() == OrderStatus.IN_TRANSIT;
+            timeline.add(new OrderTimelineEventDto(
+                    "IN_TRANSIT",
+                    "In Transit",
+                    "Consignment en route to delivery destination",
+                    "SUPPLIER",
+                    "Supplier",
+                    order.getInTransitAt(),
+                    true,
+                    isInTransitCurrent
+            ));
+        }
+
+        // 8. Delivered
+        if (order.getDeliveredAt() != null) {
+            boolean isDeliveredCurrent = order.getStatus() == OrderStatus.DELIVERED;
+            timeline.add(new OrderTimelineEventDto(
+                    "DELIVERED",
+                    "Delivered",
+                    "Consignment arrival recorded and acknowledged",
+                    "SYSTEM",
+                    "Delivery",
+                    order.getDeliveredAt(),
+                    true,
+                    isDeliveredCurrent
+            ));
+        }
+
+        // 9. Completed
+        if (order.getCompletedAt() != null) {
+            timeline.add(new OrderTimelineEventDto(
+                    "COMPLETED",
+                    "Completed",
+                    "Order settled and commercially finalized",
+                    "SYSTEM",
+                    "System",
+                    order.getCompletedAt(),
+                    true,
+                    order.getStatus() == OrderStatus.COMPLETED
+            ));
+        }
+
+        // 10. Cancelled
+        if (order.getCancelledAt() != null) {
+            timeline.add(new OrderTimelineEventDto(
+                    "CANCELLED",
+                    "Order Cancelled",
+                    "Order cancelled. Reason: " + (order.getCancellationReason() != null ? order.getCancellationReason() : "None stated"),
+                    "USER",
+                    order.getCancelledBy() != null ? order.getCancelledBy() : "User",
+                    order.getCancelledAt(),
+                    true,
+                    true
+            ));
+        }
+
+        // 11. Disputed
+        if (order.getDisputedAt() != null || order.getStatus() == OrderStatus.DISPUTED) {
+            LocalDateTime dispTime = order.getDisputedAt() != null ? order.getDisputedAt() : LocalDateTime.now();
+            timeline.add(new OrderTimelineEventDto(
+                    "DISPUTED",
+                    "Order Disputed",
+                    "Dispute raised regarding order fulfillment or invoice",
+                    "USER",
+                    order.getDisputedBy() != null ? order.getDisputedBy() : "Party",
+                    dispTime,
+                    true,
+                    true
+            ));
+        }
+
+        return timeline;
+    }
+
+    @Transactional(readOnly = true)
+    public OrderInvoiceSummaryDto getOrderInvoiceSummary(UUID orderId, Authentication authentication) {
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        PurchaseOrder order = purchaseOrderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+
+        Supplier supplier = supplierRepository.findByUser(user).orElse(null);
+        boolean isBuyer = order.getBuyerId().equals(user.getId());
+        boolean isSupplier = supplier != null && order.getSupplierId().equals(supplier.getId());
+        boolean isAdmin = user.getRole() == com.kemkendra.identity.UserRole.ADMIN;
+
+        if (!isBuyer && !isSupplier && !isAdmin) {
+            throw new ResourceNotFoundException("Order not found");
+        }
+
+        if (invoiceRepository == null) {
+            return OrderInvoiceSummaryDto.noInvoice(order.getId(), order.getPoNumber());
+        }
+
+        List<com.kemkendra.invoice.Invoice> invoices = invoiceRepository.findByPurchaseOrderId(orderId);
+        if (invoices.isEmpty()) {
+            return OrderInvoiceSummaryDto.noInvoice(order.getId(), order.getPoNumber());
+        }
+
+        com.kemkendra.invoice.Invoice invoice = invoices.get(0);
+        BigDecimal amountDue = invoice.getAmountDue() != null ? invoice.getAmountDue() : invoice.getGrandTotal().subtract(invoice.getAmountPaid());
+
+        boolean hasProof = false;
+        UUID latestRecordId = null;
+        String proofKey = null;
+
+        if (paymentRecordRepository != null) {
+            List<com.kemkendra.invoice.InvoicePaymentRecord> records = paymentRecordRepository.findByInvoiceIdOrderByCreatedAtDesc(invoice.getId());
+            if (!records.isEmpty()) {
+                com.kemkendra.invoice.InvoicePaymentRecord latest = records.get(0);
+                latestRecordId = latest.getId();
+                proofKey = latest.getProofStorageKey();
+                hasProof = proofKey != null && !proofKey.isBlank();
+            }
+        }
+
+        return new OrderInvoiceSummaryDto(
+                order.getId(),
+                order.getPoNumber(),
+                true,
+                invoice.getId(),
+                invoice.getInvoiceNumber(),
+                invoice.getStatus() != null ? invoice.getStatus().name() : "ISSUED",
+                invoice.getInvoiceDate(),
+                invoice.getDueDate(),
+                invoice.getCurrency() != null ? invoice.getCurrency() : order.getCurrency(),
+                invoice.getGrandTotal(),
+                invoice.getAmountPaid(),
+                amountDue,
+                invoice.getPaymentStatus() != null ? invoice.getPaymentStatus().name() : "PENDING",
+                hasProof,
+                latestRecordId,
+                proofKey,
+                true
         );
     }
 
@@ -680,19 +1156,34 @@ public class PurchaseOrderService {
         PurchaseOrder order = purchaseOrderRepository.findByRfqId(rfqId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found for RFQ"));
 
-        // Verify authorization: must be either the buyer or the assigned supplier
+        // Verify authorization: must be either the buyer, assigned supplier, or admin
         Supplier supplier = supplierRepository.findByUser(user).orElse(null);
         boolean isBuyer = order.getBuyerId().equals(user.getId());
         boolean isSupplier = supplier != null && order.getSupplierId().equals(supplier.getId());
+        boolean isAdmin = user.getRole() == com.kemkendra.identity.UserRole.ADMIN;
 
-        if (!isBuyer && !isSupplier) {
+        if (!isBuyer && !isSupplier && !isAdmin) {
             throw new ResourceNotFoundException("Order not found for RFQ");
         }
 
         return mapToResponse(order);
     }
 
-    private PurchaseOrderResponse mapToResponse(PurchaseOrder po) {
+    @Transactional(readOnly = true)
+    public List<PurchaseOrderResponse> getAllOrdersAdmin(Authentication authentication) {
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        if (user.getRole() != com.kemkendra.identity.UserRole.ADMIN) {
+            throw new ResourceNotFoundException("Orders not found");
+        }
+        return purchaseOrderRepository.findAll(org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "createdAt"))
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    public PurchaseOrderResponse mapToResponse(PurchaseOrder po) {
         return new PurchaseOrderResponse(
                 po.getId(),
                 po.getPoNumber(),
@@ -714,9 +1205,12 @@ public class PurchaseOrderService {
                 po.getQuantity(),
                 po.getUnit(),
                 po.getUnitPrice(),
+                po.getSubtotal(),
+                po.getTaxAmount(),
                 po.getTotalAmount(),
                 po.getCurrency(),
                 po.getAgreedLeadTimeDays(),
+                po.getExpectedDeliveryDate(),
                 po.getPaymentTerms(),
                 po.getDeliveryTerms(),
                 po.getIncoterms(),
@@ -728,7 +1222,9 @@ public class PurchaseOrderService {
                 po.getConfirmedAt(),
                 po.getConfirmedBy(),
                 po.getProcessingAt(),
+                po.getReadyForDispatchAt(),
                 po.getShippedAt(),
+                po.getInTransitAt(),
                 po.getDeliveredAt(),
                 po.getCompletedAt(),
                 po.getRejectedAt(),
@@ -737,6 +1233,9 @@ public class PurchaseOrderService {
                 po.getCancelledAt(),
                 po.getCancelledBy(),
                 po.getCancellationReason(),
+                po.getDisputedAt(),
+                po.getDisputedBy(),
+                po.getDisputeId(),
                 po.getCreatedAt(),
                 po.getUpdatedAt()
         );

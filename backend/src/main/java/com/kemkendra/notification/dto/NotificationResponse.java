@@ -22,11 +22,30 @@ public record NotificationResponse(
         String message,
         NotificationEntityType entityType,
         UUID entityId,
+        UUID businessId,
         String targetRoute,
         boolean read,
+        boolean archived,
         LocalDateTime readAt,
         LocalDateTime createdAt
 ) {
+    public NotificationResponse(
+            UUID id,
+            NotificationType type,
+            NotificationCategory category,
+            NotificationPriority priority,
+            String title,
+            String message,
+            NotificationEntityType entityType,
+            UUID entityId,
+            String targetRoute,
+            boolean read,
+            LocalDateTime readAt,
+            LocalDateTime createdAt
+    ) {
+        this(id, type, category, priority, title, message, entityType, entityId, null, targetRoute, read, false, readAt, createdAt);
+    }
+
     public static NotificationResponse from(Notification n) {
         String route = resolveSafeTargetRoute(n.getEntityType(), n.getEntityId(), n.getType());
         return new NotificationResponse(
@@ -38,8 +57,10 @@ public record NotificationResponse(
                 n.getMessage(),
                 n.getEntityType(),
                 n.getEntityId(),
+                n.getBusinessId(),
                 route,
                 n.isRead(),
+                n.isArchived(),
                 n.getReadAt(),
                 n.getCreatedAt()
         );
@@ -66,6 +87,11 @@ public record NotificationResponse(
             case SUPPLIER_OFFERING -> entityId != null ? "/dashboard/supplier/products/" + entityId : "/dashboard/supplier/products";
             case MASTER_PRODUCT -> entityId != null ? "/products/" + entityId : "/products";
             case ACCOUNT_SUSPENSION, ACCOUNT_SUSPENSION_APPEAL -> "/dashboard/account-review";
+            case INVOICE -> entityId != null ? "/dashboard/buyer/invoices/" + entityId : "/dashboard/buyer/invoices";
+            case PAYMENT -> entityId != null ? "/dashboard/buyer/invoices/" + entityId : "/dashboard/buyer/invoices";
+            case DISPUTE -> entityId != null ? "/dashboard/buyer/disputes/" + entityId : "/dashboard/buyer/disputes";
+            case USER -> "/dashboard/settings";
+            case BUSINESS -> "/dashboard/settings";
             default -> "/dashboard/notifications";
         };
     }

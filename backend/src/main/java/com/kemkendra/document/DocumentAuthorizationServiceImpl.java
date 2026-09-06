@@ -2,6 +2,7 @@ package com.kemkendra.document;
 
 import com.kemkendra.identity.User;
 import com.kemkendra.identity.UserRole;
+import com.kemkendra.invoice.InvoiceRepository;
 import com.kemkendra.order.PurchaseOrder;
 import com.kemkendra.order.PurchaseOrderRepository;
 import com.kemkendra.order.Shipment;
@@ -29,6 +30,7 @@ public class DocumentAuthorizationServiceImpl implements DocumentAuthorizationSe
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final ShipmentRepository shipmentRepository;
     private final SupplierRepository supplierRepository;
+    private final InvoiceRepository invoiceRepository;
 
     public DocumentAuthorizationServiceImpl(
             ProductRepository productRepository,
@@ -38,7 +40,8 @@ public class DocumentAuthorizationServiceImpl implements DocumentAuthorizationSe
             QuotationRepository quotationRepository,
             PurchaseOrderRepository purchaseOrderRepository,
             ShipmentRepository shipmentRepository,
-            SupplierRepository supplierRepository) {
+            SupplierRepository supplierRepository,
+            InvoiceRepository invoiceRepository) {
         this.productRepository = productRepository;
         this.masterProductRepository = masterProductRepository;
         this.supplierOfferingRepository = supplierOfferingRepository;
@@ -47,6 +50,15 @@ public class DocumentAuthorizationServiceImpl implements DocumentAuthorizationSe
         this.purchaseOrderRepository = purchaseOrderRepository;
         this.shipmentRepository = shipmentRepository;
         this.supplierRepository = supplierRepository;
+        this.invoiceRepository = invoiceRepository;
+    }
+
+    @Override
+    public boolean canAccessDocument(DocumentResponse document, User authenticatedUser) {
+        if (Boolean.TRUE.equals(document.getIsPublic())) {
+            return true;
+        }
+        return canAccessDocument(document.getOwnerType(), document.getOwnerId(), authenticatedUser);
     }
 
     @Override
@@ -82,6 +94,8 @@ public class DocumentAuthorizationServiceImpl implements DocumentAuthorizationSe
                 return canAccessPurchaseOrder(ownerId, authenticatedUser);
             case SHIPMENT:
                 return canAccessShipment(ownerId, authenticatedUser);
+            case INVOICE:
+                return canAccessInvoice(ownerId, authenticatedUser);
             default:
                 return false;
         }
@@ -115,6 +129,8 @@ public class DocumentAuthorizationServiceImpl implements DocumentAuthorizationSe
                 return canUploadPurchaseOrder(ownerId, authenticatedUser);
             case SHIPMENT:
                 return canUploadShipment(ownerId, authenticatedUser);
+            case INVOICE:
+                return canUploadInvoice(ownerId, authenticatedUser);
             default:
                 return false;
         }
@@ -322,5 +338,20 @@ public class DocumentAuthorizationServiceImpl implements DocumentAuthorizationSe
 
     private boolean canUploadUser(UUID ownerId, User authenticatedUser) {
         return canAccessUser(ownerId, authenticatedUser);
+    }
+
+    private boolean canAccessInvoice(UUID invoiceId, User authenticatedUser) {
+        if (authenticatedUser == null) {
+            return false;
+        }
+        if (invoiceRepository.findByIdAndBuyerId(invoiceId, authenticatedUser.getId()).isPresent()) {
+            return true;
+        }
+        Long supplierId = getSupplierId(authenticatedUser);
+        return supplierId != null && invoiceRepository.findByIdAndSupplierId(invoiceId, supplierId).isPresent();
+    }
+
+    private boolean canUploadInvoice(UUID invoiceId, User authenticatedUser) {
+        return canAccessInvoice(invoiceId, authenticatedUser);
     }
 }

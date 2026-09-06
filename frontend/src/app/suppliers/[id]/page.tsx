@@ -21,14 +21,21 @@ export async function generateMetadata(props: {
     const supplier = await getSupplierPublicProfile(params.id);
     if (!supplier) {
       return {
-        title: "Supplier Profile | KemKendra",
+        title: "Chemical Supplier Directory | KemKendra",
+        description: "Explore verified chemical manufacturers and suppliers on KemKendra.",
         robots: { index: false, follow: true },
       };
     }
-    const title = `${supplier.name} | Verified Chemical Manufacturer & Supplier | KemKendra`;
-    const description =
-      supplier.aboutCompany ||
-      `Source chemical compounds, APIs, and specialty raw materials from verified supplier ${supplier.name}${supplier.countryName ? ` in ${supplier.countryName}` : ""}. View verified status, chemical catalog, and submit RFQs directly on KemKendra.`;
+    
+    // Title format: [Supplier Name] | Verified Chemical Supplier | KemKendra
+    const title = supplier.verified
+      ? `${supplier.name} | Verified Chemical Supplier | KemKendra`
+      : `${supplier.name} | Chemical Supplier | KemKendra`;
+    
+    // Description format:
+    // Explore [Supplier Name] on KemKendra. View its verified chemical offerings, business details, product categories, and contact the supplier for sourcing inquiries.
+    const verificationSnippet = supplier.verified ? "verified " : "";
+    const description = `Explore ${supplier.name} on KemKendra. View its ${verificationSnippet}chemical offerings, business details, product categories, and contact the supplier for sourcing inquiries.`;
 
     return {
       title,
@@ -42,6 +49,7 @@ export async function generateMetadata(props: {
         url: `${SITE_URL}/suppliers/${params.id}`,
         siteName: "KemKendra",
         type: "profile",
+        images: supplier.logoUrl ? [{ url: supplier.logoUrl, alt: `${supplier.name} logo` }] : undefined,
       },
       twitter: {
         card: "summary_large_image",
@@ -51,7 +59,8 @@ export async function generateMetadata(props: {
     };
   } catch {
     return {
-      title: "Supplier Profile | KemKendra",
+      title: "Chemical Supplier Profile | KemKendra",
+      description: "Explore verified chemical manufacturers and suppliers on KemKendra.",
       robots: { index: false, follow: true },
     };
   }
@@ -192,7 +201,7 @@ export default async function SupplierProfilePage(props: {
 
                 <div className="flex items-center gap-3 shrink-0 flex-wrap">
                   <Link
-                    href={`/rfqs/new?supplierId=${supplier.id}`}
+                    href={`/contact?supplierId=${supplier.id}&company=${encodeURIComponent(supplier.name)}`}
                     className="inline-flex items-center justify-center gap-2 bg-[#155EEF] hover:bg-[#104EC6] text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-2xs text-xs"
                   >
                     <FileCheck className="w-4 h-4" />

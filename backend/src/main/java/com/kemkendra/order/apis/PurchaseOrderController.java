@@ -125,6 +125,14 @@ public class PurchaseOrderController {
         return purchaseOrderService.confirmReceiptBuyerOrder(orderId, authentication);
     }
 
+    @PostMapping("/{orderId}/complete")
+    @PreAuthorize("hasRole('BUYER') or hasRole('USER') or hasRole('SUPPLIER')")
+    public PurchaseOrderResponse completeOrder(
+            @PathVariable UUID orderId,
+            Authentication authentication) {
+        return purchaseOrderService.completeOrder(orderId, authentication);
+    }
+
     @PostMapping("/{orderId}/cancel")
     @PreAuthorize("hasRole('BUYER') or hasRole('USER')")
     public PurchaseOrderResponse cancelOrder(
@@ -134,11 +142,51 @@ public class PurchaseOrderController {
         return purchaseOrderService.cancelBuyerOrder(orderId, request, authentication);
     }
 
-    @PostMapping("/{orderId}/complete")
-    @PreAuthorize("hasRole('BUYER') or hasRole('USER') or hasRole('SUPPLIER') or hasRole('ADMIN')")
-    public PurchaseOrderResponse completeOrder(
+    @PostMapping("/supplier/{orderId}/ready-for-dispatch")
+    @PreAuthorize("hasRole('SUPPLIER')")
+    public PurchaseOrderResponse markReadyForDispatch(
             @PathVariable UUID orderId,
             Authentication authentication) {
-        return purchaseOrderService.completeOrder(orderId, authentication);
+        return purchaseOrderService.markReadyForDispatchSupplierOrder(orderId, authentication);
+    }
+
+    @PostMapping("/supplier/{orderId}/dispatch")
+    @PreAuthorize("hasRole('SUPPLIER')")
+    public PurchaseOrderResponse dispatchOrder(
+            @PathVariable UUID orderId,
+            @Valid @RequestBody com.kemkendra.order.dto.DispatchOrderRequest request,
+            Authentication authentication) {
+        return purchaseOrderService.dispatchSupplierOrder(orderId, request, authentication);
+    }
+
+    @PutMapping("/supplier/{orderId}/shipment-status")
+    @PreAuthorize("hasRole('SUPPLIER')")
+    public com.kemkendra.order.dto.ShipmentResponse updateShipmentStatus(
+            @PathVariable UUID orderId,
+            @Valid @RequestBody com.kemkendra.order.dto.UpdateShipmentStatusRequest request,
+            Authentication authentication) {
+        return purchaseOrderService.updateShipmentStatus(orderId, request, authentication);
+    }
+
+    @GetMapping("/{orderId}/timeline")
+    @PreAuthorize("hasRole('BUYER') or hasRole('USER') or hasRole('SUPPLIER') or hasRole('ADMIN')")
+    public List<com.kemkendra.order.dto.OrderTimelineEventDto> getOrderTimeline(
+            @PathVariable UUID orderId,
+            Authentication authentication) {
+        return purchaseOrderService.getOrderTimeline(orderId, authentication);
+    }
+
+    @GetMapping("/{orderId}/invoice-summary")
+    @PreAuthorize("hasRole('BUYER') or hasRole('USER') or hasRole('SUPPLIER') or hasRole('ADMIN')")
+    public com.kemkendra.order.dto.OrderInvoiceSummaryDto getOrderInvoiceSummary(
+            @PathVariable UUID orderId,
+            Authentication authentication) {
+        return purchaseOrderService.getOrderInvoiceSummary(orderId, authentication);
+    }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<PurchaseOrderResponse> getAllOrdersAdmin(Authentication authentication) {
+        return purchaseOrderService.getAllOrdersAdmin(authentication);
     }
 }

@@ -9,5 +9,6 @@ public enum DocumentOwnerType {
     RFQ,
     QUOTATION,
     PURCHASE_ORDER,
-    SHIPMENT
+    SHIPMENT,
+    INVOICE
 }

@@ -3,6 +3,7 @@ package com.kemkendra.order.dto;
 import com.kemkendra.order.OrderStatus;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,9 +28,12 @@ public record PurchaseOrderResponse(
         BigDecimal quantity,
         String unit,
         BigDecimal unitPrice,
+        BigDecimal subtotal,
+        BigDecimal taxAmount,
         BigDecimal totalAmount,
         String currency,
         Integer agreedLeadTimeDays,
+        LocalDate expectedDeliveryDate,
         String paymentTerms,
         String deliveryTerms,
         String incoterms,
@@ -41,7 +45,9 @@ public record PurchaseOrderResponse(
         LocalDateTime confirmedAt,
         String confirmedBy,
         LocalDateTime processingAt,
+        LocalDateTime readyForDispatchAt,
         LocalDateTime shippedAt,
+        LocalDateTime inTransitAt,
         LocalDateTime deliveredAt,
         LocalDateTime completedAt,
         LocalDateTime rejectedAt,
@@ -50,7 +56,9 @@ public record PurchaseOrderResponse(
         LocalDateTime cancelledAt,
         String cancelledBy,
         String cancellationReason,
+        LocalDateTime disputedAt,
+        String disputedBy,
+        UUID disputeId,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {}
-

@@ -42,8 +42,26 @@ public class Document {
     @Column(name = "file_size", nullable = false)
     private Long fileSize;
 
+    @Column(name = "title", length = 255)
+    private String title;
+
     @Column(name = "uploaded_by", nullable = false)
     private UUID uploadedBy;
+
+    @Column(name = "reviewed_by")
+    private UUID reviewedBy;
+
+    @Column(name = "reviewed_at")
+    private LocalDateTime reviewedAt;
+
+    @Column(name = "review_notes", columnDefinition = "TEXT")
+    private String reviewNotes;
+
+    @Column(name = "is_public")
+    private Boolean isPublic = false;
+
+    @Column(name = "replaced_by_id")
+    private UUID replacedById;
 
     @Column(name = "document_number", length = 100)
     private String documentNumber;
@@ -58,7 +76,7 @@ public class Document {
     private LocalDate expiryDate;
 
     @Column(name = "verification_status", length = 50)
-    private String verificationStatus = "ACTIVE";
+    private String verificationStatus = "PENDING_REVIEW";
 
     @Column(name = "version")
     private Integer version = 1;
@@ -81,6 +99,28 @@ public class Document {
     private LocalDateTime updatedAt;
 
     public Document() {
+    }
+
+    public String getTitle() {
+        return (title != null && !title.isBlank()) ? title : originalFileName;
+    }
+    public void setTitle(String title) { this.title = title; }
+    public UUID getReviewedBy() { return reviewedBy; }
+    public void setReviewedBy(UUID reviewedBy) { this.reviewedBy = reviewedBy; }
+    public LocalDateTime getReviewedAt() { return reviewedAt; }
+    public void setReviewedAt(LocalDateTime reviewedAt) { this.reviewedAt = reviewedAt; }
+    public String getReviewNotes() { return reviewNotes; }
+    public void setReviewNotes(String reviewNotes) { this.reviewNotes = reviewNotes; }
+    public Boolean getIsPublic() { return isPublic != null ? isPublic : false; }
+    public void setIsPublic(Boolean isPublic) { this.isPublic = isPublic; }
+    public UUID getReplacedById() { return replacedById; }
+    public void setReplacedById(UUID replacedById) { this.replacedById = replacedById; }
+
+    public DocumentStatus getStatus() {
+        return DocumentStatus.fromString(this.verificationStatus);
+    }
+    public void setStatus(DocumentStatus status) {
+        this.verificationStatus = status != null ? status.name() : DocumentStatus.PENDING_REVIEW.name();
     }
 
     public UUID getId() { return id; }

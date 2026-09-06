@@ -297,7 +297,15 @@ export function ChemicalIdentityCard({
 /*                        5. FULFILLMENT WORKFLOW STEPPER                     */
 /* -------------------------------------------------------------------------- */
 
-export type OrderWorkflowStep = "PLACED" | "CONFIRMED" | "PROCESSING" | "SHIPPED" | "DELIVERED";
+export type OrderWorkflowStep =
+  | "PLACED"
+  | "CONFIRMED"
+  | "PROCESSING"
+  | "READY_FOR_DISPATCH"
+  | "DISPATCHED"
+  | "IN_TRANSIT"
+  | "DELIVERED"
+  | "COMPLETED";
 
 export interface WorkflowStepperProps {
   currentStatus: string;
@@ -306,23 +314,33 @@ export interface WorkflowStepperProps {
 
 export function WorkflowStepper({ currentStatus, className = "" }: WorkflowStepperProps) {
   const steps: { key: OrderWorkflowStep; label: string; description: string }[] = [
-    { key: "PLACED", label: "Placed", description: "Issued by buyer" },
+    { key: "PLACED", label: "Created", description: "Issued by buyer" },
     { key: "CONFIRMED", label: "Confirmed", description: "Accepted by supplier" },
-    { key: "PROCESSING", label: "Processing", description: "Synthesis in progress" },
-    { key: "SHIPPED", label: "Shipped", description: "In transit" },
-    { key: "DELIVERED", label: "Delivered", description: "Receipt acknowledged" },
+    { key: "PROCESSING", label: "Processing", description: "Batch synthesis / pack" },
+    { key: "READY_FOR_DISPATCH", label: "Ready", description: "QC verified & packed" },
+    { key: "DISPATCHED", label: "Dispatched", description: "Consignment handed over" },
+    { key: "IN_TRANSIT", label: "In Transit", description: "Freight in movement" },
+    { key: "DELIVERED", label: "Delivered", description: "Destination arrived" },
+    { key: "COMPLETED", label: "Completed", description: "Settled & closed" },
   ];
 
   const statusOrder: Record<string, number> = {
+    PENDING_CONFIRMATION: 0,
     PLACED: 0,
     CONFIRMED: 1,
     PROCESSING: 2,
-    SHIPPED: 3,
-    DELIVERED: 4,
+    READY_FOR_DISPATCH: 3,
+    DISPATCHED: 4,
+    SHIPPED: 4,
+    IN_TRANSIT: 5,
+    DELIVERED: 6,
+    COMPLETED: 7,
   };
 
-  const currentIndex = statusOrder[currentStatus.toUpperCase()] ?? 0;
-  const isCancelled = currentStatus.toUpperCase() === "CANCELLED" || currentStatus.toUpperCase() === "REJECTED";
+  const norm = (currentStatus || "").toUpperCase();
+  const currentIndex = statusOrder[norm] ?? 0;
+  const isCancelled = norm === "CANCELLED" || norm === "REJECTED";
+  const isDisputed = norm === "DISPUTED";
 
   return (
     <div className={`bg-white border border-[#E4E4E7] rounded-[8px] p-4 sm:p-5 shadow-tactile-card ${className}`}>
@@ -331,17 +349,22 @@ export function WorkflowStepper({ currentStatus, className = "" }: WorkflowStepp
           Order Fulfillment Lifecycle
         </h2>
         <span className="text-[10px] font-mono font-medium text-[#0052CC] bg-[#EFF6FF] px-2 py-0.5 rounded-[4px] border border-[#BFDBFE]">
-          {isCancelled ? currentStatus.toUpperCase() : `STEP ${currentIndex + 1} OF ${steps.length}`}
+          {isCancelled || isDisputed ? norm : `STEP ${currentIndex + 1} OF ${steps.length}`}
         </span>
       </div>
 
       {isCancelled ? (
         <div className="p-3 bg-[#FEF2F2] border border-[rgba(220,38,38,0.2)] rounded-[6px] text-[#DC2626] text-xs font-medium flex items-center gap-2">
           <AlertCircle className="w-4 h-4 text-[#DC2626]" />
-          <span>This purchase order has been marked as {currentStatus}. Fulfillment terminated.</span>
+          <span>This purchase order has been marked as {norm.replace(/_/g, " ")}. Fulfillment terminated.</span>
+        </div>
+      ) : isDisputed ? (
+        <div className="p-3 bg-[#FFF7ED] border border-[rgba(234,88,12,0.2)] rounded-[6px] text-[#EA580C] text-xs font-medium flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 text-[#EA580C]" />
+          <span>This purchase order has an active commercial dispute. Standard progression is temporarily paused pending dispute resolution.</span>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-2.5 relative">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 relative">
           {steps.map((step, idx) => {
             const isCompleted = idx < currentIndex;
             const isCurrent = idx === currentIndex;

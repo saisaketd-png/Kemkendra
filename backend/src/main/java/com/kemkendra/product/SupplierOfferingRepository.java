@@ -15,6 +15,8 @@ public interface SupplierOfferingRepository extends JpaRepository<SupplierOfferi
 
     List<SupplierOffering> findByMasterProductId(UUID masterProductId);
 
+    List<SupplierOffering> findByMasterProductIdIn(List<UUID> masterProductIds);
+
     List<SupplierOffering> findBySupplierId(Long supplierId);
 
     Optional<SupplierOffering> findByMasterProductIdAndSupplierId(UUID masterProductId, Long supplierId);
@@ -34,6 +36,10 @@ public interface SupplierOfferingRepository extends JpaRepository<SupplierOfferi
     long countBySupplierId(Long supplierId);
 
     long countBySupplierIdAndAvailabilityStatus(Long supplierId, String availabilityStatus);
+
+    long countBySupplierIdAndAvailabilityStatusAndModerationStatus(Long supplierId, String availabilityStatus, String moderationStatus);
+
+    long countBySupplierIdAndModerationStatus(Long supplierId, String moderationStatus);
 
     long countByMasterProductIdAndAvailabilityStatusAndModerationStatus(UUID masterProductId, String availabilityStatus, String moderationStatus);
 

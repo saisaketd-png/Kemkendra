@@ -173,6 +173,13 @@ public class SecurityConfig {
                         // Public authentication & health & (dev-only docs)
                         .requestMatchers(publicEndpoints.toArray(new String[0])).permitAll()
 
+                        // Public POST endpoints (Inquiries, Marketing Analytics Tracking)
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/v1/public/contact",
+                                "/api/v1/public/analytics/track"
+                        ).permitAll()
+
                         // Public product browsing & public document list
                         .requestMatchers(
                                 HttpMethod.GET,

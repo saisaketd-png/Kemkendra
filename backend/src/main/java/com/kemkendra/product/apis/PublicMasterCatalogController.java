@@ -23,16 +23,28 @@ public class PublicMasterCatalogController {
     private final SupplierOfferingService supplierOfferingService;
     private final LegacyProductTransitionService transitionService;
     private final SupplierRepository supplierRepository;
+    private final com.kemkendra.product.analytics.ProductAnalyticsEventService productAnalyticsEventService;
 
     public PublicMasterCatalogController(
             MasterProductService masterProductService,
             SupplierOfferingService supplierOfferingService,
             LegacyProductTransitionService transitionService,
             SupplierRepository supplierRepository) {
+        this(masterProductService, supplierOfferingService, transitionService, supplierRepository, null);
+    }
+
+    @org.springframework.beans.factory.annotation.Autowired
+    public PublicMasterCatalogController(
+            MasterProductService masterProductService,
+            SupplierOfferingService supplierOfferingService,
+            LegacyProductTransitionService transitionService,
+            SupplierRepository supplierRepository,
+            com.kemkendra.product.analytics.ProductAnalyticsEventService productAnalyticsEventService) {
         this.masterProductService = masterProductService;
         this.supplierOfferingService = supplierOfferingService;
         this.transitionService = transitionService;
         this.supplierRepository = supplierRepository;
+        this.productAnalyticsEventService = productAnalyticsEventService;
     }
 
     @GetMapping
@@ -96,6 +108,9 @@ public class PublicMasterCatalogController {
         if (!"ACTIVE".equalsIgnoreCase(mp.getStatus())) {
             return ResponseEntity.notFound().build();
         }
+        if (productAnalyticsEventService != null) {
+            productAnalyticsEventService.recordViewEvent(mp.getId(), mp.getCategory() != null ? mp.getCategory().name() : null);
+        }
         return ResponseEntity.ok(masterProductService.getMasterProductById(mp.getId()));
     }
 
@@ -118,7 +133,10 @@ public class PublicMasterCatalogController {
                         return false;
                     }
                     return supplierRepository.findById(o.supplierId())
-                            .map(s -> Boolean.TRUE.equals(s.getVerified()) && s.getVerificationStatus() != com.kemkendra.seller.SupplierVerificationStatus.SUSPENDED && s.getVerificationStatus() != com.kemkendra.seller.SupplierVerificationStatus.REJECTED)
+                            .map(s -> Boolean.TRUE.equals(s.getVerified()) &&
+                                    s.getVerificationStatus() != com.kemkendra.seller.SupplierVerificationStatus.SUSPENDED &&
+                                    s.getVerificationStatus() != com.kemkendra.seller.SupplierVerificationStatus.REJECTED &&
+                                    (s.getUser() == null || (s.getUser().getDeletedAt() == null && s.getUser().getStatus() != com.kemkendra.identity.UserStatus.SUSPENDED)))
                             .orElse(false);
                 })
                 .map(o -> new SupplierOfferingResponse(

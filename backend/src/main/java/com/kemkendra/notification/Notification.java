@@ -49,8 +49,14 @@ public class Notification {
     @Column(name = "entity_id", updatable = false)
     private UUID entityId;
 
+    @Column(name = "business_id")
+    private UUID businessId;
+
     @Column(name = "read", nullable = false)
     private boolean read = false;
+
+    @Column(name = "archived", nullable = false)
+    private boolean archived = false;
 
     @Column(name = "read_at")
     private LocalDateTime readAt;
@@ -78,6 +84,9 @@ public class Notification {
         if (name.startsWith("QUOTATION") || name.startsWith("COUNTER_OFFER")) return NotificationCategory.QUOTATION;
         if (name.startsWith("PURCHASE_ORDER") || name.startsWith("PO_")) return NotificationCategory.PURCHASE_ORDER;
         if (name.startsWith("ORDER_")) return NotificationCategory.SHIPMENT;
+        if (name.startsWith("INVOICE_")) return NotificationCategory.INVOICE;
+        if (name.startsWith("PAYMENT_")) return NotificationCategory.PAYMENT;
+        if (name.startsWith("DISPUTE_")) return NotificationCategory.DISPUTE;
         if (name.startsWith("SUPPLIER_VERIFICATION") || name.startsWith("VERIFICATION_")
                 || type == NotificationType.SUPPLIER_VERIFIED || type == NotificationType.SUPPLIER_REJECTED
                 || type == NotificationType.SUPPLIER_INFORMATION_REQUIRED) {
@@ -90,6 +99,12 @@ public class Notification {
                 || name.startsWith("APPEAL_") || type == NotificationType.SUPPLIER_SUSPENDED) {
             return NotificationCategory.GOVERNANCE;
         }
+        if (type == NotificationType.SECURITY_ALERT) {
+            return NotificationCategory.SECURITY;
+        }
+        if (type == NotificationType.ACCOUNT_UPDATED || type == NotificationType.BUSINESS_REGISTRATION_UPDATED) {
+            return NotificationCategory.ACCOUNT;
+        }
         if (name.startsWith("DOCUMENT_")) return NotificationCategory.SYSTEM;
         return NotificationCategory.SYSTEM;
     }
@@ -97,11 +112,14 @@ public class Notification {
     public static NotificationPriority derivePriorityFromType(NotificationType type) {
         if (type == null) return NotificationPriority.NORMAL;
         return switch (type) {
-            case USER_SUSPENDED, SUPPLIER_SUSPENDED, APPEAL_REJECTED -> NotificationPriority.CRITICAL;
+            case USER_SUSPENDED, SUPPLIER_SUSPENDED, APPEAL_REJECTED, SECURITY_ALERT -> NotificationPriority.CRITICAL;
             case USER_REINSTATED, APPEAL_APPROVED, APPEAL_INFORMATION_REQUIRED,
                  SUPPLIER_INFORMATION_REQUIRED, VERIFICATION_INFO_REQUESTED,
                  SUPPLIER_REJECTED, SUPPLIER_OFFERING_FLAGGED, SUPPLIER_OFFERING_REJECTED,
-                 PURCHASE_ORDER_CANCELLED, RFQ_CANCELLED -> NotificationPriority.HIGH;
+                 PURCHASE_ORDER_CANCELLED, RFQ_CANCELLED,
+                 INVOICE_CANCELLED, INVOICE_DISPUTED,
+                 PAYMENT_REJECTED, PAYMENT_DISPUTED,
+                 DISPUTE_CREATED, DISPUTE_ESCALATED -> NotificationPriority.HIGH;
             case ORDER_DELIVERED, RFQ_EXPIRED -> NotificationPriority.LOW;
             default -> NotificationPriority.NORMAL;
         };
@@ -137,6 +155,12 @@ public class Notification {
 
     public UUID getEntityId() { return entityId; }
     public void setEntityId(UUID entityId) { this.entityId = entityId; }
+
+    public UUID getBusinessId() { return businessId; }
+    public void setBusinessId(UUID businessId) { this.businessId = businessId; }
+
+    public boolean isArchived() { return archived; }
+    public void setArchived(boolean archived) { this.archived = archived; }
 
     public boolean isRead() { return read; }
     public void setRead(boolean read) { this.read = read; }

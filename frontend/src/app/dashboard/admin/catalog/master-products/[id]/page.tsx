@@ -64,6 +64,7 @@ export default function MasterProductGovernanceDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
+  const activeMasterProductId = detail?.id || id;
 
   // Synonyms Form State
   const [newSynonym, setNewSynonym] = useState("");
@@ -182,7 +183,7 @@ export default function MasterProductGovernanceDetailPage() {
     if (!selectedField) return;
     try {
       setActionLoading(true);
-      await verifyChemicalField(id, {
+      await verifyChemicalField(activeMasterProductId, {
         fieldName: selectedField,
         status: fieldStatus,
         notes: fieldNotes.trim() || undefined,
@@ -218,7 +219,7 @@ export default function MasterProductGovernanceDetailPage() {
     if (!newSynonym.trim()) return;
     try {
       setSynonymSubmitting(true);
-      await addOfficialSynonym(id, newSynonym.trim());
+      await addOfficialSynonym(activeMasterProductId, newSynonym.trim());
       setNewSynonym("");
       toast.success("Official synonym added");
       await loadData();
@@ -232,7 +233,7 @@ export default function MasterProductGovernanceDetailPage() {
   const handleDeleteSynonym = async (synonymId: string) => {
     try {
       setActionLoading(true);
-      await deleteSynonym(id, synonymId);
+      await deleteSynonym(activeMasterProductId, synonymId);
       toast.success("Synonym deleted");
       await loadData();
     } catch (e: any) {
@@ -293,7 +294,7 @@ export default function MasterProductGovernanceDetailPage() {
     try {
       setEditProductSubmitting(true);
       setEditProductErrors({});
-      await updateMasterProduct(id, {
+      await updateMasterProduct(activeMasterProductId, {
         name: editProductName.trim(),
         category: editProductCategory,
         casNumber: editProductCas.trim() || undefined,
@@ -324,7 +325,7 @@ export default function MasterProductGovernanceDetailPage() {
 
     try {
       setBulkSynonymsSubmitting(true);
-      const res = await addOfficialSynonymsBulk(id, toSubmit);
+      const res = await addOfficialSynonymsBulk(activeMasterProductId, toSubmit);
       toast.success(
         `Added ${res.addedCount || toSubmit.length} synonym(s)${
           res.skippedCount && res.skippedCount > 0 ? ` (${res.skippedCount} skipped as duplicate)` : ""
@@ -345,7 +346,7 @@ export default function MasterProductGovernanceDetailPage() {
     if (!synonymToDelete) return;
     try {
       setDeleteSynonymSubmitting(true);
-      await deleteSynonym(id, synonymToDelete.id);
+      await deleteSynonym(activeMasterProductId, synonymToDelete.id);
       toast.success(`Synonym "${synonymToDelete.name}" removed`);
       setSynonymToDelete(null);
       await loadData();
@@ -374,7 +375,7 @@ export default function MasterProductGovernanceDetailPage() {
     if (!imageFile) return;
     try {
       setImageUploading(true);
-      await uploadMasterProductImage(id, imageFile, imageAlt.trim() || undefined);
+      await uploadMasterProductImage(activeMasterProductId, imageFile, imageAlt.trim() || undefined);
       setImageFile(null);
       setImageAlt("");
       toast.success("Chemical structure image uploaded");
@@ -389,7 +390,7 @@ export default function MasterProductGovernanceDetailPage() {
   const handleDeleteImage = async (imageId: string) => {
     try {
       setActionLoading(true);
-      await deleteMasterProductImage(id, imageId);
+      await deleteMasterProductImage(activeMasterProductId, imageId);
       toast.success("Product image removed");
       await loadData();
     } catch (e: any) {
@@ -402,7 +403,7 @@ export default function MasterProductGovernanceDetailPage() {
   const handleSetPrimaryImage = async (imageId: string) => {
     try {
       setActionLoading(true);
-      await setPrimaryMasterProductImage(id, imageId);
+      await setPrimaryMasterProductImage(activeMasterProductId, imageId);
       toast.success("Primary image updated");
       await loadData();
     } catch (e: any) {
@@ -417,7 +418,7 @@ export default function MasterProductGovernanceDetailPage() {
     if (!docFile) return;
     try {
       setDocUploading(true);
-      await uploadMasterProductDocument(id, docFile, docCategory, docNumber.trim() || undefined);
+      await uploadMasterProductDocument(activeMasterProductId, docFile, docCategory, docNumber.trim() || undefined);
       setDocFile(null);
       setDocNumber("");
       toast.success("Technical document uploaded");
@@ -470,7 +471,7 @@ export default function MasterProductGovernanceDetailPage() {
       setCreateOfferingSubmitting(true);
       await createOfferingOnBehalfOfSupplier({
         supplierId: Number(selectedSupplierId),
-        masterProductId: id,
+        masterProductId: activeMasterProductId,
         price: parsedPrice,
         currency: offeringCurrency,
         stock: offeringStock ? parseInt(offeringStock, 10) : 0,

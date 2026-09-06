@@ -26,6 +26,22 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, UU
 
     long countByStatus(OrderStatus status);
 
+    long countByBuyerId(UUID buyerId);
+
+    long countByBuyerIdAndStatusIn(UUID buyerId, java.util.Collection<OrderStatus> statuses);
+
+    long countByBuyerIdAndStatus(UUID buyerId, OrderStatus status);
+
+    long countBySupplierId(Long supplierId);
+
+    long countBySupplierIdAndStatusIn(Long supplierId, java.util.Collection<OrderStatus> statuses);
+
+    long countBySupplierIdAndStatus(Long supplierId, OrderStatus status);
+
+    List<PurchaseOrder> findTop5ByBuyerIdOrderByCreatedAtDesc(UUID buyerId);
+
+    List<PurchaseOrder> findTop5BySupplierIdOrderByCreatedAtDesc(Long supplierId);
+
     @Query(value = "SELECT nextval('purchase_order_seq')", nativeQuery = true)
     Long getNextPoSequenceValue();
 }

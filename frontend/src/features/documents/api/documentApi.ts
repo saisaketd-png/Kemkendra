@@ -2,16 +2,31 @@ import { authenticatedFetch } from "@/features/auth/api/authenticatedFetch";
 
 export type DocumentExpiryStatus = "VALID" | "EXPIRING_SOON" | "EXPIRED" | "NO_EXPIRY";
 
+export type DocumentVerificationStatus =
+  | "PENDING_REVIEW"
+  | "APPROVED"
+  | "REJECTED"
+  | "EXPIRED"
+  | "REPLACED"
+  | "ARCHIVED"
+  | "ACTIVE";
+
 export interface DocumentResponse {
   id: string;
   documentGroupId?: string;
   ownerType: string;
   ownerId: string;
   category: string;
+  title?: string;
   originalFileName: string;
   mimeType: string;
   fileSize: number;
   uploadedBy: string;
+  reviewedBy?: string;
+  reviewedAt?: string;
+  reviewNotes?: string;
+  isPublic?: boolean;
+  replacedById?: string;
   documentNumber?: string;
   issuingAuthority?: string;
   issueDate?: string;
@@ -20,9 +35,28 @@ export interface DocumentResponse {
   checksum?: string;
   description?: string;
   isActive?: boolean;
+  status?: DocumentVerificationStatus;
+  verificationStatus?: DocumentVerificationStatus;
   expiryStatus?: DocumentExpiryStatus;
   createdAt: string;
   updatedAt?: string;
+}
+
+export interface DocumentComplianceStatsDto {
+  totalCount: number;
+  pendingReviewCount: number;
+  approvedCount: number;
+  rejectedCount: number;
+  expiredCount: number;
+  expiringSoonCount: number;
+}
+
+export interface DocumentPageResponse {
+  content: DocumentResponse[];
+  totalElements: number;
+  totalPages: number;
+  number: number;
+  size: number;
 }
 
 export interface UploadDocumentParams {
@@ -30,6 +64,8 @@ export interface UploadDocumentParams {
   ownerId: string;
   category: string;
   file: File;
+  title?: string;
+  isPublic?: boolean;
   documentGroupId?: string;
   documentNumber?: string;
   issuingAuthority?: string;
@@ -82,6 +118,12 @@ export async function uploadDocument(
     formData.append("category", params.category);
     formData.append("file", params.file);
 
+    if (params.title) {
+      formData.append("title", params.title);
+    }
+    if (params.isPublic !== undefined) {
+      formData.append("isPublic", String(params.isPublic));
+    }
     if (params.documentGroupId) {
       formData.append("documentGroupId", params.documentGroupId);
     }
@@ -167,4 +209,98 @@ export async function downloadDocument(documentId: string, filename: string): Pr
   a.click();
   a.remove();
   window.URL.revokeObjectURL(url);
+}
+
+// ---------------- Admin Compliance APIs ----------------
+
+export async function getAdminComplianceStats(): Promise<DocumentComplianceStatsDto> {
+  const res = await authenticatedFetch("/api/v1/admin/documents/stats");
+  if (!res.ok) {
+    throw new Error("Failed to fetch compliance stats");
+  }
+  return res.json();
+}
+
+export async function getAdminDocuments(params: {
+  status?: string;
+  category?: string;
+  ownerType?: string;
+  ownerId?: string;
+  search?: string;
+  page?: number;
+  size?: number;
+}): Promise<DocumentPageResponse> {
+  const searchParams = new URLSearchParams();
+  if (params.status && params.status !== "ALL") searchParams.append("status", params.status);
+  if (params.category && params.category !== "ALL") searchParams.append("category", params.category);
+  if (params.ownerType && params.ownerType !== "ALL") searchParams.append("ownerType", params.ownerType);
+  if (params.ownerId) searchParams.append("ownerId", params.ownerId);
+  if (params.search) searchParams.append("search", params.search);
+  if (params.page !== undefined) searchParams.append("page", String(params.page));
+  if (params.size !== undefined) searchParams.append("size", String(params.size));
+
+  const res = await authenticatedFetch(`/api/v1/admin/documents?${searchParams.toString()}`);
+  if (!res.ok) {
+    throw new Error("Failed to load admin compliance documents");
+  }
+  return res.json();
+}
+
+export async function approveDocument(id: string, notes?: string): Promise<DocumentResponse> {
+  const res = await authenticatedFetch(`/api/v1/admin/documents/${encodeURIComponent(id)}/approve`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ reviewNotes: notes || "" }),
+  });
+  if (!res.ok) {
+    let err = "Failed to approve document";
+    try {
+      const data = await res.json();
+      err = data.error || data.message || err;
+    } catch {}
+    throw new Error(err);
+  }
+  return res.json();
+}
+
+export async function rejectDocument(id: string, reason: string): Promise<DocumentResponse> {
+  const res = await authenticatedFetch(`/api/v1/admin/documents/${encodeURIComponent(id)}/reject`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ reviewNotes: reason }),
+  });
+  if (!res.ok) {
+    let err = "Failed to reject document";
+    try {
+      const data = await res.json();
+      err = data.error || data.message || err;
+    } catch {}
+    throw new Error(err);
+  }
+  return res.json();
+}
+
+export async function expireDocument(id: string, reason?: string): Promise<DocumentResponse> {
+  const res = await authenticatedFetch(`/api/v1/admin/documents/${encodeURIComponent(id)}/expire`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ reviewNotes: reason || "Manually marked expired" }),
+  });
+  if (!res.ok) {
+    let err = "Failed to expire document";
+    try {
+      const data = await res.json();
+      err = data.error || data.message || err;
+    } catch {}
+    throw new Error(err);
+  }
+  return res.json();
+}
+
+export async function getDocumentAuditHistory(id: string): Promise<any[]> {
+  const res = await authenticatedFetch(`/api/v1/admin/documents/${encodeURIComponent(id)}/audit`);
+  if (!res.ok) {
+    return [];
+  }
+  return res.json();
 }

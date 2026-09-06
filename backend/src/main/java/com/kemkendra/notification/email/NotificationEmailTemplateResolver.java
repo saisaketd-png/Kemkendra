@@ -49,6 +49,9 @@ public class NotificationEmailTemplateResolver {
             case SUPPLIER_OFFERING -> appBaseUrl + "/dashboard/admin/catalog/offerings/" + entityId;
             case SUPPLIER -> appBaseUrl + "/dashboard/admin/catalog/verification/" + entityId;
             case ACCOUNT_SUSPENSION, ACCOUNT_SUSPENSION_APPEAL -> appBaseUrl + "/dashboard/account-review";
+            case INVOICE, PAYMENT -> appBaseUrl + "/dashboard/buyer/invoices/" + entityId;
+            case DISPUTE -> appBaseUrl + "/dashboard/buyer/disputes/" + entityId;
+            case USER, BUSINESS -> appBaseUrl + "/dashboard/settings";
         };
     }
 
@@ -70,6 +73,11 @@ public class NotificationEmailTemplateResolver {
             case SUPPLIER -> "View Supplier Profile";
             case ACCOUNT_SUSPENSION -> "Review Account Status";
             case ACCOUNT_SUSPENSION_APPEAL -> "View Appeal Status";
+            case INVOICE -> "View Tax Invoice";
+            case PAYMENT -> "View Payment Details";
+            case DISPUTE -> "View Dispute Details";
+            case USER -> "View User Profile";
+            case BUSINESS -> "View Business Profile";
         };
     }
 

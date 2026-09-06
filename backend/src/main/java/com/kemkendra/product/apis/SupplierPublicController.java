@@ -13,6 +13,8 @@ import com.kemkendra.identity.User;
 import com.kemkendra.product.Product;
 import com.kemkendra.product.ProductRepository;
 import com.kemkendra.product.MasterProduct;
+import com.kemkendra.product.MasterProductImage;
+import com.kemkendra.product.MasterProductImageRepository;
 import com.kemkendra.product.ProductCategory;
 import com.kemkendra.product.SupplierOffering;
 import com.kemkendra.product.dto.SupplierProductPublicResponse;
@@ -44,19 +46,22 @@ public class SupplierPublicController {
     private final com.kemkendra.product.SupplierOfferingRepository supplierOfferingRepository;
     private final com.kemkendra.document.storage.StorageService storageService;
     private final SupplierPerformanceService supplierPerformanceService;
+    private final MasterProductImageRepository masterProductImageRepository;
 
     public SupplierPublicController(SupplierRepository supplierRepository,
                                     SupplierIdentityResolver identityResolver,
                                     ProductRepository productRepository,
                                     com.kemkendra.product.SupplierOfferingRepository supplierOfferingRepository,
                                     com.kemkendra.document.storage.StorageService storageService,
-                                    SupplierPerformanceService supplierPerformanceService) {
+                                    SupplierPerformanceService supplierPerformanceService,
+                                    MasterProductImageRepository masterProductImageRepository) {
         this.supplierRepository = supplierRepository;
         this.identityResolver = identityResolver;
         this.productRepository = productRepository;
         this.supplierOfferingRepository = supplierOfferingRepository;
         this.storageService = storageService;
         this.supplierPerformanceService = supplierPerformanceService;
+        this.masterProductImageRepository = masterProductImageRepository;
     }
 
     private static final java.util.Set<String> ALLOWED_SUPPLIER_SORT_FIELDS = java.util.Set.of(
@@ -118,10 +123,28 @@ public class SupplierPublicController {
         return ResponseEntity.ok(responsePage);
     }
 
+    private boolean isSupplierPubliclyVisible(Supplier supplier) {
+        if (supplier == null) return false;
+        if (supplier.getVerificationStatus() == com.kemkendra.seller.SupplierVerificationStatus.SUSPENDED ||
+            supplier.getVerificationStatus() == com.kemkendra.seller.SupplierVerificationStatus.REJECTED) {
+            return false;
+        }
+        if (supplier.getUser() != null) {
+            if (supplier.getUser().getDeletedAt() != null || supplier.getUser().getStatus() == com.kemkendra.identity.UserStatus.SUSPENDED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<SupplierPublicResponse> getPublicSupplier(@PathVariable Long id) {
         Supplier supplier = supplierRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+
+        if (!isSupplierPubliclyVisible(supplier)) {
+            throw new ResourceNotFoundException("Supplier not found");
+        }
 
         Optional<SellerProfile> profileOpt = Optional.empty();
         if (supplier.getUser() != null) {
@@ -134,7 +157,10 @@ public class SupplierPublicController {
 
     @GetMapping("/{id}/performance")
     public ResponseEntity<SupplierPerformanceResponse> getSupplierPerformance(@PathVariable Long id) {
-        if (!supplierRepository.existsById(id)) {
+        Supplier supplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found: " + id));
+
+        if (!isSupplierPubliclyVisible(supplier)) {
             throw new ResourceNotFoundException("Supplier not found: " + id);
         }
         return ResponseEntity.ok(supplierPerformanceService.getSupplierPerformance(id));
@@ -144,6 +170,10 @@ public class SupplierPublicController {
     public ResponseEntity<org.springframework.core.io.Resource> getSupplierLogo(@PathVariable Long id) {
         Supplier supplier = supplierRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier not found: " + id));
+
+        if (!isSupplierPubliclyVisible(supplier)) {
+            throw new ResourceNotFoundException("Supplier not found: " + id);
+        }
 
         if (supplier.getLogoStoragePath() == null || supplier.getLogoStoragePath().isBlank()) {
             throw new ResourceNotFoundException("Supplier logo not found for supplier: " + id);
@@ -205,6 +235,10 @@ public class SupplierPublicController {
         Supplier supplier = supplierRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
 
+        if (!isSupplierPubliclyVisible(supplier)) {
+            throw new ResourceNotFoundException("Supplier not found");
+        }
+
         int page = Math.max(0, pageable.getPageNumber());
         int size = Math.min(Math.max(1, pageable.getPageSize()), 100);
         Pageable safePageable = org.springframework.data.domain.PageRequest.of(page, size);
@@ -213,6 +247,30 @@ public class SupplierPublicController {
         //    when accessing mp.getCategory(), mp.getName() etc. outside a JPA session.
         List<SupplierOffering> allOfferings = supplierOfferingRepository.findBySupplierId_WithMasterProduct(id);
         if (!allOfferings.isEmpty()) {
+            // Batch-load primary images for all master products in this supplier's offerings
+            List<java.util.UUID> mpIds = allOfferings.stream()
+                    .map(o -> o.getMasterProduct().getId())
+                    .distinct()
+                    .collect(Collectors.toList());
+            List<MasterProductImage> allImages = masterProductImageRepository.findByMasterProductIdInAndStatus(mpIds, "ACTIVE");
+            Map<java.util.UUID, String> primaryImageUrlMap = new java.util.HashMap<>();
+            // Group images by master product and resolve primary or first by display order
+            Map<java.util.UUID, List<MasterProductImage>> imagesByMp = allImages.stream()
+                    .collect(Collectors.groupingBy(img -> img.getMasterProduct().getId()));
+            for (Map.Entry<java.util.UUID, List<MasterProductImage>> entry : imagesByMp.entrySet()) {
+                java.util.UUID mpId = entry.getKey();
+                List<MasterProductImage> imgs = entry.getValue();
+                String url = imgs.stream()
+                        .filter(img -> Boolean.TRUE.equals(img.getIsPrimary()))
+                        .findFirst()
+                        .map(img -> "/api/v1/master-products/" + mpId + "/images/" + img.getId() + "/content")
+                        .orElseGet(() -> imgs.stream()
+                                .min(java.util.Comparator.comparingInt(MasterProductImage::getDisplayOrder))
+                                .map(img -> "/api/v1/master-products/" + mpId + "/images/" + img.getId() + "/content")
+                                .orElse(null));
+                primaryImageUrlMap.put(mpId, url);
+            }
+
             // Manual pagination on the in-memory list
             int start = (int) safePageable.getOffset();
             int end = Math.min(start + safePageable.getPageSize(), allOfferings.size());
@@ -223,20 +281,25 @@ public class SupplierPublicController {
             List<SupplierProductPublicResponse> mapped = pageContent.stream().map(offering -> {
                 MasterProduct mp = offering.getMasterProduct();
                 ProductCategory cat = mp != null && mp.getCategory() != null ? mp.getCategory() : ProductCategory.API;
+                String imageUrl = primaryImageUrlMap.getOrDefault(mp.getId(), null);
                 return new SupplierProductPublicResponse(
                         mp.getId(),
+                        mp.getMasterProductCode(),
                         mp.getName(),
                         mp.getDescription(),
                         cat,
                         mp.getCasNumber(),
                         mp.getMolecularFormula(),
+                        imageUrl,
                         offering.getPurity(),
                         offering.getGrade(),
                         offering.getMoqKg(),
                         offering.getPackaging(),
                         offering.getLeadTimeDays(),
                         offering.getAvailabilityStatus(),
-                        offering.getExportReady()
+                        offering.getExportReady(),
+                        offering.getPrice(),
+                        offering.getCurrency()
                 );
             }).collect(Collectors.toList());
 
@@ -257,18 +320,22 @@ public class SupplierPublicController {
         Page<SupplierProductPublicResponse> responsePage = products
             .map(product -> new SupplierProductPublicResponse(
                     product.getId(),
+                    null, // legacy products do not have masterProductCode
                     product.getName(),
                     product.getDescription(),
                     product.getCategory(),
                     product.getCasNumber(),
                     product.getMolecularFormula(),
+                    null, // legacy products do not have MasterProductImage
                     product.getPurity(),
                     product.getGrade(),
                     product.getMoqKg(),
                     product.getPackaging(),
                     product.getLeadTimeDays(),
                     product.getAvailabilityStatus(),
-                    product.getExportReady()
+                    product.getExportReady(),
+                    null, // no price on legacy Product entity
+                    null  // no currency on legacy Product entity
             ));
 
         return ResponseEntity.ok(responsePage);

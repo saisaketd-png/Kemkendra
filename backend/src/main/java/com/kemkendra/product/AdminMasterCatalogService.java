@@ -43,6 +43,7 @@ public class AdminMasterCatalogService {
     private final com.kemkendra.document.DocumentRepository documentRepository;
     private final com.kemkendra.document.DocumentService documentService;
     private final SupplierRepository supplierRepository;
+    private final LegacyProductTransitionService legacyProductTransitionService;
 
     public AdminMasterCatalogService(
             MasterProductRepository masterProductRepository,
@@ -58,7 +59,8 @@ public class AdminMasterCatalogService {
             MasterProductImageRepository masterProductImageRepository,
             com.kemkendra.document.DocumentRepository documentRepository,
             com.kemkendra.document.DocumentService documentService,
-            SupplierRepository supplierRepository) {
+            SupplierRepository supplierRepository,
+            LegacyProductTransitionService legacyProductTransitionService) {
         this.masterProductRepository = masterProductRepository;
         this.supplierOfferingRepository = supplierOfferingRepository;
         this.productRequestRepository = productRequestRepository;
@@ -73,6 +75,7 @@ public class AdminMasterCatalogService {
         this.documentRepository = documentRepository;
         this.documentService = documentService;
         this.supplierRepository = supplierRepository;
+        this.legacyProductTransitionService = legacyProductTransitionService;
     }
 
     @Transactional(readOnly = true)
@@ -611,8 +614,15 @@ public class AdminMasterCatalogService {
         if (mp == null) {
             mp = masterProductRepository.findByMasterProductCodeIgnoreCase(trimmed).orElse(null);
         }
+        if (mp == null && legacyProductTransitionService != null) {
+            try {
+                mp = legacyProductTransitionService.resolveCanonicalMasterProduct(trimmed);
+            } catch (Exception ignored) {
+                // Not found via legacy transition either
+            }
+        }
         if (mp == null) {
-            throw new ResourceNotFoundException("Master product not found");
+            throw new ResourceNotFoundException("Master product not found: " + trimmed);
         }
 
         return buildMasterProductDetail(mp);

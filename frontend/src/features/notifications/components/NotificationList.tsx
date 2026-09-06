@@ -12,6 +12,8 @@ interface NotificationListProps {
   isSupplier: boolean;
   filterUnreadOnly?: boolean;
   onNotificationSelect: (notification: NotificationResponse) => void;
+  onArchive?: (notification: NotificationResponse) => void;
+  onDelete?: (notification: NotificationResponse) => void;
   onRetry?: () => void;
 }
 
@@ -22,6 +24,8 @@ export function NotificationList({
   isSupplier,
   filterUnreadOnly = false,
   onNotificationSelect,
+  onArchive,
+  onDelete,
   onRetry,
 }: NotificationListProps) {
   if (loading) {
@@ -96,6 +100,8 @@ export function NotificationList({
           notification={n}
           isSupplier={isSupplier}
           onSelect={onNotificationSelect}
+          onArchive={onArchive}
+          onDelete={onDelete}
         />
       ))}
     </div>

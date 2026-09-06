@@ -160,6 +160,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   } else if (
     [
       "PENDING",
+      "PENDING_CONFIRMATION",
       "PENDING_REVIEW",
       "UNDER_REVIEW",
       "INFORMATION_REQUIRED",
@@ -167,7 +168,10 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
       "COUNTERED",
       "COUNTER_OFFER_RECEIVED",
       "PROCESSING",
+      "READY_FOR_DISPATCH",
+      "DISPATCHED",
       "SHIPPED",
+      "IN_TRANSIT",
       "CONTACTED",
       "SUBMITTED",
       "PLACED",
@@ -181,6 +185,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
       "SUSPENDED",
       "DEACTIVATED",
       "CANCELLED",
+      "DISPUTED",
       "FAILED",
       "HIDDEN",
       "OUT_OF_STOCK",

@@ -50,6 +50,8 @@ export const DocumentUpload: React.FC<DocumentUploadProps> = ({
   const [category, setCategory] = useState<string>(
     existingDocumentToRevise?.category || defaultCategory || availableCategories[0]?.value || "OTHER"
   );
+  const [title, setTitle] = useState<string>(existingDocumentToRevise?.title || "");
+  const [isPublic, setIsPublic] = useState<boolean>(existingDocumentToRevise?.isPublic ?? false);
   const [documentNumber, setDocumentNumber] = useState<string>(existingDocumentToRevise?.documentNumber || "");
   const [issuingAuthority, setIssuingAuthority] = useState<string>(existingDocumentToRevise?.issuingAuthority || "");
   const [issueDate, setIssueDate] = useState<string>(existingDocumentToRevise?.issueDate || "");
@@ -104,6 +106,9 @@ export const DocumentUpload: React.FC<DocumentUploadProps> = ({
       return;
     }
     setFile(selectedFile);
+    if (!title) {
+      setTitle(selectedFile.name.replace(/\.[^/.]+$/, ""));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -125,6 +130,8 @@ export const DocumentUpload: React.FC<DocumentUploadProps> = ({
         ownerId,
         category,
         file,
+        title: title.trim() || undefined,
+        isPublic,
         documentGroupId: resolvedGroupId,
         documentNumber: documentNumber.trim() || undefined,
         issuingAuthority: issuingAuthority.trim() || undefined,
@@ -219,6 +226,37 @@ export const DocumentUpload: React.FC<DocumentUploadProps> = ({
               </p>
             </div>
           )}
+        </div>
+
+        {/* Title and Visibility */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="md:col-span-2">
+            <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+              Document Title / Label *
+            </label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g. Manufacturing License 2026 / Batch 101 COA"
+              className="w-full text-xs bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg p-2 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+            />
+          </div>
+
+          <div className="flex flex-col justify-end pb-1">
+            <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-zinc-700 dark:text-zinc-300 select-none">
+              <input
+                type="checkbox"
+                checked={isPublic}
+                onChange={(e) => setIsPublic(e.target.checked)}
+                className="w-4 h-4 text-emerald-600 rounded border-zinc-300 focus:ring-emerald-500"
+              />
+              <span>Publicly Available</span>
+            </label>
+            <span className="text-[10px] text-zinc-400 mt-0.5">
+              Allow download by all verified buyers
+            </span>
+          </div>
         </div>
 
         {/* Metadata Fields */}

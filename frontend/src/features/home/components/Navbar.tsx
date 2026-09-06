@@ -30,11 +30,11 @@ import {
 import { getAuthUser, logout, AuthUser } from "@/features/auth/api/auth";
 import { NotificationBell } from "@/features/notifications/components/NotificationBell";
 import { KemKendraLogo } from "@/shared/components/KemkendraLogo";
+import { GlobalSearchBar } from "@/features/search/components/SearchSuggestionsDropdown";
 
 export function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [user, setUser] = useState<AuthUser | null>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -87,13 +87,6 @@ export function Navbar() {
     setIsUserMenuOpen(false);
   }, [pathname]);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
-      setIsMobileOpen(false);
-    }
-  };
 
   const handleSignOut = () => {
     logout();
@@ -168,16 +161,10 @@ export function Navbar() {
 
         {/* 2. CENTER: GLOBAL SEARCH (MAX 500px) */}
         <div className="flex-1 max-w-[500px] mx-auto hidden md:block">
-          <form onSubmit={handleSearchSubmit} className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748B]" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search chemical name, CAS, formula or category..."
-              className="w-full h-9 pl-9 pr-3 text-xs bg-[#FAFAFA] hover:bg-white focus:bg-white border border-[#E4E4E7] rounded-[6px] focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC] transition-colors text-[#0F172A] placeholder:text-[#94A3B8] font-normal shadow-xs"
-            />
-          </form>
+          <GlobalSearchBar
+            size="sm"
+            placeholder="Search chemical name, CAS, formula or supplier..."
+          />
         </div>
 
         {/* 3. RIGHT: ACTIONS, NOTIFICATIONS & USER WORKSPACE TRIGGER */}
@@ -520,16 +507,13 @@ export function Navbar() {
         <div className="lg:hidden fixed inset-0 top-16 z-40 bg-[#0F172A]/40 backdrop-blur-[2px] flex justify-end">
           <div className="bg-white w-[280px] h-[calc(100vh-64px)] p-4 overflow-y-auto space-y-4 shadow-tactile-modal border-l border-[#E4E4E7]">
             {/* Search */}
-            <form onSubmit={handleSearchSubmit} className="relative w-full">
-              <Search className="w-3.5 h-3.5 text-[#64748B] absolute left-3 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+            <div>
+              <GlobalSearchBar
+                size="sm"
                 placeholder="Search chemicals, CAS, formula..."
-                className="w-full h-9 pl-8 pr-3 text-xs bg-[#FAFAFA] border border-[#E4E4E7] rounded-[6px] focus:outline-none focus:border-[#0052CC] text-[#0F172A]"
+                onSearchSubmitted={() => setIsMobileOpen(false)}
               />
-            </form>
+            </div>
 
             <div className="space-y-0.5 border-b border-[#E4E4E7] pb-3">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] block mb-1 font-mono px-2">

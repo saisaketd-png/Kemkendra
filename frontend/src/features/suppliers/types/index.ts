@@ -59,11 +59,13 @@ export interface UpdateSellerProfileRequest {
 
 export interface SupplierProductPublicResponse {
   id: string;
+  masterProductCode: string | null;
   name: string;
   description: string | null;
   category: string;
   casNumber: string | null;
   molecularFormula: string | null;
+  imageUrl: string | null;
   purity: number | null;
   grade: string | null;
   moqKg: number | null;
@@ -71,6 +73,8 @@ export interface SupplierProductPublicResponse {
   leadTimeDays: number | null;
   availabilityStatus: string | null;
   exportReady: boolean;
+  price: number | null;
+  currency: string | null;
 }
 
 export interface SupplierProductListResponse {

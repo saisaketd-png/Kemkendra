@@ -106,8 +106,12 @@ public class RateLimitingFilter extends OncePerRequestFilter {
             if ("/api/v1/auth/verify-email".equals(path) || "/api/v1/auth/resend-verification".equals(path)) {
                 return RateLimitCategory.EMAIL_VERIFICATION;
             }
+            if (path.startsWith("/api/v1/public/contact") || path.startsWith("/api/v1/public/analytics")) {
+                return RateLimitCategory.PUBLIC_API;
+            }
         } else if ("GET".equalsIgnoreCase(method)) {
-            if (path.startsWith("/api/v1/products") ||
+            if (path.startsWith("/api/v1/public") ||
+                path.startsWith("/api/v1/products") ||
                 path.startsWith("/api/v1/categories") ||
                 path.startsWith("/api/v1/suppliers") ||
                 path.startsWith("/api/v1/master-products") ||

@@ -62,7 +62,26 @@ export type NotificationType =
   | "APPEAL_REVIEW_STARTED"
   | "APPEAL_INFORMATION_REQUIRED"
   | "APPEAL_APPROVED"
-  | "APPEAL_REJECTED";
+  | "APPEAL_REJECTED"
+  | "INVOICE_ISSUED"
+  | "INVOICE_CANCELLED"
+  | "INVOICE_DISPUTED"
+  | "PAYMENT_PROOF_UPLOADED"
+  | "PAYMENT_CONFIRMED"
+  | "PAYMENT_REJECTED"
+  | "PAYMENT_INFO_REQUESTED"
+  | "DISPUTE_CREATED"
+  | "DISPUTE_UPDATED"
+  | "DISPUTE_MESSAGE_ADDED"
+  | "DISPUTE_EVIDENCE_ADDED"
+  | "DISPUTE_RESOLVED"
+  | "DISPUTE_ESCALATED"
+  | "RFQ_RESPONSE_SUBMITTED"
+  | "ORDER_STATUS_CHANGED"
+  | "SUPPLIER_VERIFICATION_STATUS_CHANGED"
+  | "ACCOUNT_UPDATED"
+  | "BUSINESS_REGISTRATION_UPDATED"
+  | "SECURITY_ALERT";
 
 export type NotificationCategory =
   | "SECURITY"
@@ -72,6 +91,9 @@ export type NotificationCategory =
   | "QUOTATION"
   | "PURCHASE_ORDER"
   | "SHIPMENT"
+  | "INVOICE"
+  | "PAYMENT"
+  | "DISPUTE"
   | "CATALOG"
   | "GOVERNANCE"
   | "SYSTEM";
@@ -83,16 +105,23 @@ export type NotificationEntityType =
   | "QUOTATION"
   | "PURCHASE_ORDER"
   | "SHIPMENT"
+  | "INVOICE"
+  | "PAYMENT"
+  | "DISPUTE"
   | "DOCUMENT"
   | "PRODUCT_REQUEST"
   | "MASTER_PRODUCT"
   | "SUPPLIER_OFFERING"
   | "SUPPLIER"
   | "ACCOUNT_SUSPENSION"
-  | "ACCOUNT_SUSPENSION_APPEAL";
+  | "ACCOUNT_SUSPENSION_APPEAL"
+  | "USER"
+  | "BUSINESS";
 
 export interface NotificationResponse {
   id: string;
+  recipientId?: string;
+  businessId?: string | null;
   type: NotificationType;
   category: NotificationCategory;
   priority: NotificationPriority;
@@ -102,6 +131,7 @@ export interface NotificationResponse {
   entityId: string | null;
   targetRoute?: string;
   read: boolean;
+  archived: boolean;
   readAt: string | null;
   createdAt: string;
 }
@@ -141,3 +171,40 @@ export interface UpdateNotificationPreferenceRequest {
 export interface BulkUpdateNotificationPreferencesRequest {
   preferences: UpdateNotificationPreferenceRequest[];
 }
+
+export type NotificationDeliveryLogStatus = "PENDING" | "SENT" | "FAILED" | "RETRYING";
+
+export interface NotificationDeliveryLogDto {
+  id: string;
+  notificationId?: string | null;
+  recipientId?: string | null;
+  recipientEmail: string;
+  channel: string;
+  notificationType: string;
+  subject?: string | null;
+  status: NotificationDeliveryLogStatus;
+  errorMessage?: string | null;
+  retryCount: number;
+  lastAttemptedAt: string;
+  createdAt: string;
+}
+
+export interface DeliveryLogsFilterParams {
+  status?: NotificationDeliveryLogStatus;
+  notificationType?: string;
+  recipientEmail?: string;
+  page?: number;
+  size?: number;
+}
+
+export interface PaginatedDeliveryLogs {
+  content: NotificationDeliveryLogDto[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}
+

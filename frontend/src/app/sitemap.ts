@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { getProducts } from "@/features/products/api/getProducts";
 import { getSuppliers } from "@/features/suppliers/api";
 import { CANONICAL_CATEGORIES } from "@/features/categories/api/categoryApi";
+import { RESOURCE_ARTICLES } from "@/features/resources/data/resourceArticles";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -23,6 +24,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${BASE_URL}/chemicals`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/search`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
       url: `${BASE_URL}/categories`,
       lastModified: new Date(),
       changeFrequency: "weekly",
@@ -30,6 +43,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${BASE_URL}/suppliers`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/resources`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
@@ -48,12 +67,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${BASE_URL}/industries`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/resources`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
@@ -92,7 +105,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // Dynamic products
+  // Resource guide routes
+  const resourceRoutes: MetadataRoute.Sitemap = RESOURCE_ARTICLES.map((article) => ({
+    url: `${BASE_URL}/resources/${article.slug}`,
+    lastModified: new Date(article.publishedDate),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  // Dynamic products and chemicals
   let productRoutes: MetadataRoute.Sitemap = [];
   try {
     const productPage = await getProducts({ size: 1000 });
@@ -110,10 +131,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  // Dynamic suppliers
+  // Dynamic suppliers (active and verified)
   let supplierRoutes: MetadataRoute.Sitemap = [];
   try {
-    const supplierPage = await getSuppliers({ size: 1000 });
+    const supplierPage = await getSuppliers({ size: 1000, verified: true });
     if (supplierPage && supplierPage.content) {
       supplierRoutes = supplierPage.content.map((supplier) => ({
         url: `${BASE_URL}/suppliers/${supplier.id}`,
@@ -128,5 +149,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  return [...staticRoutes, ...categoryRoutes, ...productRoutes, ...supplierRoutes];
+  return [
+    ...staticRoutes,
+    ...categoryRoutes,
+    ...resourceRoutes,
+    ...productRoutes,
+    ...supplierRoutes,
+  ];
 }

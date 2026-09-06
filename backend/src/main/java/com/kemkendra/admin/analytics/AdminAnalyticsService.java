@@ -24,11 +24,14 @@ public class AdminAnalyticsService {
 
     private final AdminAnalyticsRepository analyticsRepository;
     private final NotificationRepository notificationRepository;
+    private final com.kemkendra.product.analytics.ProductAnalyticsEventRepository productAnalyticsEventRepository;
 
     public AdminAnalyticsService(AdminAnalyticsRepository analyticsRepository,
-                                 NotificationRepository notificationRepository) {
+                                 NotificationRepository notificationRepository,
+                                 com.kemkendra.product.analytics.ProductAnalyticsEventRepository productAnalyticsEventRepository) {
         this.analyticsRepository = analyticsRepository;
         this.notificationRepository = notificationRepository;
+        this.productAnalyticsEventRepository = productAnalyticsEventRepository;
     }
 
     public AdminAnalyticsOverviewResponse getOverview(String period, String fromStr, String toStr) {
@@ -454,5 +457,269 @@ public class AdminAnalyticsService {
         }
         double rate = ((double) numerator / (double) denominator) * 100.0;
         return Math.round(rate * 10.0) / 10.0;
+    }
+
+    private LocalDate[] parseDateRange(String period, String fromStr, String toStr) {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate;
+
+        if ("7d".equalsIgnoreCase(period)) {
+            startDate = endDate.minusDays(6);
+        } else if ("90d".equalsIgnoreCase(period)) {
+            startDate = endDate.minusDays(89);
+        } else if ("12m".equalsIgnoreCase(period)) {
+            startDate = endDate.minusDays(364);
+        } else if ("custom".equalsIgnoreCase(period) || (fromStr != null && toStr != null)) {
+            try {
+                startDate = LocalDate.parse(fromStr, DateTimeFormatter.ISO_LOCAL_DATE);
+                endDate = LocalDate.parse(toStr, DateTimeFormatter.ISO_LOCAL_DATE);
+                if (startDate.isAfter(endDate)) {
+                    startDate = endDate.minusDays(29);
+                }
+            } catch (Exception e) {
+                startDate = endDate.minusDays(29);
+            }
+        } else {
+            startDate = endDate.minusDays(29);
+        }
+        return new LocalDate[]{startDate, endDate};
+    }
+
+    // ==========================================
+    // 1. DASHBOARD 15-KPI OVERVIEW
+    // ==========================================
+    public AdminDashboardKpiDto getDashboardKpis() {
+        return new AdminDashboardKpiDto(
+                analyticsRepository.countTotalBuyers(),
+                analyticsRepository.countTotalSuppliers(),
+                analyticsRepository.countVerifiedSuppliers(),
+                analyticsRepository.countActiveProducts(),
+                analyticsRepository.countActiveOfferings(),
+                analyticsRepository.countTotalRfqs(),
+                analyticsRepository.countActiveRfqs(),
+                analyticsRepository.countTotalQuotations(),
+                analyticsRepository.countTotalOrders(),
+                analyticsRepository.countCompletedOrders(),
+                analyticsRepository.countCancelledOrders(),
+                analyticsRepository.sumTotalInvoiceValue(),
+                analyticsRepository.sumPaidInvoiceValue(),
+                analyticsRepository.sumOutstandingInvoiceValue(),
+                analyticsRepository.countOpenDisputes()
+        );
+    }
+
+    // ==========================================
+    // 2. RFQ & QUOTATION ANALYTICS
+    // ==========================================
+    public RfqQuotationAnalyticsDto getRfqQuotationAnalytics(String period, String fromStr, String toStr) {
+        LocalDate[] range = parseDateRange(period, fromStr, toStr);
+        LocalDateTime from = range[0].atStartOfDay();
+        LocalDateTime to = range[1].atTime(LocalTime.MAX);
+
+        Map<LocalDate, Long> rfqTrendMap = analyticsRepository.getRfqTrends(from, to);
+        List<DataPointDto> trendList = new ArrayList<>();
+        LocalDate cur = range[0];
+        while (!cur.isAfter(range[1])) {
+            trendList.add(new DataPointDto(cur.toString(), rfqTrendMap.getOrDefault(cur, 0L).doubleValue()));
+            cur = cur.plusDays(1);
+        }
+
+        long totalRfqs = analyticsRepository.countRfqsBetween(from, to);
+        long rfqsWithQuotes = analyticsRepository.countRfqsReceivingQuotationsBetween(from, to);
+        long totalQuotes = analyticsRepository.countQuotationsBetween(from, to);
+        long acceptedQuotes = analyticsRepository.countAcceptedQuotations();
+
+        double avgQuotesPerRfq = rfqsWithQuotes > 0 ? Math.round(((double) totalQuotes / rfqsWithQuotes) * 10.0) / 10.0 : 0.0;
+        double conversionRate = totalRfqs > 0 ? Math.round(((double) rfqsWithQuotes / totalRfqs * 100.0) * 10.0) / 10.0 : 0.0;
+        double acceptanceRate = totalQuotes > 0 ? Math.round(((double) acceptedQuotes / totalQuotes * 100.0) * 10.0) / 10.0 : 0.0;
+        double avgResponseHours = analyticsRepository.getAverageQuotationResponseTimeHoursBetween(from, to);
+
+        return new RfqQuotationAnalyticsDto(
+                trendList,
+                totalRfqs,
+                rfqsWithQuotes,
+                avgQuotesPerRfq,
+                conversionRate,
+                acceptanceRate,
+                avgResponseHours,
+                analyticsRepository.countPendingRfqsBetween(from, to),
+                analyticsRepository.countExpiredRfqsBetween(from, to)
+        );
+    }
+
+    // ==========================================
+    // 3. ORDER ANALYTICS
+    // ==========================================
+    public OrderAnalyticsReportDto getOrderAnalytics(String period, String fromStr, String toStr) {
+        LocalDate[] range = parseDateRange(period, fromStr, toStr);
+        LocalDateTime from = range[0].atStartOfDay();
+        LocalDateTime to = range[1].atTime(LocalTime.MAX);
+
+        Map<LocalDate, Long> orderTrendMap = analyticsRepository.getOrderTrends(from, to);
+        List<DataPointDto> trendList = new ArrayList<>();
+        LocalDate cur = range[0];
+        while (!cur.isAfter(range[1])) {
+            trendList.add(new DataPointDto(cur.toString(), orderTrendMap.getOrDefault(cur, 0L).doubleValue()));
+            cur = cur.plusDays(1);
+        }
+
+        Map<String, Long> statusBreakdown = analyticsRepository.getOrderStatusBreakdownBetween(from, to);
+        long totalOrders = analyticsRepository.countOrdersBetween(from, to);
+        long completed = statusBreakdown.getOrDefault("COMPLETED", 0L) + statusBreakdown.getOrDefault("DELIVERED", 0L);
+        long cancelled = statusBreakdown.getOrDefault("CANCELLED", 0L) + statusBreakdown.getOrDefault("REJECTED", 0L);
+
+        BigDecimal aov = analyticsRepository.averageOrderValue();
+        double avgCompletionDays = analyticsRepository.getAverageOrderCompletionTimeDaysBetween(from, to);
+        List<TopProductDto> topProducts = analyticsRepository.getMostOrderedProductsBetween(from, to, 10);
+        List<TopSupplierDto> topSuppliers = analyticsRepository.getMostActiveSuppliersBetween(from, to, 10);
+
+        return new OrderAnalyticsReportDto(
+                trendList,
+                statusBreakdown,
+                totalOrders,
+                completed,
+                cancelled,
+                aov,
+                avgCompletionDays,
+                topProducts,
+                topSuppliers
+        );
+    }
+
+    // ==========================================
+    // 4. SUPPLIER ANALYTICS
+    // ==========================================
+    public SupplierAnalyticsReportDto getSupplierAnalytics(String period, String fromStr, String toStr) {
+        LocalDate[] range = parseDateRange(period, fromStr, toStr);
+        LocalDateTime from = range[0].atStartOfDay();
+        LocalDateTime to = range[1].atTime(LocalTime.MAX);
+
+        long totalSuppliers = analyticsRepository.countTotalSuppliers();
+        long verified = analyticsRepository.countSuppliersByVerificationStatus("VERIFIED");
+        long pending = analyticsRepository.countSuppliersByVerificationStatus("PENDING");
+        long underReview = analyticsRepository.countSuppliersByVerificationStatus("UNDER_REVIEW");
+        long rejected = analyticsRepository.countSuppliersByVerificationStatus("REJECTED");
+
+        long rfqsReceived = analyticsRepository.countRfqsBetween(from, to);
+        long quotesSubmitted = analyticsRepository.countQuotationsBetween(from, to);
+        long quotesAccepted = analyticsRepository.countAcceptedQuotations();
+        long ordersCompleted = analyticsRepository.countCompletedOrders();
+        double avgResponseHours = analyticsRepository.getAverageQuotationResponseTimeHoursBetween(from, to);
+
+        List<SupplierPerformanceRowDto> performanceRows = analyticsRepository.getSupplierPerformanceSummaries(20);
+
+        return new SupplierAnalyticsReportDto(
+                totalSuppliers,
+                verified,
+                pending,
+                underReview,
+                rejected,
+                rfqsReceived,
+                quotesSubmitted,
+                quotesAccepted,
+                ordersCompleted,
+                avgResponseHours,
+                performanceRows
+        );
+    }
+
+    // ==========================================
+    // 5. PRODUCT ANALYTICS
+    // ==========================================
+    public ProductAnalyticsReportDto getProductAnalytics(String period, String fromStr, String toStr) {
+        LocalDate[] range = parseDateRange(period, fromStr, toStr);
+        LocalDateTime from = range[0].atStartOfDay();
+        LocalDateTime to = range[1].atTime(LocalTime.MAX);
+
+        long days = java.time.temporal.ChronoUnit.DAYS.between(range[0], range[1]) + 1;
+        LocalDateTime prevFrom = from.minusDays(days);
+        LocalDateTime prevTo = from.minusSeconds(1);
+
+        // 1. Most searched
+        List<SearchTermCountDto> mostSearched = new ArrayList<>();
+        try {
+            List<Object[]> searchResults = productAnalyticsEventRepository.findTopSearchesBetween(
+                    from, to, PageRequest.of(0, 10));
+            for (Object[] r : searchResults) {
+                mostSearched.add(new SearchTermCountDto((String) r[0], ((Number) r[1]).longValue()));
+            }
+        } catch (Exception e) {
+            // Safe fallback if table has no events yet
+        }
+
+        // 2. Most viewed
+        List<ProductCountDto> mostViewed = new ArrayList<>();
+        try {
+            List<Object[]> viewResults = productAnalyticsEventRepository.findTopViewedProductsBetween(
+                    from, to, PageRequest.of(0, 10));
+            for (Object[] r : viewResults) {
+                UUID pId = (UUID) r[0];
+                mostViewed.add(new ProductCountDto(pId, "Chemical Product", "KP-" + pId.toString().substring(0, 6).toUpperCase(), ((Number) r[1]).longValue()));
+            }
+        } catch (Exception e) {
+            // Safe fallback
+        }
+
+        // 3. Most requested chemicals
+        List<ProductDemandDto> mostRequested = analyticsRepository.getMostRequestedChemicalsBetween(from, to, 10);
+
+        // 4. Most active categories
+        List<CategoryActivityDto> activeCategories = analyticsRepository.getCategoryActivityBetween(from, to);
+
+        // 5. Products with no active offerings
+        List<ProductSummaryDto> noOfferingProducts = analyticsRepository.getProductsWithNoActiveOfferings(10);
+
+        // 6. Products with increasing demand
+        List<ProductDemandGrowthDto> demandGrowth = analyticsRepository.getProductsWithIncreasingDemand(
+                from, to, prevFrom, prevTo, 10);
+
+        return new ProductAnalyticsReportDto(
+                mostSearched,
+                mostViewed,
+                mostRequested,
+                activeCategories,
+                noOfferingProducts,
+                demandGrowth
+        );
+    }
+
+    // ==========================================
+    // 6. INVOICE & PAYMENT REPORT
+    // ==========================================
+    public InvoicePaymentReportDto getInvoicePaymentReport(String period, String fromStr, String toStr) {
+        LocalDate[] range = parseDateRange(period, fromStr, toStr);
+        LocalDateTime from = range[0].atStartOfDay();
+        LocalDateTime to = range[1].atTime(LocalTime.MAX);
+
+        Map<String, Object> invoiceTotals = analyticsRepository.getInvoiceTotalsBetween(from, to);
+        Map<String, Long> paymentBreakdown = analyticsRepository.getPaymentConfirmationStatusBreakdownBetween(from, to);
+        Map<String, Object> disputes = analyticsRepository.getDisputedPaymentsBetween(from, to);
+
+        BigDecimal totalVal = (BigDecimal) invoiceTotals.getOrDefault("total_val", BigDecimal.ZERO);
+        BigDecimal paidVal = (BigDecimal) invoiceTotals.getOrDefault("paid_val", BigDecimal.ZERO);
+        BigDecimal dueVal = (BigDecimal) invoiceTotals.getOrDefault("due_val", BigDecimal.ZERO);
+        BigDecimal partPaidVal = (BigDecimal) invoiceTotals.getOrDefault("part_paid_val", BigDecimal.ZERO);
+        BigDecimal overdueVal = (BigDecimal) invoiceTotals.getOrDefault("overdue_val", BigDecimal.ZERO);
+        long cancelledCnt = (Long) invoiceTotals.getOrDefault("cancelled_cnt", 0L);
+        BigDecimal cancelledAmt = (BigDecimal) invoiceTotals.getOrDefault("cancelled_amt", BigDecimal.ZERO);
+
+        long disputeCnt = (Long) disputes.getOrDefault("count", 0L);
+        BigDecimal disputeAmt = (BigDecimal) disputes.getOrDefault("amount", BigDecimal.ZERO);
+
+        String notice = "KemKendra Marketplace Notice: Invoice and payment values represent gross transaction volume facilitated on the platform, not KemKendra direct company revenue.";
+
+        return new InvoicePaymentReportDto(
+                totalVal,
+                paidVal,
+                partPaidVal,
+                dueVal,
+                overdueVal,
+                cancelledCnt,
+                cancelledAmt,
+                paymentBreakdown,
+                disputeCnt,
+                disputeAmt,
+                notice
+        );
     }
 }

@@ -103,4 +103,13 @@ public class AdminSupplierController {
 
         return ResponseEntity.ok(adminSupplierService.updateSupplierStatus(id, request, authentication, servletRequest));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSupplier(
+            @PathVariable Long id,
+            Authentication authentication,
+            HttpServletRequest servletRequest) {
+        adminSupplierService.deleteSupplier(id, authentication, servletRequest);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -9,6 +9,10 @@ export function resolveNotificationRoute(
   isSupplier: boolean,
   isAdmin: boolean = false
 ): string | null {
+  if (notification.targetRoute && notification.targetRoute.startsWith("/")) {
+    return notification.targetRoute;
+  }
+
   const { entityType, entityId } = notification;
 
   if (!entityType || !entityId) {
@@ -31,6 +35,15 @@ export function resolveNotificationRoute(
       case "PURCHASE_ORDER":
       case "SHIPMENT":
         return `/dashboard/admin/transactions/orders`;
+      case "INVOICE":
+      case "PAYMENT":
+        return `/dashboard/invoices/${entityId}`;
+      case "DISPUTE":
+        return `/dashboard/disputes/${entityId}`;
+      case "USER":
+        return `/dashboard/admin/activity`;
+      case "BUSINESS":
+        return `/dashboard/admin/suppliers`;
       default:
         return `/dashboard/admin/activity`;
     }
@@ -44,11 +57,20 @@ export function resolveNotificationRoute(
       case "PURCHASE_ORDER":
       case "SHIPMENT":
         return `/dashboard/supplier/orders/${entityId}`;
+      case "INVOICE":
+      case "PAYMENT":
+        return `/dashboard/supplier/invoices/${entityId}`;
+      case "DISPUTE":
+        return `/dashboard/disputes/${entityId}`;
       case "SUPPLIER_OFFERING":
       case "PRODUCT_REQUEST":
         return `/dashboard/supplier/products`;
       case "SUPPLIER":
         return `/dashboard/supplier/verification`;
+      case "BUSINESS":
+        return `/dashboard/supplier/tax-profile`;
+      case "USER":
+        return `/dashboard/settings`;
       default:
         return `/dashboard/supplier`;
     }
@@ -62,8 +84,17 @@ export function resolveNotificationRoute(
     case "PURCHASE_ORDER":
     case "SHIPMENT":
       return `/dashboard/orders/${entityId}`;
+    case "INVOICE":
+    case "PAYMENT":
+      return `/dashboard/invoices/${entityId}`;
+    case "DISPUTE":
+      return `/dashboard/disputes/${entityId}`;
     case "MASTER_PRODUCT":
       return `/products/${entityId}`;
+    case "BUSINESS":
+      return `/dashboard/tax-profile`;
+    case "USER":
+      return `/dashboard/settings`;
     default:
       return `/dashboard`;
   }

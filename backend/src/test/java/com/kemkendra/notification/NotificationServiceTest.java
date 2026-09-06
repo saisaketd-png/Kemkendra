@@ -156,4 +156,126 @@ public class NotificationServiceTest {
         // User B's unread count should remain 1
         assertEquals(1, notificationService.getUnreadCount(userB.getId()));
     }
+
+    @Test
+    public void testCreateNotification_WithBusinessId() {
+        UUID businessId = UUID.randomUUID();
+        UUID entityId = UUID.randomUUID();
+        Notification n = notificationService.createNotification(
+                userA.getId(),
+                businessId,
+                NotificationType.INVOICE_ISSUED,
+                NotificationCategory.INVOICE,
+                NotificationPriority.NORMAL,
+                "Tax Invoice Issued",
+                "Supplier issued invoice",
+                NotificationEntityType.INVOICE,
+                entityId
+        );
+
+        assertNotNull(n);
+        assertEquals(businessId, n.getBusinessId());
+        assertEquals(NotificationCategory.INVOICE, n.getCategory());
+
+        Page<NotificationResponse> page = notificationService.getNotifications(
+                userA.getId(), businessId, NotificationCategory.INVOICE, null, false, PageRequest.of(0, 10));
+        assertEquals(1, page.getTotalElements());
+        assertEquals(businessId, page.getContent().get(0).businessId());
+    }
+
+    @Test
+    public void testCreateNotification_DeduplicationSuppression() {
+        UUID entityId = UUID.randomUUID();
+        Notification first = notificationService.createNotification(
+                userA.getId(),
+                NotificationType.PAYMENT_PROOF_UPLOADED,
+                NotificationCategory.PAYMENT,
+                NotificationPriority.HIGH,
+                "Payment Proof Uploaded",
+                "Buyer recorded payment",
+                NotificationEntityType.INVOICE,
+                entityId
+        );
+
+        assertNotNull(first);
+
+        // Immediate duplicate creation attempt for same recipient, type, entityId
+        Notification second = notificationService.createNotification(
+                userA.getId(),
+                NotificationType.PAYMENT_PROOF_UPLOADED,
+                NotificationCategory.PAYMENT,
+                NotificationPriority.HIGH,
+                "Payment Proof Uploaded",
+                "Buyer recorded payment duplicate",
+                NotificationEntityType.INVOICE,
+                entityId
+        );
+
+        assertNotNull(second);
+        assertEquals(first.getId(), second.getId(), "Duplicate notification should return existing instance without creating a second record");
+    }
+
+    @Test
+    public void testArchiveNotification_Success() {
+        Notification n = notificationService.createNotification(
+                userA.getId(),
+                NotificationType.DISPUTE_CREATED,
+                NotificationCategory.DISPUTE,
+                NotificationPriority.HIGH,
+                "Dispute Raised",
+                "Commercial dispute created",
+                NotificationEntityType.DISPUTE,
+                UUID.randomUUID()
+        );
+
+        assertFalse(n.isArchived());
+
+        NotificationResponse archived = notificationService.archiveNotification(n.getId(), userA.getId());
+        assertTrue(archived.archived());
+
+        // Default query excludes archived
+        Page<NotificationResponse> active = notificationService.getNotifications(userA.getId(), PageRequest.of(0, 10));
+        assertEquals(0, active.getTotalElements());
+
+        // Query with archived = true retrieves it
+        Page<NotificationResponse> archivedList = notificationService.getNotifications(
+                userA.getId(), null, null, null, true, PageRequest.of(0, 10));
+        assertEquals(1, archivedList.getTotalElements());
+    }
+
+    @Test
+    public void testDeleteNotification_Success() {
+        Notification n = notificationService.createNotification(
+                userA.getId(),
+                NotificationType.QUOTATION_SUBMITTED,
+                "T",
+                "M",
+                NotificationEntityType.QUOTATION,
+                UUID.randomUUID()
+        );
+
+        notificationService.deleteNotification(n.getId(), userA.getId());
+        assertTrue(notificationRepository.findById(n.getId()).isEmpty());
+    }
+
+    @Test
+    public void testCleanUpOldNotifications() {
+        Notification n = notificationService.createNotification(
+                userA.getId(),
+                NotificationType.SYSTEM_ANNOUNCEMENT,
+                "Old Announce",
+                "Maintenance message",
+                NotificationEntityType.USER,
+                userA.getId()
+        );
+
+        // Backdate notification created_at in database
+        jdbcTemplate.update("UPDATE notifications SET created_at = ? WHERE id = ?",
+                java.sql.Timestamp.valueOf(java.time.LocalDateTime.now().minusDays(100)),
+                n.getId());
+
+        long purged = notificationService.cleanUpOldNotifications(90);
+        assertTrue(purged >= 1, "Should have purged at least 1 old notification");
+        assertTrue(notificationRepository.findById(n.getId()).isEmpty());
+    }
 }

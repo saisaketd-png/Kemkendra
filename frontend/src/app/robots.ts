@@ -5,6 +5,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kemkendra.online";
 export default function robots(): MetadataRoute.Robots {
   const publicAllowed = [
     "/",
+    "/search",
     "/products",
     "/products/*",
     "/chemicals",

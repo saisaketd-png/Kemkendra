@@ -16,26 +16,26 @@ import { serializeJsonLd } from "@/shared/utils/security";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "KemKendra | Verified Chemical Suppliers & B2B Chemical Marketplace",
+  title: "B2B Chemical Marketplace | Verified Chemical Suppliers | KemKendra",
   description:
-    "Discover verified chemical suppliers, compare chemical offerings, request quotations, and source raw materials through KemKendra’s B2B chemical marketplace.",
+    "Find verified chemical suppliers on KemKendra. Source APIs, intermediates, industrial solvents, and specialty chemicals, compare offerings, and request bulk quotations.",
   alternates: {
-    canonical: "https://kemkendra.online",
+    canonical: "https://kemkendra.online/",
   },
   openGraph: {
-    title: "KemKendra | Verified Chemical Suppliers & B2B Chemical Marketplace",
+    title: "B2B Chemical Marketplace | Verified Chemical Suppliers | KemKendra",
     description:
-      "Discover verified chemical suppliers, compare chemical offerings, request quotations, and source raw materials through KemKendra’s B2B chemical marketplace.",
-    url: "https://kemkendra.online",
+      "Find verified chemical suppliers on KemKendra. Source APIs, intermediates, industrial solvents, and specialty chemicals, compare offerings, and request bulk quotations.",
+    url: "https://kemkendra.online/",
     siteName: "KemKendra",
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "KemKendra | Verified Chemical Suppliers & B2B Chemical Marketplace",
+    title: "B2B Chemical Marketplace | Verified Chemical Suppliers | KemKendra",
     description:
-      "Discover verified chemical suppliers, compare chemical offerings, request quotations, and source raw materials through KemKendra’s B2B chemical marketplace.",
+      "Find verified chemical suppliers on KemKendra. Source APIs, intermediates, industrial solvents, and specialty chemicals, compare offerings, and request bulk quotations.",
   },
 };
 

@@ -12,6 +12,8 @@ public interface MasterProductImageRepository extends JpaRepository<MasterProduc
 
     List<MasterProductImage> findByMasterProductIdAndStatusOrderByDisplayOrderAsc(UUID masterProductId, String status);
 
+    List<MasterProductImage> findByMasterProductIdInAndStatus(List<UUID> masterProductIds, String status);
+
     Optional<MasterProductImage> findByMasterProductIdAndIsPrimaryTrueAndStatus(UUID masterProductId, String status);
 
     long countByMasterProductIdAndStatus(UUID masterProductId, String status);

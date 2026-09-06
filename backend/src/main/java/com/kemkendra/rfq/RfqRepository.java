@@ -21,6 +21,22 @@ public interface RfqRepository extends JpaRepository<Rfq, UUID>, JpaSpecificatio
 
     long countByStatus(RfqStatus status);
 
+    long countByBuyerId(UUID buyerId);
+
+    long countByBuyerIdAndStatus(UUID buyerId, RfqStatus status);
+
+    long countByBuyerIdAndStatusNotIn(UUID buyerId, java.util.Collection<RfqStatus> statuses);
+
+    long countBySupplierId(Long supplierId);
+
+    long countBySupplierIdAndStatus(Long supplierId, RfqStatus status);
+
+    long countBySupplierIdAndStatusIn(Long supplierId, java.util.Collection<RfqStatus> statuses);
+
+    List<Rfq> findTop5ByBuyerIdOrderByCreatedAtDesc(UUID buyerId);
+
+    List<Rfq> findTop5BySupplierIdOrderByCreatedAtDesc(Long supplierId);
+
     long countByBuyerIdAndCreatedAtGreaterThanEqual(UUID buyerId, java.time.LocalDateTime createdAt);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)

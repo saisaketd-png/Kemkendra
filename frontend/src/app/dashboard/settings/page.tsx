@@ -30,7 +30,9 @@ import {
   ShieldCheck,
   Bell,
   Check,
+  Receipt,
 } from "lucide-react";
+import { TaxProfileForm } from "@/features/invoice/components/TaxProfileForm";
 
 export default function SettingsPage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -231,6 +233,12 @@ export default function SettingsPage() {
         return "Purchase Orders";
       case "SHIPMENT":
         return "Shipments & Logistics";
+      case "INVOICE":
+        return "Invoices & Billing";
+      case "PAYMENT":
+        return "Payment Confirmations";
+      case "DISPUTE":
+        return "Dispute Resolution";
       case "CATALOG":
         return "Catalog & Offerings";
       case "GOVERNANCE":
@@ -617,6 +625,22 @@ export default function SettingsPage() {
             </button>
           </div>
         </form>
+      </div>
+
+      {/* Business Tax Profile & GSTIN Card */}
+      <div className="rounded-[8px] border border-[#E4E4E7] bg-white p-6 shadow-xs space-y-4">
+        <div>
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#64748B] font-mono">
+            <Receipt className="w-3.5 h-3.5 text-[#0052CC]" />
+            <span>Business Tax Profile & GSTIN</span>
+          </div>
+          <p className="mt-1 text-xs text-[#64748B]">
+            Configure legal business details, GSTIN, PAN, and registered address used to generate immutable snapshots on B2B tax invoices.
+          </p>
+        </div>
+        <div className="pt-2">
+          <TaxProfileForm />
+        </div>
       </div>
     </div>
   );

@@ -60,6 +60,10 @@ function RegisterForm() {
       });
       // Do NOT auto-login. Require email verification before authenticated access.
       setRegisteredEmail(email);
+      try {
+        const { trackMarketingEvent } = await import("@/features/analytics/utils/marketingTracker");
+        trackMarketingEvent("REG_COMPLETE");
+      } catch {}
     } catch (err: unknown) {
       setError(
         parseApiError(

@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -73,6 +74,12 @@ public class PurchaseOrder {
     @Column(name = "unit_price", nullable = false, precision = 18, scale = 4)
     private BigDecimal unitPrice;
 
+    @Column(name = "subtotal", precision = 18, scale = 4)
+    private BigDecimal subtotal;
+
+    @Column(name = "tax_amount", precision = 18, scale = 4)
+    private BigDecimal taxAmount = BigDecimal.ZERO;
+
     @Column(name = "total_amount", nullable = false, precision = 18, scale = 4)
     private BigDecimal totalAmount;
 
@@ -81,6 +88,9 @@ public class PurchaseOrder {
 
     @Column(name = "agreed_lead_time_days")
     private Integer agreedLeadTimeDays;
+
+    @Column(name = "expected_delivery_date")
+    private LocalDate expectedDeliveryDate;
 
     @Column(name = "payment_terms", length = 100)
     private String paymentTerms;
@@ -104,6 +114,15 @@ public class PurchaseOrder {
     @Column(nullable = false, length = 30)
     private OrderStatus status = OrderStatus.PLACED;
 
+    @Column(name = "payment_status", nullable = false, length = 30)
+    private String paymentStatus = "PENDING";
+
+    @Column(name = "amount_paid", nullable = false, precision = 18, scale = 4)
+    private BigDecimal amountPaid = BigDecimal.ZERO;
+
+    @Column(name = "payment_settled_at")
+    private LocalDateTime paymentSettledAt;
+
     @Column(name = "placed_at", nullable = false)
     private LocalDateTime placedAt;
 
@@ -116,14 +135,29 @@ public class PurchaseOrder {
     @Column(name = "processing_at")
     private LocalDateTime processingAt;
 
+    @Column(name = "ready_for_dispatch_at")
+    private LocalDateTime readyForDispatchAt;
+
     @Column(name = "shipped_at")
     private LocalDateTime shippedAt;
+
+    @Column(name = "in_transit_at")
+    private LocalDateTime inTransitAt;
 
     @Column(name = "delivered_at")
     private LocalDateTime deliveredAt;
 
     @Column(name = "completed_at")
     private LocalDateTime completedAt;
+
+    @Column(name = "disputed_at")
+    private LocalDateTime disputedAt;
+
+    @Column(name = "disputed_by", length = 100)
+    private String disputedBy;
+
+    @Column(name = "dispute_id")
+    private UUID disputeId;
 
     @Column(name = "rejected_at")
     private LocalDateTime rejectedAt;
@@ -493,6 +527,94 @@ public class PurchaseOrder {
 
     public void setCompletedAt(LocalDateTime completedAt) {
         this.completedAt = completedAt;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public BigDecimal getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(BigDecimal amountPaid) {
+        this.amountPaid = amountPaid;
+    }
+
+    public LocalDateTime getPaymentSettledAt() {
+        return paymentSettledAt;
+    }
+
+    public void setPaymentSettledAt(LocalDateTime paymentSettledAt) {
+        this.paymentSettledAt = paymentSettledAt;
+    }
+
+    public BigDecimal getSubtotal() {
+        return subtotal != null ? subtotal : totalAmount;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public BigDecimal getTaxAmount() {
+        return taxAmount != null ? taxAmount : BigDecimal.ZERO;
+    }
+
+    public void setTaxAmount(BigDecimal taxAmount) {
+        this.taxAmount = taxAmount;
+    }
+
+    public LocalDate getExpectedDeliveryDate() {
+        return expectedDeliveryDate;
+    }
+
+    public void setExpectedDeliveryDate(LocalDate expectedDeliveryDate) {
+        this.expectedDeliveryDate = expectedDeliveryDate;
+    }
+
+    public LocalDateTime getReadyForDispatchAt() {
+        return readyForDispatchAt;
+    }
+
+    public void setReadyForDispatchAt(LocalDateTime readyForDispatchAt) {
+        this.readyForDispatchAt = readyForDispatchAt;
+    }
+
+    public LocalDateTime getInTransitAt() {
+        return inTransitAt;
+    }
+
+    public void setInTransitAt(LocalDateTime inTransitAt) {
+        this.inTransitAt = inTransitAt;
+    }
+
+    public LocalDateTime getDisputedAt() {
+        return disputedAt;
+    }
+
+    public void setDisputedAt(LocalDateTime disputedAt) {
+        this.disputedAt = disputedAt;
+    }
+
+    public String getDisputedBy() {
+        return disputedBy;
+    }
+
+    public void setDisputedBy(String disputedBy) {
+        this.disputedBy = disputedBy;
+    }
+
+    public UUID getDisputeId() {
+        return disputeId;
+    }
+
+    public void setDisputeId(UUID disputeId) {
+        this.disputeId = disputeId;
     }
 
     public LocalDateTime getCreatedAt() {

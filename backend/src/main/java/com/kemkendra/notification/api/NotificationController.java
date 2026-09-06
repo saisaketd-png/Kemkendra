@@ -56,16 +56,18 @@ public class NotificationController {
 
     @GetMapping
     public Page<NotificationResponse> getNotifications(
+            @RequestParam(required = false) UUID businessId,
             @RequestParam(required = false) NotificationCategory category,
             @RequestParam(required = false) Boolean read,
+            @RequestParam(required = false, defaultValue = "false") Boolean archived,
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             Authentication authentication) {
         User user = getAuthenticatedUser(authentication);
-        return notificationService.getNotifications(user.getId(), category, read, pageable);
+        return notificationService.getNotifications(user.getId(), businessId, category, read, archived, pageable);
     }
 
     public Page<NotificationResponse> getNotifications(Pageable pageable, Authentication authentication) {
-        return getNotifications(null, null, pageable, authentication);
+        return getNotifications(null, null, null, false, pageable, authentication);
     }
 
     @GetMapping("/unread-count")
@@ -85,5 +87,18 @@ public class NotificationController {
         User user = getAuthenticatedUser(authentication);
         int count = notificationService.markAllAsRead(user.getId());
         return new UnreadCountResponse(count);
+    }
+
+    @PutMapping("/{id}/archive")
+    public NotificationResponse archiveNotification(@PathVariable UUID id, Authentication authentication) {
+        User user = getAuthenticatedUser(authentication);
+        return notificationService.archiveNotification(id, user.getId());
+    }
+
+    @DeleteMapping("/{id}")
+    public org.springframework.http.ResponseEntity<Void> deleteNotification(@PathVariable UUID id, Authentication authentication) {
+        User user = getAuthenticatedUser(authentication);
+        notificationService.deleteNotification(id, user.getId());
+        return org.springframework.http.ResponseEntity.noContent().build();
     }
 }

@@ -1,21 +1,26 @@
 import { authenticatedFetch } from "@/features/auth/api/authenticatedFetch";
 import {
   BulkUpdateNotificationPreferencesRequest,
+  DeliveryLogsFilterParams,
   NotificationCategory,
+  NotificationDeliveryLogDto,
   NotificationPreferencesResponse,
   NotificationResponse,
+  PaginatedDeliveryLogs,
   PaginatedNotifications,
   UnreadCountResponse,
 } from "../types/notification";
 
 /**
- * Fetches paginated notifications for the authenticated user with optional category and read filter.
+ * Fetches paginated notifications for the authenticated user with optional category, read, businessId and archived filters.
  */
 export async function getNotifications(
   page: number = 0,
   size: number = 20,
   category?: NotificationCategory,
-  read?: boolean
+  read?: boolean,
+  businessId?: string,
+  archived?: boolean
 ): Promise<PaginatedNotifications> {
   const params = new URLSearchParams();
   params.set("page", page.toString());
@@ -27,6 +32,12 @@ export async function getNotifications(
   }
   if (read !== undefined && read !== null) {
     params.set("read", read.toString());
+  }
+  if (businessId) {
+    params.set("businessId", businessId);
+  }
+  if (archived !== undefined && archived !== null) {
+    params.set("archived", archived.toString());
   }
 
   const response = await authenticatedFetch(`/api/v1/notifications?${params.toString()}`);
@@ -121,3 +132,85 @@ export async function updateNotificationPreferences(
 
   return response.json();
 }
+
+/**
+ * Archives a single notification.
+ */
+export async function archiveNotification(
+  notificationId: string
+): Promise<NotificationResponse> {
+  const response = await authenticatedFetch(
+    `/api/v1/notifications/${notificationId}/archive`,
+    {
+      method: "PUT",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to archive notification: ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
+/**
+ * Deletes a single notification.
+ */
+export async function deleteNotification(notificationId: string): Promise<void> {
+  const response = await authenticatedFetch(
+    `/api/v1/notifications/${notificationId}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to delete notification: ${response.statusText}`);
+  }
+}
+
+/**
+ * Admin: Fetches paginated delivery logs for email/push audit with optional filters.
+ */
+export async function getDeliveryLogs(
+  params?: DeliveryLogsFilterParams
+): Promise<PaginatedDeliveryLogs> {
+  const q = new URLSearchParams();
+  if (params?.status) q.set("status", params.status);
+  if (params?.notificationType) q.set("notificationType", params.notificationType);
+  if (params?.recipientEmail) q.set("recipientEmail", params.recipientEmail);
+  if (params?.page !== undefined) q.set("page", params.page.toString());
+  if (params?.size !== undefined) q.set("size", params.size.toString());
+
+  const response = await authenticatedFetch(
+    `/api/v1/admin/notifications/delivery-logs?${q.toString()}`
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to load delivery logs: ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
+/**
+ * Admin: Retries a failed notification delivery log.
+ */
+export async function retryDeliveryLog(
+  logId: string
+): Promise<NotificationDeliveryLogDto> {
+  const response = await authenticatedFetch(
+    `/api/v1/admin/notifications/delivery-logs/${logId}/retry`,
+    {
+      method: "POST",
+    }
+  );
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.message || `Failed to retry delivery: ${response.statusText}`);
+  }
+
+  return response.json();
+}
+

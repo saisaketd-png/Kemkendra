@@ -32,6 +32,9 @@ public enum DocumentCategory {
     DRUG_LICENSE,
     FACTORY_LICENSE,
     POLLUTION_CLEARANCE,
+    REGULATORY_CERTIFICATE,
+    SUPPLIER_AUTHORIZATION_DOCUMENT,
+    PURITY_CERTIFICATE,
     OTHER_COMPLIANCE,
     OTHER,
 
@@ -58,11 +61,14 @@ public enum DocumentCategory {
             return DocumentCategory.valueOf(normalized);
         } catch (IllegalArgumentException e) {
             return switch (normalized) {
-                case "TDS", "TECHNICAL_SPEC", "SPECIFICATION" -> TECHNICAL_DATA_SHEET;
+                case "TDS", "TECHNICAL_SPEC", "SPECIFICATION", "PRODUCT_SPECIFICATION" -> TECHNICAL_DATA_SHEET;
                 case "SDS", "SAFETY_SHEET" -> SAFETY_DATA_SHEET;
                 case "COA_REPORT", "ANALYSIS_CERTIFICATE" -> CERTIFICATE_OF_ANALYSIS;
                 case "GST", "GSTIN" -> GST_CERTIFICATE;
                 case "PAN" -> PAN_CARD;
+                case "SUPPLIER_AUTHORIZATION", "AUTHORIZATION_LETTER" -> SUPPLIER_AUTHORIZATION_DOCUMENT;
+                case "REGULATORY", "REGULATORY_DOC" -> REGULATORY_CERTIFICATE;
+                case "PURITY", "PURITY_REPORT" -> PURITY_CERTIFICATE;
                 default -> OTHER;
             };
         }

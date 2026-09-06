@@ -30,6 +30,10 @@ import {
   Megaphone,
   Tag,
   SlidersHorizontal,
+  Receipt,
+  AlertCircle,
+  Mail,
+  TrendingUp,
 } from "lucide-react";
 import { getAuthUser, logout, AuthUser } from "@/features/auth/api/auth";
 import { NotificationBell } from "@/features/notifications/components/NotificationBell";
@@ -158,9 +162,24 @@ export default function DashboardClientLayout({
           icon: ShoppingCart,
         },
         {
+          name: "Invoices & Payments",
+          href: "/dashboard/buyer/invoices",
+          icon: Receipt,
+        },
+        {
+          name: "Commercial Disputes",
+          href: "/dashboard/buyer/disputes",
+          icon: AlertCircle,
+        },
+        {
           name: "Saved Shortlists",
           href: "/dashboard/buyer/shortlist",
           icon: Bookmark,
+        },
+        {
+          name: "Procurement Analytics",
+          href: "/dashboard/buyer/analytics",
+          icon: TrendingUp,
         },
       ],
     },
@@ -210,6 +229,21 @@ export default function DashboardClientLayout({
           name: "Purchase Orders",
           href: "/dashboard/supplier/orders",
           icon: ShoppingCart,
+        },
+        {
+          name: "Invoices & Tax",
+          href: "/dashboard/supplier/invoices",
+          icon: Receipt,
+        },
+        {
+          name: "Disputes & Claims",
+          href: "/dashboard/supplier/disputes",
+          icon: AlertCircle,
+        },
+        {
+          name: "Performance & Analytics",
+          href: "/dashboard/supplier/analytics",
+          icon: TrendingUp,
         },
       ],
     },
@@ -261,6 +295,11 @@ export default function DashboardClientLayout({
           exact: true,
         },
         {
+          name: "Analytics & Reports",
+          href: "/dashboard/admin/analytics",
+          icon: TrendingUp,
+        },
+        {
           name: "Operations Console",
           href: "/dashboard/admin/operations",
           icon: LayoutDashboard,
@@ -286,6 +325,16 @@ export default function DashboardClientLayout({
           href: "/dashboard/admin/transactions/orders",
           icon: ShoppingCart,
         },
+        {
+          name: "Invoice Oversight",
+          href: "/dashboard/admin/transactions/invoices",
+          icon: Receipt,
+        },
+        {
+          name: "Dispute Oversight",
+          href: "/dashboard/admin/transactions/disputes",
+          icon: AlertCircle,
+        },
       ],
     },
     {
@@ -305,6 +354,11 @@ export default function DashboardClientLayout({
           name: "Supplier Verification",
           href: "/dashboard/admin/suppliers/quality",
           icon: ShieldCheck,
+        },
+        {
+          name: "Document Compliance",
+          href: "/dashboard/admin/compliance",
+          icon: FileCheck,
         },
         {
           name: "Catalog Taxonomy",
@@ -365,6 +419,11 @@ export default function DashboardClientLayout({
           name: "Notifications",
           href: "/dashboard/notifications",
           icon: Bell,
+        },
+        {
+          name: "Delivery Logs",
+          href: "/dashboard/admin/notifications/logs",
+          icon: Mail,
         },
       ],
     },

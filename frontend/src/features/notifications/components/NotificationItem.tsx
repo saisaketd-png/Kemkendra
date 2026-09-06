@@ -19,6 +19,12 @@ import {
   ShieldAlert,
   Layers,
   ChevronRight,
+  Receipt,
+  CreditCard,
+  Scale,
+  Building2,
+  Archive,
+  Trash2,
 } from "lucide-react";
 import { NotificationCategory, NotificationPriority, NotificationResponse, NotificationType } from "../types/notification";
 import { formatNotificationTime, resolveNotificationRoute } from "../utils/navigation";
@@ -27,20 +33,39 @@ interface NotificationItemProps {
   notification: NotificationResponse;
   isSupplier: boolean;
   onSelect: (notification: NotificationResponse) => void;
+  onArchive?: (notification: NotificationResponse) => void;
+  onDelete?: (notification: NotificationResponse) => void;
   compact?: boolean;
 }
 
 function getNotificationIcon(type: NotificationType, category: NotificationCategory, isUnread: boolean) {
   const iconClass = isUnread ? "w-4 h-4 text-[#0052CC]" : "w-4 h-4 text-[#5E6C84]";
 
-  if (category === "SECURITY" || category === "ACCOUNT") {
+  if (category === "SECURITY" || type === "SECURITY_ALERT") {
     return <ShieldAlert className={isUnread ? "w-4 h-4 text-[#DE350B]" : iconClass} />;
+  }
+
+  if (category === "DISPUTE" || type.startsWith("DISPUTE_")) {
+    return <Scale className={isUnread ? "w-4 h-4 text-[#DE350B]" : iconClass} />;
+  }
+
+  if (category === "PAYMENT" || type.startsWith("PAYMENT_")) {
+    return <CreditCard className={isUnread ? "w-4 h-4 text-[#006644]" : iconClass} />;
+  }
+
+  if (category === "INVOICE" || type.startsWith("INVOICE_")) {
+    return <Receipt className={isUnread ? "w-4 h-4 text-[#0052CC]" : iconClass} />;
+  }
+
+  if (category === "ACCOUNT" || type === "ACCOUNT_UPDATED" || type === "BUSINESS_REGISTRATION_UPDATED") {
+    return <Building2 className={isUnread ? "w-4 h-4 text-[#403294]" : iconClass} />;
   }
 
   switch (type) {
     case "RFQ_CREATED":
     case "RFQ_SUBMITTED":
     case "RFQ_RECEIVED":
+    case "RFQ_RESPONSE_SUBMITTED":
       return <FileText className={isUnread ? "w-4 h-4 text-[#0052CC]" : iconClass} />;
     case "QUOTATION_SUBMITTED":
     case "QUOTATION_UPDATED":
@@ -67,6 +92,7 @@ function getNotificationIcon(type: NotificationType, category: NotificationCateg
       return <ClipboardList className={isUnread ? "w-4 h-4 text-[#403294]" : iconClass} />;
     case "ORDER_PROCESSING_STARTED":
     case "PURCHASE_ORDER_PROCESSING":
+    case "ORDER_STATUS_CHANGED":
       return <Factory className={isUnread ? "w-4 h-4 text-[#0052CC]" : iconClass} />;
     case "ORDER_SHIPPED":
     case "PURCHASE_ORDER_SHIPPED":
@@ -84,6 +110,7 @@ function getNotificationIcon(type: NotificationType, category: NotificationCateg
     case "SUPPLIER_INFORMATION_REQUIRED":
     case "DOCUMENT_VERIFICATION_REQUIRED":
     case "APPEAL_INFORMATION_REQUIRED":
+    case "SUPPLIER_VERIFICATION_STATUS_CHANGED":
       return <AlertTriangle className={isUnread ? "w-4 h-4 text-[#B35C00]" : iconClass} />;
     default:
       return <FileText className={iconClass} />;
@@ -127,9 +154,19 @@ function formatEntityReference(entityType: string | null, entityId: string | nul
       return `QUOTE-${shortId}`;
     case "SHIPMENT":
       return `TRK-${shortId}`;
+    case "INVOICE":
+      return `INV-${shortId}`;
+    case "PAYMENT":
+      return `PAY-${shortId}`;
+    case "DISPUTE":
+      return `DSP-${shortId}`;
     case "MASTER_PRODUCT":
     case "SUPPLIER_OFFERING":
       return `PRD-${shortId}`;
+    case "BUSINESS":
+      return `BIZ-${shortId}`;
+    case "USER":
+      return `USR-${shortId}`;
     default:
       return null;
   }
@@ -139,6 +176,8 @@ export function NotificationItem({
   notification,
   isSupplier,
   onSelect,
+  onArchive,
+  onDelete,
   compact = false,
 }: NotificationItemProps) {
   const isUnread = !notification.read;
@@ -296,11 +335,48 @@ export function NotificationItem({
               {reference}
             </span>
           )}
+          {notification.businessId && (
+            <span
+              className="inline-flex items-center gap-1 font-mono text-[10px] font-medium text-[#403294] bg-[#F3F0FF] px-1.5 py-0.2 rounded-[4px] border border-[#DDD6FE]"
+              title={`Business: ${notification.businessId}`}
+            >
+              <Building2 className="w-2.5 h-2.5" />
+              BIZ-{notification.businessId.substring(0, 8).toUpperCase()}
+            </span>
+          )}
         </div>
       </div>
 
-      {/* Trailing Action */}
-      <div className="flex items-center gap-2 shrink-0 self-center pl-1">
+      {/* Trailing Actions */}
+      <div className="flex items-center gap-1 shrink-0 self-center pl-1">
+        {onArchive && !notification.archived && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onArchive(notification);
+            }}
+            className="w-7 h-7 rounded-[4px] flex items-center justify-center text-[#94A3B8] hover:text-[#0052CC] hover:bg-[#EFF6FF] transition-colors"
+            title="Archive notification"
+            aria-label="Archive notification"
+          >
+            <Archive className="w-3.5 h-3.5" />
+          </button>
+        )}
+        {onDelete && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(notification);
+            }}
+            className="w-7 h-7 rounded-[4px] flex items-center justify-center text-[#94A3B8] hover:text-[#DE350B] hover:bg-[#FEE2E2] transition-colors"
+            title="Delete notification"
+            aria-label="Delete notification"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
+        )}
         {hasRoute && (
           <div className="w-7 h-7 rounded-[4px] flex items-center justify-center text-[#94A3B8] group-hover:text-[#0052CC] transition-colors">
             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-0.5" />

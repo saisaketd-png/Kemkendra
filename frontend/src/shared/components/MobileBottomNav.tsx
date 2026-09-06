@@ -21,6 +21,8 @@ import {
   Bell,
   Activity,
   Users,
+  Receipt,
+  AlertCircle,
 } from "lucide-react";
 import { getAuthUser, logout, AuthUser } from "@/features/auth/api/auth";
 import { useUnreadNotificationCount } from "@/features/notifications/hooks/useUnreadNotificationCount";
@@ -236,6 +238,22 @@ export function MobileBottomNav() {
                     <span>Purchase Orders</span>
                   </Link>
                   <Link
+                    href="/dashboard/buyer/invoices"
+                    onClick={() => setMoreDrawerOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#0F172A] hover:bg-[#FAFAFA] rounded-[6px]"
+                  >
+                    <Receipt className="w-4 h-4 text-[#0052CC]" />
+                    <span>Invoices & Payments</span>
+                  </Link>
+                  <Link
+                    href="/dashboard/buyer/disputes"
+                    onClick={() => setMoreDrawerOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#0F172A] hover:bg-[#FAFAFA] rounded-[6px]"
+                  >
+                    <AlertCircle className="w-4 h-4 text-[#0052CC]" />
+                    <span>Commercial Disputes</span>
+                  </Link>
+                  <Link
                     href="/dashboard/buyer/shortlist"
                     onClick={() => setMoreDrawerOpen(false)}
                     className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#0F172A] hover:bg-[#FAFAFA] rounded-[6px]"
@@ -298,6 +316,22 @@ export function MobileBottomNav() {
                   >
                     <ShoppingBag className="w-4 h-4 text-[#0052CC]" />
                     <span>Purchase Orders</span>
+                  </Link>
+                  <Link
+                    href="/dashboard/supplier/invoices"
+                    onClick={() => setMoreDrawerOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#0F172A] hover:bg-[#FAFAFA] rounded-[6px]"
+                  >
+                    <Receipt className="w-4 h-4 text-[#0052CC]" />
+                    <span>Invoices & Tax</span>
+                  </Link>
+                  <Link
+                    href="/dashboard/supplier/disputes"
+                    onClick={() => setMoreDrawerOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#0F172A] hover:bg-[#FAFAFA] rounded-[6px]"
+                  >
+                    <AlertCircle className="w-4 h-4 text-[#0052CC]" />
+                    <span>Disputes & Claims</span>
                   </Link>
                   <Link
                     href="/dashboard/supplier/profile"
@@ -394,6 +428,22 @@ export function MobileBottomNav() {
                   >
                     <ShoppingBag className="w-4 h-4 text-[#0052CC]" />
                     <span>Order Oversight</span>
+                  </Link>
+                  <Link
+                    href="/dashboard/admin/transactions/invoices"
+                    onClick={() => setMoreDrawerOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#0F172A] hover:bg-[#FAFAFA] rounded-[6px]"
+                  >
+                    <Receipt className="w-4 h-4 text-[#0052CC]" />
+                    <span>Invoice Oversight</span>
+                  </Link>
+                  <Link
+                    href="/dashboard/admin/transactions/disputes"
+                    onClick={() => setMoreDrawerOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#0F172A] hover:bg-[#FAFAFA] rounded-[6px]"
+                  >
+                    <AlertCircle className="w-4 h-4 text-[#0052CC]" />
+                    <span>Dispute Oversight</span>
                   </Link>
                   <Link
                     href="/dashboard/notifications"

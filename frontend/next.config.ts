@@ -21,6 +21,22 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "kemkendra.online",
+      },
+      {
+        protocol: "https",
+        hostname: "*.kemkendra.online",
+      },
+      {
+        protocol: "http",
+        hostname: "kemkendra.online",
+      },
+      {
+        protocol: "http",
+        hostname: "*.kemkendra.online",
+      },
+      {
+        protocol: "https",
         hostname: "kemkendra.com",
       },
       {

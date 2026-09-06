@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public record CreatePurchaseOrderRequest(
@@ -28,9 +30,20 @@ public record CreatePurchaseOrderRequest(
         String deliveryTerms,
 
         @Size(max = 50, message = "Incoterms must not exceed 50 characters")
-        String incoterms
+        String incoterms,
+
+        LocalDate expectedDeliveryDate,
+
+        BigDecimal taxAmount,
+
+        BigDecimal subtotal
 ) {
     public CreatePurchaseOrderRequest(UUID rfqId, String shippingAddress, String billingContact, String notes) {
-        this(rfqId, shippingAddress, billingContact, notes, null, null, null);
+        this(rfqId, shippingAddress, billingContact, notes, null, null, null, null, null, null);
+    }
+
+    public CreatePurchaseOrderRequest(UUID rfqId, String shippingAddress, String billingContact, String notes,
+                                      String paymentTerms, String deliveryTerms, String incoterms) {
+        this(rfqId, shippingAddress, billingContact, notes, paymentTerms, deliveryTerms, incoterms, null, null, null);
     }
 }

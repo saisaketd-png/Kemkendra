@@ -1,0 +1,11 @@
+package com.kemkendra.dispute;
+
+public enum DisputeReason {
+    PAYMENT_NOT_RECEIVED,
+    INCORRECT_PAYMENT_AMOUNT,
+    INVALID_PAYMENT_PROOF,
+    DUPLICATE_PAYMENT,
+    INVOICE_MISMATCH,
+    ORDER_DELIVERY_ISSUE,
+    OTHER
+}

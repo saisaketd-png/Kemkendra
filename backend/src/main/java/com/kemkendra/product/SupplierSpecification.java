@@ -1,7 +1,12 @@
 package com.kemkendra.product;
 
 import org.springframework.data.jpa.domain.Specification;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
+import com.kemkendra.identity.User;
+import com.kemkendra.identity.UserStatus;
+import com.kemkendra.seller.SupplierVerificationStatus;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +19,20 @@ public class SupplierSpecification {
         
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
+
+            // 1. Never show soft-deleted or suspended users to the public
+            Join<Supplier, User> userJoin = root.join("user", JoinType.LEFT);
+            predicates.add(criteriaBuilder.or(criteriaBuilder.isNull(userJoin), criteriaBuilder.isNull(userJoin.get("deletedAt"))));
+            predicates.add(criteriaBuilder.or(criteriaBuilder.isNull(userJoin), criteriaBuilder.notEqual(userJoin.get("status"), UserStatus.SUSPENDED)));
+
+            // 2. Filter out suspended and rejected suppliers
+            predicates.add(criteriaBuilder.or(
+                    criteriaBuilder.isNull(root.get("verificationStatus")),
+                    criteriaBuilder.and(
+                            criteriaBuilder.notEqual(root.get("verificationStatus"), SupplierVerificationStatus.SUSPENDED),
+                            criteriaBuilder.notEqual(root.get("verificationStatus"), SupplierVerificationStatus.REJECTED)
+                    )
+            ));
 
             if (search != null && !search.trim().isEmpty()) {
                 String searchPattern = "%" + search.trim().toLowerCase() + "%";

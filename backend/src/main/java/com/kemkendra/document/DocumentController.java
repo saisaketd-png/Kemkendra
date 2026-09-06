@@ -62,15 +62,24 @@ public class DocumentController {
         return documentService.uploadDocument(request, user.getId());
     }
 
+    private void checkCanAccessDocument(DocumentResponse doc, User user) {
+        if (doc != null && Boolean.TRUE.equals(doc.getIsPublic())) {
+            return;
+        }
+        if (user == null) {
+            throw new AccessDeniedException("Authentication required to access confidential document");
+        }
+        if (doc == null || !documentAuthorizationService.canAccessDocument(doc.getOwnerType(), doc.getOwnerId(), user)) {
+            throw new AccessDeniedException("Not authorized to access this document");
+        }
+    }
+
     @GetMapping("/{id}")
     public DocumentResponse getDocument(@PathVariable UUID id, Authentication authentication) {
         User user = getOptionalAuthenticatedUser(authentication);
 
         DocumentResponse doc = documentService.getDocument(id);
-
-        if (!documentAuthorizationService.canAccessDocument(doc.getOwnerType(), doc.getOwnerId(), user)) {
-            throw new AccessDeniedException("Not authorized to view this document");
-        }
+        checkCanAccessDocument(doc, user);
 
         return doc;
     }
@@ -80,10 +89,7 @@ public class DocumentController {
         User user = getOptionalAuthenticatedUser(authentication);
 
         DocumentResponse doc = documentService.getDocument(id);
-
-        if (!documentAuthorizationService.canAccessDocument(doc.getOwnerType(), doc.getOwnerId(), user)) {
-            throw new AccessDeniedException("Not authorized to view version history for this document");
-        }
+        checkCanAccessDocument(doc, user);
 
         return documentService.getDocumentVersions(doc.getDocumentGroupId());
     }
@@ -98,9 +104,7 @@ public class DocumentController {
         }
 
         DocumentResponse head = versions.get(0);
-        if (!documentAuthorizationService.canAccessDocument(head.getOwnerType(), head.getOwnerId(), user)) {
-            throw new AccessDeniedException("Not authorized to view versions for this document group");
-        }
+        checkCanAccessDocument(head, user);
 
         return versions;
     }
@@ -110,10 +114,7 @@ public class DocumentController {
         User user = getOptionalAuthenticatedUser(authentication);
 
         DocumentResponse doc = documentService.getDocument(id);
-
-        if (!documentAuthorizationService.canAccessDocument(doc.getOwnerType(), doc.getOwnerId(), user)) {
-            throw new AccessDeniedException("Not authorized to download this document");
-        }
+        checkCanAccessDocument(doc, user);
 
         Resource resource = documentService.downloadDocument(id);
 

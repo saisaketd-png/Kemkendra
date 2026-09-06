@@ -28,15 +28,24 @@ public interface NotificationRepository extends JpaRepository<Notification, UUID
 
     long countByRecipientIdAndReadFalse(UUID recipientId);
 
+    long countByRecipientIdAndReadFalseAndArchivedFalse(UUID recipientId);
+
     Optional<Notification> findByIdAndRecipientId(UUID id, UUID recipientId);
 
     List<Notification> findByRecipientIdAndReadFalse(UUID recipientId);
 
+    List<Notification> findByRecipientIdAndReadFalseAndArchivedFalse(UUID recipientId);
+
     List<Notification> findByRecipientIdOrderByCreatedAtDesc(UUID recipientId);
+
+    Optional<Notification> findFirstByRecipientIdAndTypeAndEntityIdAndCreatedAtAfterOrderByCreatedAtDesc(
+            UUID recipientId, NotificationType type, UUID entityId, LocalDateTime after);
 
     @Query("SELECT COUNT(n) FROM Notification n WHERE n.createdAt >= :since")
     long countNotificationsSince(@Param("since") LocalDateTime since);
 
     @Query("SELECT COUNT(n) FROM Notification n WHERE n.read = false")
     long countTotalUnreadNotifications();
+
+    long deleteByCreatedAtBefore(LocalDateTime threshold);
 }

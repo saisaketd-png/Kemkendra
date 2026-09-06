@@ -49,5 +49,20 @@ public enum NotificationEntityType {
     ACCOUNT_SUSPENSION,
 
     /** An account suspension appeal — maps to /dashboard/account-review or admin governance */
-    ACCOUNT_SUSPENSION_APPEAL
+    ACCOUNT_SUSPENSION_APPEAL,
+
+    /** An invoice — maps to /dashboard/buyer/invoices/{id} or /dashboard/supplier/invoices/{id} */
+    INVOICE,
+
+    /** A payment record */
+    PAYMENT,
+
+    /** A commercial or payment dispute — maps to /dashboard/buyer/disputes/{id} */
+    DISPUTE,
+
+    /** A user account — maps to /dashboard/settings */
+    USER,
+
+    /** A business tax profile or business registration — maps to /dashboard/settings/tax */
+    BUSINESS
 }

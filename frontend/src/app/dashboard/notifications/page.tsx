@@ -16,12 +16,19 @@ import {
   Award,
   AlertCircle,
   RefreshCw,
+  Receipt,
+  CreditCard,
+  Scale,
+  Archive,
+  Trash2,
 } from "lucide-react";
 import { getAuthUser, AuthUser } from "@/features/auth/api/auth";
 import {
   getNotifications,
   markNotificationAsRead,
   markAllNotificationsAsRead,
+  archiveNotification,
+  deleteNotification,
 } from "@/features/notifications/api/notifications";
 import { PageHeader } from "@/shared/components/ui/KemkendraUI";
 import {
@@ -34,11 +41,14 @@ import { resolveNotificationRoute } from "@/features/notifications/utils/navigat
 
 const CATEGORY_TABS: { label: string; value: NotificationCategory | "ALL"; icon: React.ComponentType<{ className?: string }> }[] = [
   { label: "All", value: "ALL", icon: Bell },
-  { label: "Security & Account", value: "SECURITY", icon: Shield },
-  { label: "RFQs", value: "RFQ", icon: FileText },
-  { label: "Quotations", value: "QUOTATION", icon: FileText },
+  { label: "Invoices", value: "INVOICE", icon: Receipt },
+  { label: "Payments", value: "PAYMENT", icon: CreditCard },
+  { label: "Disputes", value: "DISPUTE", icon: Scale },
   { label: "Orders", value: "PURCHASE_ORDER", icon: Package },
+  { label: "Quotations", value: "QUOTATION", icon: FileText },
+  { label: "RFQs", value: "RFQ", icon: FileText },
   { label: "Shipments", value: "SHIPMENT", icon: Package },
+  { label: "Security & Account", value: "SECURITY", icon: Shield },
   { label: "Verification", value: "SUPPLIER_VERIFICATION", icon: Award },
   { label: "Catalog", value: "CATALOG", icon: Layers },
   { label: "Governance", value: "GOVERNANCE", icon: AlertCircle },
@@ -51,6 +61,7 @@ export default function NotificationInboxPage() {
   const [pageSize] = useState<number>(15);
   const [selectedCategory, setSelectedCategory] = useState<NotificationCategory | "ALL">("ALL");
   const [filterUnreadOnly, setFilterUnreadOnly] = useState<boolean>(false);
+  const [filterArchivedOnly, setFilterArchivedOnly] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [data, setData] = useState<PaginatedNotifications | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -78,7 +89,14 @@ export default function NotificationInboxPage() {
     try {
       const categoryParam = selectedCategory === "ALL" ? undefined : selectedCategory;
       const readParam = filterUnreadOnly ? false : undefined;
-      const response = await getNotifications(page, pageSize, categoryParam, readParam);
+      const response = await getNotifications(
+        page,
+        pageSize,
+        categoryParam,
+        readParam,
+        undefined,
+        filterArchivedOnly
+      );
       setData(response);
     } catch (err: unknown) {
       if (!silent) {
@@ -90,7 +108,7 @@ export default function NotificationInboxPage() {
         setLoading(false);
       }
     }
-  }, [page, pageSize, selectedCategory, filterUnreadOnly]);
+  }, [page, pageSize, selectedCategory, filterUnreadOnly, filterArchivedOnly]);
 
   useEffect(() => {
     if (user) {
@@ -196,6 +214,40 @@ export default function NotificationInboxPage() {
     }
   };
 
+  const handleArchive = async (notification: NotificationResponse) => {
+    try {
+      await archiveNotification(notification.id);
+      setData((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          content: prev.content.filter((n) => n.id !== notification.id),
+          totalElements: Math.max(0, prev.totalElements - 1),
+        };
+      });
+      window.dispatchEvent(new CustomEvent("notifications-updated"));
+    } catch (err) {
+      console.error("Failed to archive notification", err);
+    }
+  };
+
+  const handleDelete = async (notification: NotificationResponse) => {
+    try {
+      await deleteNotification(notification.id);
+      setData((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          content: prev.content.filter((n) => n.id !== notification.id),
+          totalElements: Math.max(0, prev.totalElements - 1),
+        };
+      });
+      window.dispatchEvent(new CustomEvent("notifications-updated"));
+    } catch (err) {
+      console.error("Failed to delete notification", err);
+    }
+  };
+
   const rawNotifications = data?.content || [];
   const filteredNotifications = useMemo(() => {
     if (!searchTerm.trim()) return rawNotifications;
@@ -280,17 +332,18 @@ export default function NotificationInboxPage() {
           />
         </div>
 
-        {/* Right: Unread Filter & Count */}
+        {/* Right: Unread Filter, Archive Toggle & Count */}
         <div className="flex items-center gap-2">
           <div className="inline-flex items-center p-0.5 bg-[#F4F4F5] rounded-[6px] text-xs border border-[#E4E4E7]">
             <button
               type="button"
               onClick={() => {
                 setFilterUnreadOnly(false);
+                setFilterArchivedOnly(false);
                 setPage(0);
               }}
               className={`px-2.5 py-1 rounded-[4px] text-xs transition-colors cursor-pointer ${
-                !filterUnreadOnly
+                !filterUnreadOnly && !filterArchivedOnly
                   ? "bg-white text-[#0052CC] font-semibold shadow-xs"
                   : "text-[#64748B] hover:text-[#0F172A]"
               }`}
@@ -301,10 +354,11 @@ export default function NotificationInboxPage() {
               type="button"
               onClick={() => {
                 setFilterUnreadOnly(true);
+                setFilterArchivedOnly(false);
                 setPage(0);
               }}
               className={`px-2.5 py-1 rounded-[4px] text-xs transition-colors flex items-center gap-1.5 cursor-pointer ${
-                filterUnreadOnly
+                filterUnreadOnly && !filterArchivedOnly
                   ? "bg-white text-[#0052CC] font-semibold shadow-xs"
                   : "text-[#64748B] hover:text-[#0F172A]"
               }`}
@@ -316,6 +370,22 @@ export default function NotificationInboxPage() {
                   {unreadCountOnPage}
                 </span>
               )}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setFilterArchivedOnly(true);
+                setFilterUnreadOnly(false);
+                setPage(0);
+              }}
+              className={`px-2.5 py-1 rounded-[4px] text-xs transition-colors flex items-center gap-1.5 cursor-pointer ${
+                filterArchivedOnly
+                  ? "bg-white text-[#0052CC] font-semibold shadow-xs"
+                  : "text-[#64748B] hover:text-[#0F172A]"
+              }`}
+            >
+              <Archive className="w-3 h-3" />
+              <span>Archived</span>
             </button>
           </div>
 
@@ -332,6 +402,8 @@ export default function NotificationInboxPage() {
         error={error}
         isSupplier={isSupplier}
         onNotificationSelect={handleNotificationSelect}
+        onArchive={handleArchive}
+        onDelete={handleDelete}
         onRetry={() => loadNotifications(false)}
       />
 

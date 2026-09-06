@@ -9,7 +9,7 @@ export async function fetchProductDetail(idOrCode: string) {
 
   if (masterRes.ok) {
     const mp = await masterRes.json();
-    let primaryImageUrl: string | null = null;
+    let primaryImageUrl: string | null = mp.primaryImageUrl || null;
     let images: any[] = [];
 
     try {
@@ -19,7 +19,7 @@ export async function fetchProductDetail(idOrCode: string) {
       if (imgRes.ok) {
         images = await imgRes.json();
         const primary = images.find((i: any) => i.isPrimary) || images[0];
-        if (primary) {
+        if (primary && primary.imageUrl) {
           primaryImageUrl = primary.imageUrl;
         }
       }

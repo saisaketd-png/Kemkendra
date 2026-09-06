@@ -516,6 +516,79 @@ public class NotificationEventListener {
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void onOrderReadyForDispatch(OrderReadyForDispatchEvent event) {
+        try {
+            Notification n = notificationService.createNotification(
+                    event.buyerId(),
+                    NotificationType.ORDER_STATUS_CHANGED,
+                    "Order Ready for Dispatch",
+                    "Your order has been prepared and is ready for dispatch by the supplier.",
+                    NotificationEntityType.PURCHASE_ORDER,
+                    event.purchaseOrderId()
+            );
+            if (n != null) {
+                emailNotificationService.sendNotificationEmail(n);
+            }
+        } catch (Exception e) {
+            log.error("Failed to process OrderReadyForDispatchEvent for PO {}", event.purchaseOrderId(), e);
+        }
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void onShipmentStatusUpdated(ShipmentStatusUpdatedEvent event) {
+        try {
+            String title = "Shipment Status Updated: " + event.shipmentStatus();
+            String msg = "Your consignment shipment status has been updated to " + event.shipmentStatus() + ".";
+            if (event.trackingNumber() != null && !event.trackingNumber().isBlank()) {
+                msg += " Tracking: " + event.trackingNumber().trim();
+            }
+            Notification n = notificationService.createNotification(
+                    event.buyerId(),
+                    NotificationType.ORDER_STATUS_CHANGED,
+                    title,
+                    msg,
+                    NotificationEntityType.PURCHASE_ORDER,
+                    event.purchaseOrderId()
+            );
+            if (n != null) {
+                emailNotificationService.sendNotificationEmail(n);
+            }
+        } catch (Exception e) {
+            log.error("Failed to process ShipmentStatusUpdatedEvent for PO {}", event.purchaseOrderId(), e);
+        }
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void onOrderDisputed(OrderDisputedEvent event) {
+        try {
+            UUID recipientId = "BUYER".equalsIgnoreCase(event.raisedByRole())
+                    ? resolveSupplierUserId(event.supplierId())
+                    : event.buyerId();
+
+            if (recipientId != null) {
+                String title = "Dispute Raised on Order";
+                String msg = "A dispute has been raised regarding the order. Reason: " + (event.reason() != null ? event.reason() : "Under Review");
+                Notification n = notificationService.createNotification(
+                        recipientId,
+                        NotificationType.DISPUTE_CREATED,
+                        title,
+                        msg,
+                        NotificationEntityType.DISPUTE,
+                        event.disputeId() != null ? event.disputeId() : event.purchaseOrderId()
+                );
+                if (n != null) {
+                    emailNotificationService.sendNotificationEmail(n);
+                }
+            }
+        } catch (Exception e) {
+            log.error("Failed to process OrderDisputedEvent for PO {}", event.purchaseOrderId(), e);
+        }
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void onDocumentUploaded(DocumentUploadedEvent event) {
         try {
             UUID recipientId = resolveDocumentCounterparty(event);
@@ -535,6 +608,111 @@ public class NotificationEventListener {
             }
         } catch (Exception e) {
             log.error("Failed to process DocumentUploadedEvent for doc {}", event.documentId(), e);
+        }
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void onDocumentApproved(DocumentApprovedEvent event) {
+        try {
+            if (event.uploadedBy() != null) {
+                String catLabel = event.category() != null ? event.category().name().replace('_', ' ') : "Document";
+                String title = "Compliance Document Approved";
+                String msg = "Your " + catLabel + " has been verified and approved by platform compliance."
+                        + (event.reviewNotes() != null && !event.reviewNotes().isBlank() ? " Notes: " + event.reviewNotes() : "");
+
+                Notification n = notificationService.createNotification(
+                        event.uploadedBy(),
+                        NotificationType.DOCUMENT_APPROVED,
+                        title,
+                        msg,
+                        NotificationEntityType.DOCUMENT,
+                        event.documentId()
+                );
+                if (n != null) {
+                    emailNotificationService.sendNotificationEmail(n);
+                }
+            }
+        } catch (Exception e) {
+            log.error("Failed to process DocumentApprovedEvent for doc {}", event.documentId(), e);
+        }
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void onDocumentRejected(DocumentRejectedEvent event) {
+        try {
+            if (event.uploadedBy() != null) {
+                String catLabel = event.category() != null ? event.category().name().replace('_', ' ') : "Document";
+                String title = "Document Requires Action (Rejected)";
+                String msg = "Your " + catLabel + " was not approved during compliance review. Reason: " + event.rejectionReason();
+
+                Notification n = notificationService.createNotification(
+                        event.uploadedBy(),
+                        NotificationType.DOCUMENT_REJECTED,
+                        title,
+                        msg,
+                        NotificationEntityType.DOCUMENT,
+                        event.documentId()
+                );
+                if (n != null) {
+                    emailNotificationService.sendNotificationEmail(n);
+                }
+            }
+        } catch (Exception e) {
+            log.error("Failed to process DocumentRejectedEvent for doc {}", event.documentId(), e);
+        }
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void onDocumentExpired(DocumentExpiredEvent event) {
+        try {
+            if (event.uploadedBy() != null) {
+                String catLabel = event.category() != null ? event.category().name().replace('_', ' ') : "Document";
+                String title = "Compliance Document Expired";
+                String msg = "Your " + catLabel + " has passed its validity date and is now marked as EXPIRED. Please upload a renewed certificate.";
+
+                Notification n = notificationService.createNotification(
+                        event.uploadedBy(),
+                        NotificationType.DOCUMENT_EXPIRED,
+                        title,
+                        msg,
+                        NotificationEntityType.DOCUMENT,
+                        event.documentId()
+                );
+                if (n != null) {
+                    emailNotificationService.sendNotificationEmail(n);
+                }
+            }
+        } catch (Exception e) {
+            log.error("Failed to process DocumentExpiredEvent for doc {}", event.documentId(), e);
+        }
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void onDocumentNearingExpiry(DocumentNearingExpiryEvent event) {
+        try {
+            if (event.uploadedBy() != null) {
+                String catLabel = event.category() != null ? event.category().name().replace('_', ' ') : "Document";
+                String title = "Document Expiring Soon";
+                String msg = "Your " + catLabel + " will expire in " + event.daysRemaining() + " days. Please arrange renewal to maintain active compliance.";
+
+                Notification n = notificationService.createNotification(
+                        event.uploadedBy(),
+                        NotificationType.DOCUMENT_NEARING_EXPIRY,
+                        title,
+                        msg,
+                        NotificationEntityType.DOCUMENT,
+                        event.documentId()
+                );
+                if (n != null) {
+                    emailNotificationService.sendNotificationEmail(n);
+                }
+            }
+        } catch (Exception e) {
+            log.error("Failed to process DocumentNearingExpiryEvent for doc {}", event.documentId(), e);
         }
     }
 

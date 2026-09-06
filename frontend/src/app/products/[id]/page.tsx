@@ -15,7 +15,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { fetchProductDetail } from "@/lib/api";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Product } from "@/features/products/types/product";
 import SupplierComparison from "@/features/products/components/SupplierComparison";
 import { ProductDocuments } from "@/features/products/components/ProductDocuments";
@@ -36,11 +36,31 @@ export async function generateMetadata({
   const resolvedParams = await params;
   try {
     const product: Product = await fetchProductDetail(resolvedParams.id);
-    const title = `${product.name} | Specifications, Suppliers & Commercial Offerings | KemKendra`;
-    const formulaPart = product.molecularFormula ? ` (${product.molecularFormula})` : "";
-    const description =
-      product.description ||
-      `Explore ${product.name}, including CAS number ${product.casNumber || "N/A"}${formulaPart}, specifications, available supplier offerings, and quotation options on KemKendra.`;
+    const chemName = product.name;
+    const casPart = product.casNumber ? `CAS ${product.casNumber}` : null;
+    
+    // Title format: [Chemical Name] | CAS [CAS Number] | Chemical Suppliers | KemKendra
+    // If title exceeds ~60 chars, shorten to: [Chemical Name] | CAS [CAS Number] | KemKendra
+    let title: string;
+    if (casPart) {
+      const fullTitle = `${chemName} | ${casPart} | Chemical Suppliers | KemKendra`;
+      if (fullTitle.length <= 65) {
+        title = fullTitle;
+      } else {
+        const shortTitle = `${chemName} | ${casPart} | KemKendra`;
+        title = shortTitle.length <= 65 ? shortTitle : `${chemName} | Chemical Suppliers | KemKendra`;
+      }
+    } else {
+      title = `${chemName} | Chemical Suppliers | KemKendra`;
+    }
+
+    // Description format:
+    // Source [Chemical Name] from chemical suppliers on KemKendra. View CAS [CAS Number], specifications, purity, packaging, available offerings, indicative pricing, and request a quotation.
+    const casSnippet = product.casNumber ? `CAS ${product.casNumber}, ` : "";
+    const hasPrice = product.price && Number(product.price) > 0;
+    const pricingSnippet = hasPrice ? "indicative pricing, " : "";
+    const description = `Source ${chemName} from chemical suppliers on KemKendra. View ${casSnippet}specifications, purity, packaging, available offerings, ${pricingSnippet}and request a quotation.`;
+
     const canonicalCode = product.productCode || resolvedParams.id;
 
     return {
@@ -61,7 +81,7 @@ export async function generateMetadata({
                 url: product.primaryImageUrl.startsWith("http")
                   ? product.primaryImageUrl
                   : `${API_URL}${product.primaryImageUrl}`,
-                alt: `${product.name} chemical monograph sample`,
+                alt: `${product.name} chemical product`,
               },
             ]
           : undefined,
@@ -74,8 +94,8 @@ export async function generateMetadata({
     };
   } catch {
     return {
-      title: "Chemical Product Details | KemKendra",
-      description: "Chemical compound specifications and supplier procurement on KemKendra.",
+      title: "Chemical Product Catalog | Chemical Suppliers | KemKendra",
+      description: "Source chemicals and raw materials from verified chemical suppliers on KemKendra.",
       robots: { index: false, follow: true },
     };
   }
@@ -93,6 +113,12 @@ export default async function ProductDetailPage({
     product = await fetchProductDetail(resolvedParams.id);
   } catch (err) {
     notFound();
+  }
+
+  // If accessed by UUID and canonical product code exists, 308 redirect to clean SEO URL
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(resolvedParams.id);
+  if (isUuid && product.productCode && resolvedParams.id !== product.productCode) {
+    permanentRedirect(`/products/${product.productCode}`);
   }
 
   const canonicalCode = product.productCode || resolvedParams.id;
@@ -222,21 +248,33 @@ export default async function ProductDetailPage({
               
               {/* Left: Product Image */}
               <div className="lg:col-span-5 w-full">
-                <div className="relative w-full h-64 sm:h-80 md:h-[380px] rounded-[6px] border border-[#E4E4E7] bg-[#FAFAFA] p-4 sm:p-6 flex items-center justify-center overflow-hidden">
+                <div className="relative w-full h-64 sm:h-80 md:h-[380px] rounded-[8px] border border-[#E2E8F0] bg-white p-4 sm:p-6 flex items-center justify-center overflow-hidden shadow-2xs">
                   {resolvedImageUrl ? (
                     <Image
                       src={resolvedImageUrl}
-                      alt={`${product.name} canonical chemical monograph`}
+                      alt={`${product.name} chemical monograph`}
                       fill
                       priority
                       sizes="(max-width: 768px) 100vw, 400px"
                       className="object-contain p-4"
                     />
                   ) : (
-                    <div className="flex flex-col items-center justify-center text-[#64748B] space-y-2">
-                      <FlaskConical className="w-12 h-12 stroke-1 text-[#0052CC]" />
-                      <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-[#64748B]">
-                        Canonical Compound Sample
+                    <div className="flex flex-col items-center justify-center text-center p-6 space-y-3">
+                      <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#0052CC] shadow-2xs">
+                        <FlaskConical className="w-8 h-8 stroke-1.5" />
+                      </div>
+                      <div className="space-y-1 max-w-[240px]">
+                        <p className="text-xs font-bold text-slate-800 line-clamp-2 leading-tight">
+                          {product.name}
+                        </p>
+                        {product.molecularFormula && (
+                          <p className="text-[11px] font-mono text-slate-500 font-medium">
+                            {product.molecularFormula}
+                          </p>
+                        )}
+                      </div>
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-mono font-semibold uppercase bg-slate-50 text-slate-600 border border-slate-200">
+                        <Atom className="w-3 h-3 text-[#0052CC]" /> Chemical Monograph
                       </span>
                     </div>
                   )}

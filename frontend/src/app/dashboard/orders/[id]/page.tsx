@@ -10,8 +10,12 @@ import {
   getShipment,
   confirmReceiptBuyer,
   completeOrder,
+  cancelBuyerOrder,
 } from "@/features/order/api/fulfillment";
 import { CompleteOrderModal } from "@/features/order/components/CompleteOrderModal";
+import { CancelOrderModal } from "@/features/order/components/CancelOrderModal";
+import { OrderInvoicePaymentCard } from "@/features/order/components/OrderInvoicePaymentCard";
+import { OrderTimelineSection } from "@/features/order/components/OrderTimelineSection";
 import { GenericDocumentManager } from "@/features/documents/components/GenericDocumentManager";
 import { getSupplierPublicProfile } from "@/features/suppliers/api";
 import { SupplierPublicProfile } from "@/features/suppliers/types";
@@ -41,6 +45,9 @@ import {
   FileText,
   DollarSign,
   Boxes,
+  Receipt,
+  ShieldAlert,
+  AlertTriangle,
 } from "lucide-react";
 
 export default function BuyerOrderDetailPage() {
@@ -55,6 +62,7 @@ export default function BuyerOrderDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [shipment, setShipment] = useState<ShipmentResponse | null>(null);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
   const toast = useToast();
 
   const loadOrder = useCallback(async (silent = false) => {
@@ -79,7 +87,7 @@ export default function BuyerOrderDetailPage() {
           .catch(() => {});
       }
 
-      if (data.status === "SHIPPED" || data.status === "DELIVERED") {
+      if (["SHIPPED", "DISPATCHED", "IN_TRANSIT", "DELIVERED", "COMPLETED"].includes(data.status)) {
         getShipment(data.id)
           .then((s) => setShipment(s))
           .catch(() => {});
@@ -176,6 +184,26 @@ export default function BuyerOrderDetailPage() {
     }
   };
 
+  const handleCancelOrder = async (reason: string) => {
+    if (!order) return;
+    try {
+      setActionLoading(true);
+      const updated = await cancelBuyerOrder(order.id, reason);
+      setOrder(updated);
+      setShowCancelModal(false);
+      toast.success("Purchase order has been cancelled.");
+      await loadOrder(true);
+      window.dispatchEvent(new CustomEvent("order-updated", { detail: { orderId } }));
+      window.dispatchEvent(new CustomEvent("notifications-updated"));
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Failed to cancel purchase order";
+      toast.error(msg);
+      throw err;
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="max-w-[1560px] mx-auto p-8 min-h-[60vh] flex flex-col items-center justify-center space-y-3">
@@ -207,8 +235,10 @@ export default function BuyerOrderDetailPage() {
     );
   }
 
-  const isDeliveredOrShipped = order.status === "SHIPPED" || order.status === "DELIVERED";
+  const isTransitOrShipped = ["SHIPPED", "DISPATCHED", "IN_TRANSIT"].includes(order.status);
+  const isDeliveredOrShipped = isTransitOrShipped || order.status === "DELIVERED" || order.status === "COMPLETED";
   const isDelivered = order.status === "DELIVERED";
+  const isCancellable = ["PLACED", "PENDING_CONFIRMATION", "CONFIRMED", "PROCESSING"].includes(order.status);
 
   return (
     <div className="max-w-[1560px] mx-auto space-y-6 pb-20">
@@ -237,7 +267,7 @@ export default function BuyerOrderDetailPage() {
         counterpartName={supplierProfile?.name || supplierName || `Supplier #${order.supplierId}`}
         counterpartVerified={true}
         primaryAction={
-          order.status === "SHIPPED" ? (
+          isTransitOrShipped ? (
             <button
               type="button"
               onClick={handleConfirmReceipt}
@@ -268,7 +298,45 @@ export default function BuyerOrderDetailPage() {
               <CheckCircle2 className="w-4 h-4 text-[#00875A]" />
               <span>Order Completed & Settled</span>
             </div>
+          ) : order.status === "DISPUTED" ? (
+            <div className="flex items-center gap-2 px-4 py-2.5 bg-[#FFF7ED] border border-[#FED7AA] text-[#C2410C] text-xs font-bold uppercase tracking-wider rounded-xl">
+              <ShieldAlert className="w-4 h-4 text-[#EA580C]" />
+              <span>Dispute Under Formal Review</span>
+            </div>
           ) : null
+        }
+        secondaryAction={
+          <div className="flex items-center gap-2">
+            {isCancellable && (
+              <button
+                type="button"
+                onClick={() => setShowCancelModal(true)}
+                disabled={actionLoading}
+                className="h-10 px-4 bg-white hover:bg-[#FEF2F2] text-[#DC2626] border border-[#FCA5A5] text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+              >
+                <AlertTriangle className="w-3.5 h-3.5" />
+                <span>Cancel Order</span>
+              </button>
+            )}
+
+            {order.disputeId ? (
+              <Link
+                href={`/dashboard/disputes/${order.disputeId}`}
+                className="h-10 px-4 bg-[#FFF7ED] hover:bg-[#FFEDD5] text-[#C2410C] border border-[#FDBA74] text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+              >
+                <ShieldAlert className="w-3.5 h-3.5" />
+                <span>View Dispute</span>
+              </Link>
+            ) : order.status !== "CANCELLED" && order.status !== "REJECTED" && (
+              <Link
+                href={`/dashboard/disputes/new?orderId=${order.id}`}
+                className="h-10 px-4 bg-white hover:bg-[#FAFAFA] text-[#64748B] hover:text-[#0F172A] border border-[#E2E8F0] text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+              >
+                <ShieldAlert className="w-3.5 h-3.5" />
+                <span>Raise Dispute</span>
+              </Link>
+            )}
+          </div>
         }
       />
 
@@ -325,16 +393,72 @@ export default function BuyerOrderDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left (8 Cols): Order Summary, Logistics, Immutable Terms, Document Vault */}
         <div className="lg:col-span-8 space-y-6">
-          {/* Shipment Tracking Card (if shipped/delivered) */}
+          {/* Status Alert Banners */}
+          {order.status === "DISPUTED" && (
+            <div className="p-4 bg-[#FFF7ED] border border-[#FED7AA] rounded-2xl flex items-start gap-3">
+              <ShieldAlert className="w-5 h-5 text-[#EA580C] shrink-0 mt-0.5" />
+              <div className="space-y-1 text-xs">
+                <h4 className="font-bold text-[#C2410C]">Purchase Order Under Formal Dispute</h4>
+                <p className="text-[#9A3412] leading-relaxed">
+                  {order.disputedBy ? `A formal commercial dispute was lodged by ${order.disputedBy}.` : "A formal dispute has been initiated for this order."}
+                  {" "}All settlement fulfillment actions are on hold pending resolution.
+                </p>
+                {order.disputeId && (
+                  <div className="pt-1">
+                    <Link
+                      href={`/dashboard/disputes/${order.disputeId}`}
+                      className="font-bold text-[#EA580C] hover:underline inline-flex items-center gap-1"
+                    >
+                      <span>Open Dispute Resolution Center</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {order.status === "CANCELLED" && (
+            <div className="p-4 bg-[#FEF2F2] border border-[#FCA5A5] rounded-2xl flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-[#DC2626] shrink-0 mt-0.5" />
+              <div className="space-y-1 text-xs">
+                <h4 className="font-bold text-[#991B1B]">Purchase Order Cancelled</h4>
+                <p className="text-[#B91C1C] leading-relaxed">
+                  {order.cancellationReason ? `Reason: "${order.cancellationReason}"` : "This purchase order was cancelled prior to consignment dispatch."}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {order.status === "REJECTED" && (
+            <div className="p-4 bg-[#FEF2F2] border border-[#FCA5A5] rounded-2xl flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-[#DC2626] shrink-0 mt-0.5" />
+              <div className="space-y-1 text-xs">
+                <h4 className="font-bold text-[#991B1B]">Purchase Order Rejected by Supplier</h4>
+                <p className="text-[#B91C1C] leading-relaxed">
+                  {order.rejectionReason ? `Reason: "${order.rejectionReason}"` : "The supplier was unable to accept this purchase order."}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Shipment Tracking Card (if shipped/dispatched/delivered) */}
           {shipment && isDeliveredOrShipped && (
             <ShipmentTrackingCard
-              carrier={shipment.carrier}
+              carrier={shipment.carrier || "Freight Transporter"}
               trackingNumber={shipment.trackingNumber}
-              shippedAt={shipment.shippedAt}
-              estimatedDeliveryDate={shipment.estimatedDeliveryDate}
+              shippedAt={shipment.shippedAt || shipment.dispatchDate || order.shippedAt || ""}
+              estimatedDeliveryDate={shipment.estimatedDeliveryDate || order.expectedDeliveryDate}
               status={order.status}
             />
           )}
+
+          {/* Commercial Invoice & Payment Settlement Card */}
+          <OrderInvoicePaymentCard
+            orderId={order.id}
+            poNumber={order.poNumber}
+            isBuyer={true}
+          />
 
           {/* 1. Order Summary Card */}
           <div className="bg-white border border-[#DFE1E6] rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
@@ -358,6 +482,11 @@ export default function BuyerOrderDetailPage() {
                 <strong className="text-sm font-bold text-[#091E42] block truncate">
                   {order.productName || "Specialty Chemical"}
                 </strong>
+                {order.masterProductCode && (
+                  <span className="text-[10px] font-mono text-[#64748B] block">
+                    Code: {order.masterProductCode}
+                  </span>
+                )}
               </div>
 
               <div className="p-3.5 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] space-y-1">
@@ -380,6 +509,18 @@ export default function BuyerOrderDetailPage() {
 
               <div className="p-3.5 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] space-y-1">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block">
+                  Tax / GST
+                </span>
+                <span className="font-mono text-sm font-semibold text-[#475569] block">
+                  {order.currency} {(order.taxAmount ?? 0).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </span>
+              </div>
+
+              <div className="p-3.5 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block">
                   Total Order Amount
                 </span>
                 <span className="font-mono text-sm font-bold text-[#006644] block">
@@ -392,19 +533,10 @@ export default function BuyerOrderDetailPage() {
 
               <div className="p-3.5 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] space-y-1">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block">
-                  Committed Lead Time
+                  Expected Delivery
                 </span>
                 <span className="font-mono text-sm font-bold text-[#091E42] block">
-                  {order.agreedLeadTimeDays ? `${order.agreedLeadTimeDays} Days` : "Standard SLA"}
-                </span>
-              </div>
-
-              <div className="p-3.5 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block">
-                  Packaging Protocol
-                </span>
-                <span className="text-xs font-semibold text-[#091E42] block truncate">
-                  Standard Industrial Grade
+                  {order.expectedDeliveryDate || (order.agreedLeadTimeDays ? `${order.agreedLeadTimeDays} Days SLA` : "Standard SLA")}
                 </span>
               </div>
             </div>
@@ -454,7 +586,10 @@ export default function BuyerOrderDetailPage() {
             )}
           </div>
 
-          {/* 3. Commercial & Shipping Document Vault */}
+          {/* 3. Chronological Order Lifecycle Timeline */}
+          <OrderTimelineSection orderId={order.id} />
+
+          {/* 4. Commercial & Shipping Document Vault */}
           <div className="bg-white border border-[#DFE1E6] rounded-2xl p-5 sm:p-6 shadow-xs">
             <GenericDocumentManager
               title="Commercial & Shipping Document Vault"
@@ -600,6 +735,31 @@ export default function BuyerOrderDetailPage() {
             </div>
           </div>
 
+          {/* Tax Invoice & Commercial Settlement Card */}
+          <div className="bg-white border border-[#DFE1E6] rounded-2xl p-5 shadow-xs space-y-3 text-xs">
+            <div className="flex items-center justify-between border-b border-[#DFE1E6] pb-2">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#091E42] flex items-center gap-1.5">
+                <Receipt className="w-3.5 h-3.5 text-[#0052CC]" />
+                <span>Invoices & Settlement</span>
+              </h3>
+              <span className="text-[10px] font-mono text-[#00875A] bg-[#E3FCEF] px-1.5 py-0.5 rounded font-bold">
+                GST Ready
+              </span>
+            </div>
+            <p className="text-[#5E6C84] leading-relaxed">
+              Track statutory tax invoices, record direct non-custodial bank settlement proofs (UTR/NEFT/RTGS), or report discrepancies.
+            </p>
+            <div className="pt-1">
+              <Link
+                href="/dashboard/buyer/invoices"
+                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-[#0052CC] hover:bg-[#0047B3] text-white font-bold text-xs rounded-xl transition-colors shadow-xs"
+              >
+                <span>View Invoices & Payments</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+
           {/* 3. Sourcing Reference Card */}
           <div className="bg-white border border-[#DFE1E6] rounded-2xl p-5 shadow-xs space-y-3 text-xs">
             <h3 className="text-xs font-bold uppercase tracking-wider text-[#091E42] border-b border-[#DFE1E6] pb-2">
@@ -648,6 +808,16 @@ export default function BuyerOrderDetailPage() {
           unit={order.unit}
           totalAmount={order.totalAmount}
           currency={order.currency}
+        />
+      )}
+
+      {/* Cancel Order Modal */}
+      {order && (
+        <CancelOrderModal
+          isOpen={showCancelModal}
+          onClose={() => setShowCancelModal(false)}
+          onConfirm={handleCancelOrder}
+          poNumber={order.poNumber}
         />
       )}
     </div>

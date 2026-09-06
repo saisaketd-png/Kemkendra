@@ -10,7 +10,19 @@ import { PurchaseOrderResponse } from "@/features/order/api/createOrder";
 import { PageHeader, StatusBadge, Button, SkeletonLoader } from "@/shared/components/ui/KemkendraUI";
 import { useToast } from "@/shared/context/ToastContext";
 
-type StatusFilter = "ALL" | "PLACED" | "CONFIRMED" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "COMPLETED" | "CANCELLED";
+type StatusFilter =
+  | "ALL"
+  | "PLACED"
+  | "CONFIRMED"
+  | "PROCESSING"
+  | "READY_FOR_DISPATCH"
+  | "DISPATCHED"
+  | "IN_TRANSIT"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "COMPLETED"
+  | "CANCELLED"
+  | "DISPUTED";
 type SortOption = "DATE_DESC" | "DATE_ASC" | "VALUE_DESC" | "VALUE_ASC";
 
 export default function SupplierOrdersPage() {
@@ -61,10 +73,13 @@ export default function SupplierOrdersPage() {
   const placedCount = useMemo(() => orders.filter((o) => o.status === "PLACED").length, [orders]);
   const confirmedCount = useMemo(() => orders.filter((o) => o.status === "CONFIRMED").length, [orders]);
   const processingCount = useMemo(() => orders.filter((o) => o.status === "PROCESSING").length, [orders]);
-  const shippedCount = useMemo(() => orders.filter((o) => o.status === "SHIPPED").length, [orders]);
+  const readyCount = useMemo(() => orders.filter((o) => o.status === "READY_FOR_DISPATCH").length, [orders]);
+  const dispatchedCount = useMemo(() => orders.filter((o) => o.status === "DISPATCHED" || o.status === "SHIPPED").length, [orders]);
+  const inTransitCount = useMemo(() => orders.filter((o) => o.status === "IN_TRANSIT").length, [orders]);
   const deliveredCount = useMemo(() => orders.filter((o) => o.status === "DELIVERED").length, [orders]);
   const completedCount = useMemo(() => orders.filter((o) => o.status === "COMPLETED").length, [orders]);
   const cancelledCount = useMemo(() => orders.filter((o) => o.status === "CANCELLED").length, [orders]);
+  const disputedCount = useMemo(() => orders.filter((o) => o.status === "DISPUTED").length, [orders]);
 
   // Total active commercial volume
   const totalActiveValueFormatted = useMemo(() => {
@@ -132,9 +147,14 @@ export default function SupplierOrdersPage() {
     },
     {
       label: "In Fulfillment",
-      value: processingCount + shippedCount,
-      subtext: `${shippedCount} dispatched`,
-      active: statusFilter === "PROCESSING" || statusFilter === "SHIPPED",
+      value: processingCount + readyCount + dispatchedCount + inTransitCount,
+      subtext: `${dispatchedCount + inTransitCount} in transit`,
+      active:
+        statusFilter === "PROCESSING" ||
+        statusFilter === "READY_FOR_DISPATCH" ||
+        statusFilter === "DISPATCHED" ||
+        statusFilter === "IN_TRANSIT" ||
+        statusFilter === "SHIPPED",
       onClick: () => setStatusFilter("PROCESSING"),
     },
     {
@@ -221,18 +241,44 @@ export default function SupplierOrdersPage() {
           {/* Filters & Sorting */}
           <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-between md:justify-end">
             {/* Desktop Status Filters */}
-            <div className="hidden sm:flex items-center gap-1 bg-[#F4F4F5] p-0.5 rounded-[6px] border border-[#E4E4E7] overflow-x-auto">
-              {(["ALL", "PLACED", "CONFIRMED", "PROCESSING", "SHIPPED", "DELIVERED", "COMPLETED", "CANCELLED"] as StatusFilter[]).map((f) => (
+            <div className="hidden sm:flex items-center gap-1 bg-[#F4F4F5] p-0.5 rounded-[6px] border border-[#E4E4E7] overflow-x-auto max-w-[580px]">
+              {(
+                [
+                  "ALL",
+                  "PLACED",
+                  "CONFIRMED",
+                  "PROCESSING",
+                  "READY_FOR_DISPATCH",
+                  "DISPATCHED",
+                  "IN_TRANSIT",
+                  "DELIVERED",
+                  "COMPLETED",
+                  "CANCELLED",
+                  "DISPUTED",
+                ] as StatusFilter[]
+              ).map((f) => (
                 <button
                   key={f}
                   onClick={() => setStatusFilter(f)}
-                  className={`px-2.5 py-1 text-xs font-medium rounded-[4px] transition-colors whitespace-nowrap cursor-pointer ${
+                  className={`px-2 py-1 text-xs font-medium rounded-[4px] transition-colors whitespace-nowrap cursor-pointer ${
                     statusFilter === f
                       ? "bg-white text-[#0052CC] font-semibold shadow-xs"
                       : "text-[#64748B] hover:text-[#0F172A]"
                   }`}
                 >
-                  {f === "ALL" ? "All" : f === "PLACED" ? "Action Required" : f.charAt(0) + f.slice(1).toLowerCase()}
+                  {f === "ALL"
+                    ? "All"
+                    : f === "PLACED"
+                    ? "Action Required"
+                    : f === "READY_FOR_DISPATCH"
+                    ? "Ready"
+                    : f === "DISPATCHED"
+                    ? "Dispatched"
+                    : f === "IN_TRANSIT"
+                    ? "In Transit"
+                    : f === "DISPUTED"
+                    ? "Disputed"
+                    : f.charAt(0) + f.slice(1).toLowerCase()}
                 </button>
               ))}
             </div>
@@ -248,10 +294,13 @@ export default function SupplierOrdersPage() {
                 <option value="PLACED">Action Required ({placedCount})</option>
                 <option value="CONFIRMED">Confirmed ({confirmedCount})</option>
                 <option value="PROCESSING">Processing ({processingCount})</option>
-                <option value="SHIPPED">Shipped ({shippedCount})</option>
+                <option value="READY_FOR_DISPATCH">Ready for Dispatch ({readyCount})</option>
+                <option value="DISPATCHED">Dispatched ({dispatchedCount})</option>
+                <option value="IN_TRANSIT">In Transit ({inTransitCount})</option>
                 <option value="DELIVERED">Delivered ({deliveredCount})</option>
                 <option value="COMPLETED">Completed ({completedCount})</option>
-                <option value="CANCELLED">Cancelled</option>
+                <option value="CANCELLED">Cancelled ({cancelledCount})</option>
+                <option value="DISPUTED">Disputed ({disputedCount})</option>
               </select>
             </div>
 

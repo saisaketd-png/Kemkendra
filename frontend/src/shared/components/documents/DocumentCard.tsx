@@ -78,12 +78,43 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
               </span>
             )}
           </div>
-          <DocumentStatusBadge status={document.expiryStatus} isActive={document.isActive} />
+          <div className="flex flex-col items-end gap-1">
+            <DocumentStatusBadge
+              verificationStatus={document.status || document.verificationStatus}
+              status={document.expiryStatus}
+              isActive={document.isActive}
+            />
+          </div>
         </div>
 
-        <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate mb-1" title={document.originalFileName}>
-          {document.originalFileName}
+        <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate mb-0.5" title={document.title || document.originalFileName}>
+          {document.title || document.originalFileName}
         </h4>
+        {document.title && document.title !== document.originalFileName && (
+          <p className="text-xs text-zinc-400 truncate mb-1" title={document.originalFileName}>
+            {document.originalFileName}
+          </p>
+        )}
+
+        {/* Rejection Alert Banner */}
+        {(document.status === "REJECTED" || document.verificationStatus === "REJECTED") && (
+          <div className="my-2.5 p-2.5 rounded-lg bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60 text-xs">
+            <div className="font-semibold text-rose-700 dark:text-rose-300 flex items-center justify-between">
+              <span>Audit Rejection Reason:</span>
+            </div>
+            <p className="text-rose-600 dark:text-rose-400 mt-1">
+              {document.reviewNotes || "Document does not meet compliance standards. Please upload a clear replacement."}
+            </p>
+            {canManage && onUploadNewVersion && (
+              <button
+                onClick={() => onUploadNewVersion(document)}
+                className="mt-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 px-2.5 py-1 rounded-md transition-colors"
+              >
+                Upload Fixed Version
+              </button>
+            )}
+          </div>
+        )}
 
         {document.description && (
           <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-2">

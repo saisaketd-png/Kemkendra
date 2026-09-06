@@ -139,7 +139,7 @@ public class GlobalExceptionHandler {
         } else if (exMsg.contains("users_email_key")) {
             msg = "Email already registered";
         }
-        log.warn("Database constraint violation on {}: {}", request.getRequestURI(), msg);
+        log.warn("Database constraint violation on {}: {} - {}", request.getRequestURI(), msg, exMsg);
         return new ApiErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "DUPLICATE_RESOURCE", msg, request.getRequestURI());
     }
 

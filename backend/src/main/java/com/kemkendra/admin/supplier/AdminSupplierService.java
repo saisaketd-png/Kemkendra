@@ -414,6 +414,42 @@ public class AdminSupplierService {
         return toResponse(supplier);
     }
 
+    /**
+     * Soft-deletes a supplier and their associated user account, sets status to SUSPENDED,
+     * deactivates all offerings, and records an immutable audit log entry.
+     */
+    public void deleteSupplier(Long id, Authentication authentication, HttpServletRequest servletRequest) {
+        User admin = resolveAdminActor(authentication);
+        Supplier supplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found: " + id));
+
+        supplier.setVerificationStatus(com.kemkendra.seller.SupplierVerificationStatus.SUSPENDED);
+        supplier.setVerified(false);
+        supplierRepository.save(supplier);
+
+        if (supplier.getUser() != null) {
+            User linkedUser = supplier.getUser();
+            if (linkedUser.getId().equals(admin.getId())) {
+                throw new IllegalArgumentException("Administrators cannot delete their own linked supplier account");
+            }
+            linkedUser.setDeletedAt(java.time.Instant.now());
+            linkedUser.setDeletedBy(admin.getId());
+            linkedUser.setStatus(UserStatus.SUSPENDED);
+            userRepository.save(linkedUser);
+        }
+
+        // Deactivate supplier offerings
+        try {
+            List<com.kemkendra.product.SupplierOffering> offerings = supplierOfferingRepository.findBySupplierId(id);
+            for (com.kemkendra.product.SupplierOffering off : offerings) {
+                off.setAvailabilityStatus("UNAVAILABLE");
+            }
+            supplierOfferingRepository.saveAll(offerings);
+        } catch (Exception ignored) {}
+
+        auditService.record(authentication, AuditAction.SUPPLIER_SUSPENDED, AuditTargetType.SUPPLIER, id.toString(), "Supplier soft-deleted by administrator", servletRequest);
+    }
+
     private User resolveAdminActor(Authentication authentication) {
         if (authentication == null || authentication.getName() == null) {
             throw new AccessDeniedException("Authentication required for administrative operations");

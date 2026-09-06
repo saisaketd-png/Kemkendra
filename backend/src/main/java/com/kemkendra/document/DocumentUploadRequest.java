@@ -21,6 +21,10 @@ public class DocumentUploadRequest {
     @NotNull(message = "Document category is required")
     private DocumentCategory category;
 
+    private String title;
+
+    private Boolean isPublic = false;
+
     private UUID documentGroupId;
 
     private String documentNumber;
@@ -113,5 +117,21 @@ public class DocumentUploadRequest {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Boolean getIsPublic() {
+        return isPublic != null ? isPublic : false;
+    }
+
+    public void setIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
     }
 }
