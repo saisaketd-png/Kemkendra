@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ShieldCheck, MapPin, Building2, Globe2, ChevronRight, Award, PackageCheck } from "lucide-react";
 import { SupplierPublicProfile } from "@/features/suppliers/types";
-import { resolveApiUrl } from "@/lib/apiUrl";
+import { resolveClientImageUrl } from "@/lib/apiUrl";
 import { SupplierLogo } from "./SupplierLogo";
 
 export function SupplierCard({ supplier }: { supplier: SupplierPublicProfile }) {
@@ -16,7 +16,7 @@ export function SupplierCard({ supplier }: { supplier: SupplierPublicProfile }) 
           <div className="flex items-start gap-4">
             <div className="w-14 h-14 min-w-[56px] min-h-[56px] bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl flex items-center justify-center shrink-0 overflow-hidden p-1.5 shadow-2xs">
               <SupplierLogo
-                src={supplier.logoUrl ? resolveApiUrl(supplier.logoUrl) : null}
+                src={resolveClientImageUrl(supplier.logoUrl)}
                 alt={`${supplier.name} company logo`}
                 fallbackText={supplier.name}
                 className="w-full h-full object-contain"

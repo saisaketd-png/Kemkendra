@@ -20,8 +20,9 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
-import { fetchProductSuppliers } from "@/lib/api";
+import { fetchProductSuppliers, resolveClientImageUrl } from "@/lib/api";
 import { authenticatedFetch } from "@/features/auth/api/authenticatedFetch";
+import { SupplierLogo } from "@/features/suppliers/components/SupplierLogo";
 import RfqModal from "../../rfq/components/RfqModal";
 import SupplierOfferingModal from "./SupplierOfferingModal";
 import { useToast } from "@/shared/context/ToastContext";
@@ -309,21 +310,16 @@ export default function SupplierComparison({ productId, productName }: SupplierC
                 {/* Top Line: Supplier Logo + Identity + Verification Badge */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-[#DFE1E6] pb-2.5">
                   <div className="flex items-center gap-2.5">
-                    {/* Real Supplier Company Logo from backend */}
-                    {offering.supplierLogoUrl ? (
-                      <div className="w-9 h-9 rounded-lg border border-[#DFE1E6] bg-white p-0.5 shrink-0 flex items-center justify-center overflow-hidden">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={offering.supplierLogoUrl}
-                          alt={offering.name}
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-9 h-9 rounded-lg border border-[#DFE1E6] bg-[#DEEBFF] text-[#0747A6] font-bold text-xs flex items-center justify-center shrink-0 font-mono">
-                        {offering.name.substring(0, 2).toUpperCase()}
-                      </div>
-                    )}
+                    {/* Real Supplier Company Logo from backend with corporate fallback */}
+                    <div className="w-9 h-9 rounded-lg border border-[#DFE1E6] overflow-hidden shrink-0 shadow-2xs">
+                      <SupplierLogo
+                        src={resolveClientImageUrl(offering.supplierLogoUrl)}
+                        alt={`${offering.name} logo`}
+                        fallbackText={offering.name}
+                        className="w-full h-full object-contain"
+                        iconClassName="w-4 h-4 text-white/80"
+                      />
+                    </div>
 
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">

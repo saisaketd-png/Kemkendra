@@ -240,7 +240,9 @@ export default function SupplierOfferingDetailGovernancePage() {
           </Link>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">{workspace.masterProductName}</h1>
+              <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+                {workspace.masterProductName || workspace.productName || workspace.name || "Chemical Offering"}
+              </h1>
               <span className={`px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase ${
                 modStatus === "APPROVED" ? "bg-emerald-50 text-emerald-800 border border-emerald-200" :
                 modStatus === "UNDER_REVIEW" ? "bg-blue-50 text-blue-800 border border-blue-200" :

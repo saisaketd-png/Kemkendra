@@ -303,7 +303,19 @@ public class AdminOperationsDtos {
             int failedRulesCount,
             Map<String, String> dimensionStatuses,
             LocalDateTime updatedAt
-    ) {}
+    ) {
+        @JsonProperty("productName")
+        public String productName() { return masterProductName(); }
+
+        @JsonProperty("unitPrice")
+        public BigDecimal unitPrice() { return price(); }
+
+        @JsonProperty("minimumOrderQuantity")
+        public BigDecimal minimumOrderQuantity() { return moqKg(); }
+
+        @JsonProperty("completenessScore")
+        public int completenessScore() { return qualityScore(); }
+    }
 
     public record AdminSearchResultItem(
             String type,

@@ -200,8 +200,8 @@ export default function AdminOfferingGovernanceDashboardPage() {
                   return (
                     <tr key={off.id} className="hover:bg-slate-50 transition-colors">
                       <td className="px-4 py-3.5">
-                        <strong className="text-slate-900 font-bold block">{off.masterProductName}</strong>
-                        <span className="font-mono text-[10px] text-slate-400 block">{off.masterProductCode}</span>
+                        <strong className="text-slate-900 font-bold block">{off.masterProductName || off.productName || off.name || "—"}</strong>
+                        <span className="font-mono text-[10px] text-slate-400 block">{off.masterProductCode || "—"}</span>
                         {off.casNumber && <span className="text-slate-500 font-mono text-[10px]">CAS: {off.casNumber}</span>}
                       </td>
                       <td className="px-4 py-3.5">

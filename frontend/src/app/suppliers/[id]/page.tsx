@@ -9,7 +9,7 @@ import { SupplierProductCatalog } from "@/features/suppliers/components/Supplier
 import { SupplierLogo } from "@/features/suppliers/components/SupplierLogo";
 import { Badge, Button, Card, PageHeader } from "@/shared/components/ui/KemkendraUI";
 import { serializeJsonLd } from "@/shared/utils/security";
-import { resolveApiUrl } from "@/lib/apiUrl";
+import { resolveApiUrl, resolveClientImageUrl } from "@/lib/apiUrl";
 
 export const revalidate = 60;
 
@@ -93,8 +93,8 @@ export default async function SupplierProfilePage(props: {
   // Load products independently — failure should NOT crash the supplier profile page
   const products = await getSupplierProducts(params.id, { page, size });
 
-  // Resolve logo URL for SSR
-  const resolvedLogoUrl = supplier.logoUrl ? resolveApiUrl(supplier.logoUrl) : null;
+  // Resolve logo URL for SSR/Browser
+  const resolvedLogoUrl = resolveClientImageUrl(supplier.logoUrl);
 
   // Schema.org Organization JSON-LD
   const supplierJsonLd = {

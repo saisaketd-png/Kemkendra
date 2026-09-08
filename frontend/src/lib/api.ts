@@ -1,6 +1,6 @@
 import { resolveApiUrl } from "./apiUrl";
 
-export { resolveApiUrl, getApiBaseUrl } from "./apiUrl";
+export { resolveApiUrl, getApiBaseUrl, resolveClientImageUrl } from "./apiUrl";
 
 export async function fetchProductDetail(idOrCode: string) {
   const masterRes = await fetch(resolveApiUrl(`/api/v1/public/master-products/${encodeURIComponent(idOrCode)}`), {

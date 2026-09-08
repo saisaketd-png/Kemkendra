@@ -14,9 +14,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { fetchProductDetail } from "@/lib/api";
+import { fetchProductDetail, resolveClientImageUrl } from "@/lib/api";
 import { notFound, permanentRedirect } from "next/navigation";
 import { Product } from "@/features/products/types/product";
+import { ProductDetailHeroImage } from "@/features/products/components/ProductDetailHeroImage";
 import SupplierComparison from "@/features/products/components/SupplierComparison";
 import { ProductDocuments } from "@/features/products/components/ProductDocuments";
 import { serializeJsonLd } from "@/shared/utils/security";
@@ -122,11 +123,7 @@ export default async function ProductDetailPage({
   }
 
   const canonicalCode = product.productCode || resolvedParams.id;
-  const resolvedImageUrl = product.primaryImageUrl
-    ? product.primaryImageUrl.startsWith("http")
-      ? product.primaryImageUrl
-      : `${API_URL}${product.primaryImageUrl}`
-    : null;
+  const resolvedImageUrl = resolveClientImageUrl(product.primaryImageUrl);
 
   // Real commercial offers only when price is present
   const offers = product.price && product.price > 0
@@ -246,44 +243,15 @@ export default async function ProductDetailPage({
           <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-5 sm:p-6 shadow-tactile-card">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
               
-              {/* Left: Product Image */}
+              {/* Left: Product Image & Monograph Specification */}
               <div className="lg:col-span-5 w-full">
-                <div className="relative w-full h-64 sm:h-80 md:h-[380px] rounded-[8px] border border-[#E2E8F0] bg-white p-4 sm:p-6 flex items-center justify-center overflow-hidden shadow-2xs">
-                  {resolvedImageUrl ? (
-                    <Image
-                      src={resolvedImageUrl}
-                      alt={`${product.name} chemical monograph`}
-                      fill
-                      priority
-                      sizes="(max-width: 768px) 100vw, 400px"
-                      className="object-contain p-4"
-                    />
-                  ) : (
-                    <div className="flex flex-col items-center justify-center text-center p-6 space-y-3">
-                      <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#0052CC] shadow-2xs">
-                        <FlaskConical className="w-8 h-8 stroke-1.5" />
-                      </div>
-                      <div className="space-y-1 max-w-[240px]">
-                        <p className="text-xs font-bold text-slate-800 line-clamp-2 leading-tight">
-                          {product.name}
-                        </p>
-                        {product.molecularFormula && (
-                          <p className="text-[11px] font-mono text-slate-500 font-medium">
-                            {product.molecularFormula}
-                          </p>
-                        )}
-                      </div>
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-mono font-semibold uppercase bg-slate-50 text-slate-600 border border-slate-200">
-                        <Atom className="w-3 h-3 text-[#0052CC]" /> Chemical Monograph
-                      </span>
-                    </div>
-                  )}
-                  <div className="absolute top-2.5 left-2.5">
-                    <span className="bg-[#ECFDF5] text-[#059669] border border-[rgba(5,150,105,0.2)] px-2 py-0.5 rounded-[4px] text-[10px] font-mono font-semibold uppercase flex items-center gap-1">
-                      <ShieldCheck className="w-3 h-3" /> CANONICAL RECORD
-                    </span>
-                  </div>
-                </div>
+                <ProductDetailHeroImage
+                  imageUrl={resolvedImageUrl}
+                  productName={product.name}
+                  casNumber={product.casNumber}
+                  molecularFormula={product.molecularFormula}
+                  category={product.category}
+                />
               </div>
 
               {/* Right: Chemical Specification & Master Identity */}

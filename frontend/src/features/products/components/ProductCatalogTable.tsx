@@ -26,6 +26,7 @@ import {
 import { Product } from "../types/product";
 import { fetchProductSuppliers } from "@/lib/api";
 import { ProductSupplier } from "./SupplierComparison";
+import { SupplierLogo } from "@/features/suppliers/components/SupplierLogo";
 import { authenticatedFetch } from "@/features/auth/api/authenticatedFetch";
 import { useToast } from "@/shared/context/ToastContext";
 import dynamic from "next/dynamic";
@@ -194,16 +195,18 @@ export function ProductCatalogTable({ products }: ProductCatalogTableProps) {
                       loading="lazy"
                     />
                   ) : (
-                    <div className="flex flex-col items-center justify-center text-[#94A3B8] space-y-1">
-                      <FlaskConical className="w-8 h-8 stroke-1" />
-                      <span className="text-[9px] font-mono font-bold uppercase">Compound</span>
+                    <div className="flex flex-col items-center justify-center text-center p-2 space-y-1 select-none">
+                      <FlaskConical className="w-7 h-7 text-[#0052CC] stroke-1.5" />
+                      <span className="text-[10px] font-mono font-bold text-slate-700 uppercase tracking-tight">Monograph</span>
                     </div>
                   )}
-                  <div className="absolute top-1.5 left-1.5">
-                    <span className="bg-[#E3FCEF] text-[#006644] border border-[#ABF5D1] px-1.5 py-0.2 rounded text-[9px] font-mono font-bold uppercase flex items-center gap-0.5">
-                      <ShieldCheck className="w-2.5 h-2.5" /> CANONICAL
-                    </span>
-                  </div>
+                  {resolvedImageUrl && (
+                    <div className="absolute top-1.5 left-1.5">
+                      <span className="bg-[#E3FCEF] text-[#006644] border border-[#ABF5D1] px-1.5 py-0.2 rounded text-[9px] font-mono font-bold uppercase flex items-center gap-0.5">
+                        <ShieldCheck className="w-2.5 h-2.5" /> CANONICAL
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Right: Chemical Monograph Summary */}
@@ -276,10 +279,16 @@ export function ProductCatalogTable({ products }: ProductCatalogTableProps) {
               {bestSupplier && (
                 <div className="border border-[#E2E8F0] rounded-xl p-3 bg-white space-y-2">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="w-6 h-6 rounded-md bg-[#DEEBFF] text-[#0747A6] font-bold text-xs flex items-center justify-center font-mono shrink-0">
-                        {bestSupplier.name.charAt(0)}
-                      </span>
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-7 h-7 rounded-md overflow-hidden border border-[#E2E8F0] shrink-0">
+                        <SupplierLogo
+                          src={bestSupplier.supplierLogoUrl || null}
+                          alt={`${bestSupplier.name} logo`}
+                          fallbackText={bestSupplier.name}
+                          className="w-full h-full object-contain"
+                          iconClassName="w-3.5 h-3.5 text-white/80"
+                        />
+                      </div>
                       <strong className="text-xs sm:text-sm text-[#091E42] truncate">
                         {bestSupplier.name}
                       </strong>
@@ -353,21 +362,30 @@ export function ProductCatalogTable({ products }: ProductCatalogTableProps) {
                       className="w-full h-full object-contain"
                     />
                   ) : (
-                    <div className="flex flex-col items-center justify-center text-[#64748B] space-y-2">
-                      <FlaskConical className="w-12 h-12 text-[#94A3B8] stroke-1" />
-                      <span className="text-[11px] font-mono font-bold uppercase text-[#64748B]">
-                        Compound Sample
+                    <div className="flex flex-col items-center justify-center text-[#64748B] space-y-2 text-center p-4 select-none">
+                      <div className="w-12 h-12 rounded-xl bg-blue-50/80 border border-blue-100 flex items-center justify-center text-[#0052CC]">
+                        <FlaskConical className="w-6 h-6 stroke-1.5 text-[#0052CC]" />
+                      </div>
+                      <div className="space-y-0.5">
+                        <span className="text-[11px] font-mono font-bold uppercase text-[#0F172A] block">
+                          Verified Specification
+                        </span>
+                        <span className="text-[10px] text-[#64748B] block">
+                          Technical Monograph Standard
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  {resolvedImageUrl && (
+                    <div className="absolute top-2.5 left-2.5">
+                      <span
+                        className="bg-[#E3FCEF] text-[#006644] border border-[#ABF5D1] px-2 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase flex items-center gap-1"
+                        title="Canonical Master Chemical"
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5" /> CANONICAL
                       </span>
                     </div>
                   )}
-                  <div className="absolute top-2.5 left-2.5">
-                    <span
-                      className="bg-[#E3FCEF] text-[#006644] border border-[#ABF5D1] px-2 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase flex items-center gap-1"
-                      title="Canonical Master Chemical"
-                    >
-                      <ShieldCheck className="w-3.5 h-3.5" /> CANONICAL
-                    </span>
-                  </div>
                 </div>
 
                 {/* Chemical Identity & Monograph Details */}

@@ -7,27 +7,33 @@ import { authenticatedFetch } from "@/features/auth/api/authenticatedFetch";
 
 interface OfferingQualityItem {
   id: string;
-  masterProductCode: string;
-  productName: string;
+  masterProductCode?: string;
+  masterProductName?: string;
+  productName?: string;
   supplierId: number;
   supplierName: string;
-  unitPrice: number;
+  price?: number;
+  unitPrice?: number;
   currency: string;
-  purityPercentage: number;
-  grade: string;
-  minimumOrderQuantity: number;
-  packagingDescription: string;
-  leadTimeDays: number;
-  availabilityStatus: string;
-  coaAvailable: boolean;
-  msdsAvailable: boolean;
-  exportReady: boolean;
-  moderationStatus: string;
-  completenessScore: number;
-  verifiedDimensionsCount: number;
-  issueCount: number;
-  dimensionStatuses: Record<string, string>;
-  lastUpdated: string;
+  purityPercentage?: number;
+  purity?: number;
+  grade?: string;
+  minimumOrderQuantity?: number;
+  moqKg?: number;
+  packagingDescription?: string;
+  packaging?: string;
+  leadTimeDays?: number;
+  availabilityStatus?: string;
+  coaAvailable?: boolean;
+  msdsAvailable?: boolean;
+  exportReady?: boolean;
+  moderationStatus?: string;
+  completenessScore?: number;
+  qualityScore?: number;
+  verifiedDimensionsCount?: number;
+  issueCount?: number;
+  dimensionStatuses?: Record<string, string>;
+  lastUpdated?: string;
 }
 
 export default function OfferingQualityPage() {
@@ -40,7 +46,14 @@ export default function OfferingQualityPage() {
         const res = await authenticatedFetch("/api/v1/admin/operations/offerings/quality");
         if (res.ok) {
           const data = await res.json();
-          setItems(data.content || []);
+          const normalized = (data.content || []).map((raw: any) => ({
+            ...raw,
+            productName: raw.masterProductName || raw.productName || raw.masterProductCode || "—",
+            unitPrice: typeof raw.price === "number" ? raw.price : raw.unitPrice,
+            minimumOrderQuantity: raw.moqKg ?? raw.minimumOrderQuantity,
+            completenessScore: raw.qualityScore ?? raw.completenessScore,
+          }));
+          setItems(normalized);
         }
       } catch (err) {
         console.error("Failed to load offering quality data", err);
@@ -135,40 +148,47 @@ export default function OfferingQualityPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#E4E4E7] text-xs">
-                {items.map((item) => (
-                  <tr key={item.id} className="hover:bg-[#F8FAFC] transition-colors">
-                    <td className="py-3 px-4">
-                      <div className="font-semibold text-[#0F172A]">{item.productName || "—"}</div>
-                      <div className="text-[11px] text-[#64748B] font-medium">{item.supplierName || "—"}</div>
-                    </td>
-                    <td className="py-3 px-4 font-mono text-xs text-[#0F172A]">
-                      <div>{typeof item.unitPrice === "number" ? `₹${item.unitPrice.toFixed(2)} / kg` : "—"}</div>
-                      <div className="text-[#64748B] text-[11px]">MOQ: {item.minimumOrderQuantity ? `${item.minimumOrderQuantity} kg` : "—"}</div>
-                    </td>
-                    <td className="py-3 px-4 text-xs">
-                      <span className={item.coaAvailable ? "text-[#059669] font-medium" : "text-[#94A3B8]"}>COA</span>
-                      <span className="text-[#E4E4E7] mx-1.5">|</span>
-                      <span className={item.msdsAvailable ? "text-[#0052CC] font-medium" : "text-[#94A3B8]"}>MSDS</span>
-                    </td>
-                    <td className="py-3 px-4 font-mono text-xs text-[#0F172A]">
-                      {item.completenessScore ? `${item.completenessScore}%` : "—"}
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="inline-flex items-center text-[10px] font-mono font-semibold px-2 py-0.5 rounded-[4px] bg-[#F4F4F5] text-[#334155] border border-[#E4E4E7] uppercase">
-                        {item.moderationStatus || "—"}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-right">
-                      <Link
-                        href={`/dashboard/admin/catalog/offerings/${item.id}`}
-                        className="h-7 px-2.5 bg-white hover:bg-[#FAFAFA] text-[#0F172A] border border-[#E4E4E7] rounded-[4px] text-xs font-medium transition-colors inline-flex items-center gap-1 shadow-xs"
-                      >
-                        <span>Workspace</span>
-                        <ChevronRight className="w-3 h-3 text-[#64748B]" />
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
+                {items.map((item) => {
+                  const pName = item.productName || item.masterProductName || item.masterProductCode || "—";
+                  const pPrice = typeof item.unitPrice === "number" ? item.unitPrice : (typeof item.price === "number" ? item.price : null);
+                  const pMoq = item.minimumOrderQuantity ?? item.moqKg;
+                  const pScore = item.completenessScore ?? item.qualityScore;
+
+                  return (
+                    <tr key={item.id} className="hover:bg-[#F8FAFC] transition-colors">
+                      <td className="py-3 px-4">
+                        <div className="font-semibold text-[#0F172A]">{pName}</div>
+                        <div className="text-[11px] text-[#64748B] font-medium">{item.supplierName || "—"}</div>
+                      </td>
+                      <td className="py-3 px-4 font-mono text-xs text-[#0F172A]">
+                        <div>{pPrice !== null ? `₹${pPrice.toFixed(2)} / kg` : "—"}</div>
+                        <div className="text-[#64748B] text-[11px]">MOQ: {pMoq ? `${pMoq} kg` : "—"}</div>
+                      </td>
+                      <td className="py-3 px-4 text-xs">
+                        <span className={item.coaAvailable ? "text-[#059669] font-medium" : "text-[#94A3B8]"}>COA</span>
+                        <span className="text-[#E4E4E7] mx-1.5">|</span>
+                        <span className={item.msdsAvailable ? "text-[#0052CC] font-medium" : "text-[#94A3B8]"}>MSDS</span>
+                      </td>
+                      <td className="py-3 px-4 font-mono text-xs text-[#0F172A]">
+                        {pScore != null ? `${pScore}%` : "—"}
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className="inline-flex items-center text-[10px] font-mono font-semibold px-2 py-0.5 rounded-[4px] bg-[#F4F4F5] text-[#334155] border border-[#E4E4E7] uppercase">
+                          {item.moderationStatus || "—"}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <Link
+                          href={`/dashboard/admin/catalog/offerings/${item.id}`}
+                          className="h-7 px-2.5 bg-white hover:bg-[#FAFAFA] text-[#0F172A] border border-[#E4E4E7] rounded-[4px] text-xs font-medium transition-colors inline-flex items-center gap-1 shadow-xs"
+                        >
+                          <span>Workspace</span>
+                          <ChevronRight className="w-3 h-3 text-[#64748B]" />
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

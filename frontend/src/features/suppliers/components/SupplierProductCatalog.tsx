@@ -1,7 +1,44 @@
+"use client";
+
+import { useState } from "react";
 import { SupplierProductPublicResponse, SupplierProductListResponse } from "@/features/suppliers/types";
 import { Package, ExternalLink, Activity, Beaker, FlaskConical, IndianRupee } from "lucide-react";
 import Link from "next/link";
-import { resolveApiUrl } from "@/lib/api";
+import { resolveClientImageUrl } from "@/lib/api";
+
+function SupplierProductThumbnail({
+  imageUrl,
+  name,
+}: {
+  imageUrl: string | null;
+  name: string;
+}) {
+  const [hasError, setHasError] = useState(false);
+
+  if (!imageUrl || hasError) {
+    return (
+      <div className="w-24 h-24 md:w-28 md:h-28 rounded-xl border border-slate-200 bg-slate-50 flex flex-col items-center justify-center text-slate-400 p-2 text-center select-none shadow-2xs">
+        <FlaskConical className="w-8 h-8 text-[#0052CC] mb-1.5 stroke-1.5" />
+        <span className="text-[10px] font-mono font-bold text-slate-700 uppercase leading-tight line-clamp-2">
+          {name}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-24 h-24 md:w-28 md:h-28 rounded-xl border border-slate-200 bg-white p-2 overflow-hidden shadow-2xs flex items-center justify-center">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={imageUrl}
+        alt={name}
+        className="w-full h-full object-contain"
+        onError={() => setHasError(true)}
+        loading="lazy"
+      />
+    </div>
+  );
+}
 
 export function SupplierProductCatalog({ 
   products,
@@ -30,31 +67,15 @@ export function SupplierProductCatalog({
     <div className="space-y-4">
       {content.map(product => {
         const productLink = `/products/${product.masterProductCode || product.id}`;
-        const imageUrl = product.imageUrl ? resolveApiUrl(product.imageUrl) : null;
+        const imageUrl = resolveClientImageUrl(product.imageUrl);
 
         return (
           <div key={product.id} className="bg-white border border-slate-200 rounded-sm p-6 flex flex-col md:flex-row gap-6">
             
-            {/* Product Image Thumbnail */}
+            {/* Product Image Thumbnail with Graceful Error Fallback */}
             <div className="shrink-0 flex items-start justify-center">
               <Link href={productLink} className="block">
-                {imageUrl ? (
-                  <div className="w-24 h-24 md:w-28 md:h-28 rounded-lg border border-slate-200 bg-slate-50 overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={imageUrl}
-                      alt={product.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-24 h-24 md:w-28 md:h-28 rounded-lg border border-slate-200 bg-slate-50 flex flex-col items-center justify-center text-slate-400">
-                    <FlaskConical className="w-10 h-10 mb-1" />
-                    <span className="text-[10px] font-semibold text-slate-400 text-center leading-tight px-1">
-                      {product.name.length > 30 ? product.name.substring(0, 30) + "…" : product.name}
-                    </span>
-                  </div>
-                )}
+                <SupplierProductThumbnail imageUrl={imageUrl} name={product.name} />
               </Link>
             </div>
 

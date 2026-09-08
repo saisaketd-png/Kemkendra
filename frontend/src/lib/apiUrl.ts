@@ -28,7 +28,7 @@ export function getApiBaseUrl(): string {
 
 /**
  * Resolves an API path (e.g., "/api/v1/suppliers?page=0") into a safe URL
- * for the current execution context (client or server).
+ * for the current execution context (client or server fetch).
  */
 export function resolveApiUrl(path: string): string {
   // If the path already has http:// or https://, return as-is
@@ -39,4 +39,28 @@ export function resolveApiUrl(path: string): string {
   const cleanPath = path.startsWith("/") ? path : `/${path}`;
   const baseUrl = getApiBaseUrl();
   return `${baseUrl}${cleanPath}`;
+}
+
+/**
+ * Resolves an image URL for rendering in client browser tags (<img> or <Image>).
+ * Crucially, browser image URLs must NEVER point to internal server loopbacks
+ * like http://127.0.0.1:8085 or Docker container network hostnames.
+ */
+export function resolveClientImageUrl(url?: string | null): string | null {
+  if (!url || typeof url !== "string") return null;
+  const trimmed = url.trim();
+  if (!trimmed) return null;
+
+  // Strip accidental server loopbacks if present
+  const sanitized = trimmed
+    .replace(/^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?/i, "")
+    .replace(/^https?:\/\/backend(:\d+)?/i, "");
+
+  if (/^https?:\/\//i.test(sanitized)) {
+    return sanitized;
+  }
+
+  const cleanPath = sanitized.startsWith("/") ? sanitized : `/${sanitized}`;
+  const publicBase = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/+$/, "");
+  return `${publicBase}${cleanPath}`;
 }
