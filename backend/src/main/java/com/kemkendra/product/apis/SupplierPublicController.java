@@ -1,0 +1,378 @@
+package com.kemkendra.product.apis;
+
+import com.kemkendra.common.ResourceNotFoundException;
+import com.kemkendra.product.Supplier;
+import com.kemkendra.product.SupplierRepository;
+import com.kemkendra.product.SupplierSpecification;
+import com.kemkendra.product.dto.SupplierPerformanceResponse;
+import com.kemkendra.product.dto.SupplierPublicResponse;
+import com.kemkendra.seller.SellerProfile;
+import com.kemkendra.seller.SupplierIdentityResolver;
+import com.kemkendra.seller.SupplierPerformanceService;
+import com.kemkendra.identity.User;
+import com.kemkendra.product.Product;
+import com.kemkendra.product.ProductRepository;
+import com.kemkendra.product.MasterProduct;
+import com.kemkendra.product.MasterProductImage;
+import com.kemkendra.product.MasterProductImageRepository;
+import com.kemkendra.product.ProductCategory;
+import com.kemkendra.product.SupplierOffering;
+import com.kemkendra.product.dto.SupplierProductPublicResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api/v1/suppliers")
+@Transactional(readOnly = true)
+public class SupplierPublicController {
+
+    private static final Logger log = LoggerFactory.getLogger(SupplierPublicController.class);
+
+    private final SupplierRepository supplierRepository;
+    private final SupplierIdentityResolver identityResolver;
+    private final ProductRepository productRepository;
+    private final com.kemkendra.product.SupplierOfferingRepository supplierOfferingRepository;
+    private final com.kemkendra.document.storage.StorageService storageService;
+    private final SupplierPerformanceService supplierPerformanceService;
+    private final MasterProductImageRepository masterProductImageRepository;
+
+    public SupplierPublicController(SupplierRepository supplierRepository,
+                                    SupplierIdentityResolver identityResolver,
+                                    ProductRepository productRepository,
+                                    com.kemkendra.product.SupplierOfferingRepository supplierOfferingRepository,
+                                    com.kemkendra.document.storage.StorageService storageService,
+                                    SupplierPerformanceService supplierPerformanceService,
+                                    MasterProductImageRepository masterProductImageRepository) {
+        this.supplierRepository = supplierRepository;
+        this.identityResolver = identityResolver;
+        this.productRepository = productRepository;
+        this.supplierOfferingRepository = supplierOfferingRepository;
+        this.storageService = storageService;
+        this.supplierPerformanceService = supplierPerformanceService;
+        this.masterProductImageRepository = masterProductImageRepository;
+    }
+
+    private static final java.util.Set<String> ALLOWED_SUPPLIER_SORT_FIELDS = java.util.Set.of(
+            "name", "countryName", "yearsInBusiness", "responseRate", "createdAt", "id"
+    );
+
+    private Pageable sanitizePageable(Pageable pageable, String defaultSort) {
+        int page = Math.max(0, pageable.getPageNumber());
+        int size = Math.min(Math.max(1, pageable.getPageSize()), 100);
+        Sort sort = pageable.getSort();
+        List<Sort.Order> safeOrders = new ArrayList<>();
+        for (Sort.Order order : sort) {
+            if (ALLOWED_SUPPLIER_SORT_FIELDS.contains(order.getProperty())) {
+                safeOrders.add(order);
+            }
+        }
+        if (safeOrders.isEmpty()) {
+            safeOrders.add(new Sort.Order(Sort.Direction.ASC, defaultSort));
+        }
+        return org.springframework.data.domain.PageRequest.of(page, size, Sort.by(safeOrders));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<SupplierPublicResponse>> listPublicSuppliers(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) Boolean verified,
+            @RequestParam(required = false) Boolean exportReady,
+            @PageableDefault(size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        Pageable safePageable = sanitizePageable(pageable, "name");
+
+        Page<Supplier> supplierPage = supplierRepository.findAll(
+                SupplierSpecification.searchAndFilter(search, country, verified, exportReady),
+                safePageable
+        );
+
+        List<User> users = supplierPage.getContent().stream()
+                .map(Supplier::getUser)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        List<SellerProfile> profiles = identityResolver.resolveEditableProfiles(users);
+        Map<User, SellerProfile> profileMap = profiles.stream()
+                .collect(Collectors.toMap(SellerProfile::getUser, p -> p));
+
+        List<Long> supplierIds = supplierPage.getContent().stream()
+                .map(Supplier::getId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        Map<Long, SupplierPerformanceResponse> performanceMap = supplierPerformanceService.getBulkSupplierPerformance(supplierIds);
+
+        Page<SupplierPublicResponse> responsePage = supplierPage.map(supplier -> {
+            Optional<SellerProfile> profileOpt = Optional.ofNullable(supplier.getUser() != null ? profileMap.get(supplier.getUser()) : null);
+            SupplierPerformanceResponse perf = performanceMap.get(supplier.getId());
+            return mapToResponse(supplier, profileOpt, perf);
+        });
+
+        return ResponseEntity.ok(responsePage);
+    }
+
+    private boolean isSupplierPubliclyVisible(Supplier supplier) {
+        if (supplier == null) return false;
+        if (supplier.getVerificationStatus() == com.kemkendra.seller.SupplierVerificationStatus.SUSPENDED ||
+            supplier.getVerificationStatus() == com.kemkendra.seller.SupplierVerificationStatus.REJECTED) {
+            return false;
+        }
+        if (supplier.getUser() != null) {
+            if (supplier.getUser().getDeletedAt() != null || supplier.getUser().getStatus() == com.kemkendra.identity.UserStatus.SUSPENDED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SupplierPublicResponse> getPublicSupplier(@PathVariable Long id) {
+        Supplier supplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+
+        if (!isSupplierPubliclyVisible(supplier)) {
+            throw new ResourceNotFoundException("Supplier not found");
+        }
+
+        Optional<SellerProfile> profileOpt = Optional.empty();
+        if (supplier.getUser() != null) {
+            profileOpt = identityResolver.resolveEditableProfile(supplier.getUser());
+        }
+
+        SupplierPerformanceResponse perf = supplierPerformanceService.getSupplierPerformance(id);
+        return ResponseEntity.ok(mapToResponse(supplier, profileOpt, perf));
+    }
+
+    @GetMapping("/{id}/performance")
+    public ResponseEntity<SupplierPerformanceResponse> getSupplierPerformance(@PathVariable Long id) {
+        Supplier supplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found: " + id));
+
+        if (!isSupplierPubliclyVisible(supplier)) {
+            throw new ResourceNotFoundException("Supplier not found: " + id);
+        }
+        return ResponseEntity.ok(supplierPerformanceService.getSupplierPerformance(id));
+    }
+
+    @GetMapping("/{id}/logo")
+    public ResponseEntity<org.springframework.core.io.Resource> getSupplierLogo(@PathVariable Long id) {
+        try {
+            Supplier supplier = supplierRepository.findById(id).orElse(null);
+
+            if (supplier == null || !isSupplierPubliclyVisible(supplier)) {
+                return ResponseEntity.notFound().build();
+            }
+
+            if (supplier.getLogoStoragePath() == null || supplier.getLogoStoragePath().isBlank()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            if (!storageService.exists(supplier.getLogoStoragePath())) {
+                return ResponseEntity.notFound().build();
+            }
+
+            org.springframework.core.io.Resource resource = storageService.loadAsResource(supplier.getLogoStoragePath());
+            if (resource == null || !resource.exists() || !resource.isReadable()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            String contentType = supplier.getLogoContentType() != null && !supplier.getLogoContentType().isBlank()
+                    ? supplier.getLogoContentType()
+                    : org.springframework.http.MediaType.IMAGE_PNG_VALUE;
+
+            org.springframework.http.MediaType mediaType;
+            try {
+                mediaType = org.springframework.http.MediaType.parseMediaType(contentType);
+            } catch (Exception e) {
+                mediaType = org.springframework.http.MediaType.IMAGE_PNG;
+            }
+
+            return ResponseEntity.ok()
+                    .header(org.springframework.http.HttpHeaders.CACHE_CONTROL, "public, max-age=86400")
+                    .header("X-Content-Type-Options", "nosniff")
+                    .contentType(mediaType)
+                    .body(resource);
+        } catch (Exception e) {
+            log.warn("Failed to serve logo for supplier {}: {}", id, e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    private SupplierPublicResponse mapToResponse(Supplier supplier, Optional<SellerProfile> profileOpt, SupplierPerformanceResponse perf) {
+        Integer calculatedRate = perf != null ? perf.responseRate() : supplier.getResponseRate();
+        Long avgResponseTime = perf != null ? perf.averageResponseTimeSeconds() : null;
+        String formattedTime = perf != null ? perf.formattedResponseTime() : null;
+        Long eligible = perf != null ? perf.eligibleRfqs() : null;
+        Long responded = perf != null ? perf.respondedRfqs() : null;
+
+        // Resolve logo URL: prefer the content endpoint when a stored logo file exists
+        String resolvedLogoUrl = null;
+        if (supplier.getLogoStoragePath() != null && !supplier.getLogoStoragePath().isBlank()) {
+            resolvedLogoUrl = "/api/v1/suppliers/" + supplier.getId() + "/logo";
+        } else if (supplier.getLogoUrl() != null && !supplier.getLogoUrl().isBlank()) {
+            resolvedLogoUrl = supplier.getLogoUrl();
+        }
+
+        return new SupplierPublicResponse(
+                supplier.getId(),
+                supplier.getName(),
+                supplier.getSlug(),
+                supplier.getCountryCode(),
+                supplier.getCountryName(),
+                resolvedLogoUrl,
+                supplier.getVerified(),
+                supplier.getYearsInBusiness(),
+                calculatedRate,
+                avgResponseTime,
+                formattedTime,
+                eligible,
+                responded,
+                supplier.getExportReady(),
+                profileOpt.map(SellerProfile::getAboutCompany).orElse(null),
+                profileOpt.map(SellerProfile::getWebsite).orElse(null),
+                profileOpt.map(SellerProfile::getCertifications).orElse(null)
+        );
+    }
+
+    private static final java.util.Set<String> ALLOWED_PRODUCT_SORT_FIELDS = java.util.Set.of(
+            "name", "price", "stock", "createdAt", "updatedAt", "category", "leadTimeDays", "purity", "moqKg"
+    );
+
+    @GetMapping("/{id}/products")
+    public ResponseEntity<Page<SupplierProductPublicResponse>> getSupplierProducts(
+            @PathVariable Long id,
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Supplier supplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+
+        if (!isSupplierPubliclyVisible(supplier)) {
+            throw new ResourceNotFoundException("Supplier not found");
+        }
+
+        int page = Math.max(0, pageable.getPageNumber());
+        int size = Math.min(Math.max(1, pageable.getPageSize()), 100);
+        Pageable safePageable = org.springframework.data.domain.PageRequest.of(page, size);
+
+        // 1. Use JOIN FETCH to load masterProduct eagerly — avoids LazyInitializationException
+        //    when accessing mp.getCategory(), mp.getName() etc. outside a JPA session.
+        List<SupplierOffering> allOfferings = supplierOfferingRepository.findBySupplierId_WithMasterProduct(id);
+        if (!allOfferings.isEmpty()) {
+            // Batch-load primary images for all master products in this supplier's offerings
+            List<java.util.UUID> mpIds = allOfferings.stream()
+                    .map(o -> o.getMasterProduct().getId())
+                    .distinct()
+                    .collect(Collectors.toList());
+            List<MasterProductImage> allImages = masterProductImageRepository.findByMasterProductIdInAndStatus(mpIds, "ACTIVE");
+            Map<java.util.UUID, String> primaryImageUrlMap = new java.util.HashMap<>();
+            // Group images by master product and resolve primary or first by display order
+            Map<java.util.UUID, List<MasterProductImage>> imagesByMp = allImages.stream()
+                    .collect(Collectors.groupingBy(img -> img.getMasterProduct().getId()));
+            for (Map.Entry<java.util.UUID, List<MasterProductImage>> entry : imagesByMp.entrySet()) {
+                java.util.UUID mpId = entry.getKey();
+                List<MasterProductImage> imgs = entry.getValue();
+                String url = imgs.stream()
+                        .filter(img -> Boolean.TRUE.equals(img.getIsPrimary()))
+                        .findFirst()
+                        .map(img -> "/api/v1/master-products/" + mpId + "/images/" + img.getId() + "/content")
+                        .orElseGet(() -> imgs.stream()
+                                .min(java.util.Comparator.comparingInt(MasterProductImage::getDisplayOrder))
+                                .map(img -> "/api/v1/master-products/" + mpId + "/images/" + img.getId() + "/content")
+                                .orElse(null));
+                primaryImageUrlMap.put(mpId, url);
+            }
+
+            // Manual pagination on the in-memory list
+            int start = (int) safePageable.getOffset();
+            int end = Math.min(start + safePageable.getPageSize(), allOfferings.size());
+            List<SupplierOffering> pageContent = start >= allOfferings.size()
+                    ? java.util.Collections.emptyList()
+                    : allOfferings.subList(start, end);
+
+            List<SupplierProductPublicResponse> mapped = pageContent.stream().map(offering -> {
+                MasterProduct mp = offering.getMasterProduct();
+                ProductCategory cat = mp != null && mp.getCategory() != null ? mp.getCategory() : ProductCategory.API;
+                String imageUrl = primaryImageUrlMap.getOrDefault(mp.getId(), null);
+                return new SupplierProductPublicResponse(
+                        mp.getId(),
+                        mp.getMasterProductCode(),
+                        mp.getName(),
+                        mp.getDescription(),
+                        cat,
+                        mp.getCasNumber(),
+                        mp.getMolecularFormula(),
+                        imageUrl,
+                        offering.getPurity(),
+                        offering.getGrade(),
+                        offering.getMoqKg(),
+                        offering.getPackaging(),
+                        offering.getLeadTimeDays(),
+                        offering.getAvailabilityStatus(),
+                        offering.getExportReady(),
+                        offering.getPrice(),
+                        offering.getCurrency()
+                );
+            }).collect(Collectors.toList());
+
+            Page<SupplierProductPublicResponse> responsePage =
+                    new org.springframework.data.domain.PageImpl<>(mapped, safePageable, allOfferings.size());
+            return ResponseEntity.ok(responsePage);
+        }
+
+        // 2. Legacy fallback
+        try {
+            if (supplier.getUser() == null ||
+                    supplier.getUser().getStatus() == com.kemkendra.identity.UserStatus.SUSPENDED ||
+                    supplier.getUser().getDeletedAt() != null) {
+                return ResponseEntity.ok(Page.empty(safePageable));
+            }
+
+            Page<Product> products = productRepository.findBySellerId(supplier.getUser().getId(), safePageable);
+            
+            Page<SupplierProductPublicResponse> responsePage = products
+                .map(product -> new SupplierProductPublicResponse(
+                        product.getId(),
+                        null, // legacy products do not have masterProductCode
+                        product.getName(),
+                        product.getDescription(),
+                        product.getCategory(),
+                        product.getCasNumber(),
+                        product.getMolecularFormula(),
+                        null, // legacy products do not have MasterProductImage
+                        product.getPurity(),
+                        product.getGrade(),
+                        product.getMoqKg(),
+                        product.getPackaging(),
+                        product.getLeadTimeDays(),
+                        product.getAvailabilityStatus(),
+                        product.getExportReady(),
+                        null, // no price on legacy Product entity
+                        null  // no currency on legacy Product entity
+                ));
+
+            return ResponseEntity.ok(responsePage);
+        } catch (Exception e) {
+            log.warn("Failed to fetch legacy products for supplier {}: {}", id, e.getMessage());
+            return ResponseEntity.ok(Page.empty(safePageable));
+        }
+    }
+}

@@ -1,0 +1,58 @@
+# Version Control & IDEs
+.git
+.gitignore
+.dockerignore
+.github
+.idea
+.vscode
+.agents
+.planning
+
+# Node.js & Next.js local build artifacts
+**/.next
+**/node_modules
+**/.turbo
+**/.cache
+**/out
+**/dist
+**/coverage
+**/*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Java / Maven local build artifacts
+**/target
+.mvn
+
+# Local runtime storage & logs
+build
+dist
+storage
+uploads
+logs
+**/*.log
+
+# Archives & Temporary files
+*.zip
+*.tar.gz
+*.dump
+*.sql.gz
+database/backups
+**/backups
+*.pyc
+__pycache__
+scratch*.json
+graphify-out
+.DS_Store
+Thumbs.db
+
+# Reports & Documentation
+*.md
+docs/
+
+# Environment files
+.env
+.env.*
+!.env.example
