@@ -79,9 +79,7 @@ export async function generateMetadata({
         images: product.primaryImageUrl
           ? [
               {
-                url: product.primaryImageUrl.startsWith("http")
-                  ? product.primaryImageUrl
-                  : `${API_URL}${product.primaryImageUrl}`,
+                url: resolveClientImageUrl(product.primaryImageUrl) || `${SITE_URL}/icon.png`,
                 alt: `${product.name} chemical product`,
               },
             ]

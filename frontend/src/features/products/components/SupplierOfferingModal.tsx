@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import { getDocuments, downloadDocument, DocumentResponse } from "@/features/documents/api/documentApi";
 import { SupplierPerformance } from "@/features/suppliers/types";
-import { resolveApiUrl } from "@/lib/apiUrl";
+import { resolveApiUrl, resolveClientImageUrl } from "@/lib/apiUrl";
 
 export interface SupplierOfferingModalData {
   id?: string;
@@ -169,7 +169,7 @@ export default function SupplierOfferingModal({
               if (Array.isArray(data) && data.length > 0) {
                 loadedImages = data.map((img: any) => ({
                   id: img.id,
-                  imageUrl: img.imageUrl || resolveApiUrl(`/api/v1/supplier/offerings/${offeringId}/images/${img.id}/content`),
+                  imageUrl: resolveClientImageUrl(img.imageUrl) || resolveClientImageUrl(`/api/v1/supplier/offerings/${offeringId}/images/${img.id}/content`) || "",
                   isPrimary: img.isPrimary,
                   altText: img.altText,
                 }));
@@ -187,7 +187,7 @@ export default function SupplierOfferingModal({
               if (Array.isArray(data) && data.length > 0) {
                 loadedImages = data.map((img: any) => ({
                   id: img.id,
-                  imageUrl: img.imageUrl || resolveApiUrl(`/api/v1/master-products/${masterProductId}/images/${img.id}/content`),
+                  imageUrl: resolveClientImageUrl(img.imageUrl) || resolveClientImageUrl(`/api/v1/master-products/${masterProductId}/images/${img.id}/content`) || "",
                   isPrimary: img.isPrimary,
                   altText: img.altText,
                 }));

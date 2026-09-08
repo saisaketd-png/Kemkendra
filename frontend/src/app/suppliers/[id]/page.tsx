@@ -7,9 +7,8 @@ import { notFound } from "next/navigation";
 import { getSupplierPublicProfile, getSupplierProducts } from "@/features/suppliers/api";
 import { SupplierProductCatalog } from "@/features/suppliers/components/SupplierProductCatalog";
 import { SupplierLogo } from "@/features/suppliers/components/SupplierLogo";
-import { Badge, Button, Card, PageHeader } from "@/shared/components/ui/KemkendraUI";
 import { serializeJsonLd } from "@/shared/utils/security";
-import { resolveApiUrl, resolveClientImageUrl } from "@/lib/apiUrl";
+import { resolveClientImageUrl } from "@/lib/apiUrl";
 
 export const revalidate = 60;
 
@@ -51,7 +50,7 @@ export async function generateMetadata(props: {
         url: `${SITE_URL}/suppliers/${params.id}`,
         siteName: "KemKendra",
         type: "profile",
-        images: supplier.logoUrl ? [{ url: `${SITE_URL}${supplier.logoUrl}`, alt: `${supplier.name} logo` }] : undefined,
+        images: supplier.logoUrl ? [{ url: resolveClientImageUrl(supplier.logoUrl) || `${SITE_URL}/icon.png`, alt: `${supplier.name} logo` }] : undefined,
       },
       twitter: {
         card: "summary_large_image",
