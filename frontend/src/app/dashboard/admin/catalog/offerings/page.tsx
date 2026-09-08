@@ -221,7 +221,23 @@ export default function AdminOfferingGovernanceDashboardPage() {
                       <td className="px-4 py-3.5">
                         <span className="block font-bold text-slate-800">Purity: {off.purity ? `${off.purity}%` : "N/A"}</span>
                         <span className="text-[10px] text-slate-500 block">Grade: {off.grade || "N/A"}</span>
-                        <div className="flex items-center gap-1 mt-0.5">
+                        
+                        {/* Quality Score Bar */}
+                        <div className="mt-1.5 flex items-center gap-1.5">
+                          <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full rounded-full ${
+                                (off.qualityScore ?? 85) >= 80 ? "bg-emerald-500" : (off.qualityScore ?? 85) >= 50 ? "bg-amber-500" : "bg-rose-500"
+                              }`}
+                              style={{ width: `${off.qualityScore ?? 85}%` }}
+                            />
+                          </div>
+                          <span className="text-[9px] font-mono font-bold text-slate-600">
+                            {off.qualityScore ?? 85}%
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-1 mt-1">
                           {off.coaAvailable ? (
                             <span className="px-1.5 py-0.2 bg-emerald-50 text-emerald-800 text-[9px] font-extrabold rounded">COA: Avail</span>
                           ) : (

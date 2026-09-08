@@ -381,8 +381,8 @@ export default function DashboardClientLayout({
           icon: Layers,
         },
         {
-          name: "Offering Review",
-          href: "/dashboard/admin/catalog/offerings/quality",
+          name: "Offering Governance & Quality",
+          href: "/dashboard/admin/catalog/offerings",
           icon: Package,
         },
       ],
