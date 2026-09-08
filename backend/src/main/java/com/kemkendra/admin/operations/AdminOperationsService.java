@@ -425,7 +425,7 @@ public class AdminOperationsService {
 
         long pendingOff = supplierOfferingRepository.countByModerationStatus("PENDING_REVIEW");
         if (pendingOff > 0) {
-            items.add(new ActionCenterItemResponse("act-2", "OFFERING_MODERATION", "HIGH", "Offerings Pending Moderation", "Supplier offerings waiting for technical review", pendingOff, "/dashboard/admin/catalog/offerings/quality"));
+            items.add(new ActionCenterItemResponse("act-2", "OFFERING_MODERATION", "HIGH", "Offerings Pending Moderation", "Supplier offerings waiting for technical review", pendingOff, "/dashboard/admin/catalog/offerings"));
         }
 
         long pendingReq = productRequestRepository.countByStatus("PENDING");
