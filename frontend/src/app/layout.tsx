@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/shared/context/ToastContext";
 import { MobileBottomNav } from "@/shared/components/MobileBottomNav";
+import { OfflineBanner } from "@/shared/components/OfflineBanner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -69,6 +70,7 @@ export default function RootLayout({
     >
       <body className="font-sans min-h-full flex flex-col bg-[#FAFAFA] text-[#0F172A] pb-16 lg:pb-0">
         <ToastProvider>
+          <OfflineBanner />
           {children}
           <MobileBottomNav />
         </ToastProvider>

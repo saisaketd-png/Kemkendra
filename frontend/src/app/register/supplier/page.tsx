@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { registerSupplier, getAuthUser } from "@/features/auth/api/auth";
 import { parseApiError } from "@/shared/utils/errorParser";
-import { ArrowRight, Shield, Award, Globe, Building2, CheckCircle2, Mail, ShieldCheck } from "lucide-react";
+import { ArrowRight, Shield, Award, Globe, Building2, CheckCircle2, Mail, ShieldCheck, AlertCircle } from "lucide-react";
 import { KemKendraLogo } from "@/shared/components/KemkendraLogo";
+import { PasswordInput } from "@/shared/components/PasswordInput";
+import { PasswordStrengthMeter } from "@/shared/components/PasswordStrengthMeter";
 
 function SupplierRegisterForm() {
   const router = useRouter();
@@ -393,15 +395,14 @@ function SupplierRegisterForm() {
                       >
                         Account Password <span className="text-red-500">*</span>
                       </label>
-                      <input
+                      <PasswordInput
                         id="password"
-                        type="password"
                         required
+                        showIcon={false}
                         autoComplete="new-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         disabled={loading}
-                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 disabled:bg-slate-100"
                         placeholder="Min 8 characters"
                       />
                     </div>
@@ -413,19 +414,38 @@ function SupplierRegisterForm() {
                       >
                         Confirm Password <span className="text-red-500">*</span>
                       </label>
-                      <input
+                      <PasswordInput
                         id="confirmPassword"
-                        type="password"
                         required
+                        showIcon={false}
                         autoComplete="new-password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         disabled={loading}
-                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 disabled:bg-slate-100"
                         placeholder="Repeat password"
                       />
+                      {confirmPassword.length > 0 && (
+                        <div className={`flex items-center gap-1 text-[11px] font-medium pt-1 ${
+                          password === confirmPassword ? "text-emerald-600" : "text-red-600"
+                        }`}>
+                          {password === confirmPassword ? (
+                            <>
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                              <span>Passwords match</span>
+                            </>
+                          ) : (
+                            <>
+                              <AlertCircle className="w-3.5 h-3.5 text-red-600 flex-shrink-0" />
+                              <span>Passwords do not match</span>
+                            </>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
+
+                  {/* Password Strength Meter */}
+                  <PasswordStrengthMeter password={password} />
                 </div>
               </div>
 

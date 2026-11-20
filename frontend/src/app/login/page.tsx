@@ -7,6 +7,7 @@ import { login, getAuthUser, setAuthToken } from "@/features/auth/api/auth";
 import { authenticatedFetch } from "@/features/auth/api/authenticatedFetch";
 import { Lock, Mail, ShieldAlert, ArrowRight } from "lucide-react";
 import { KemKendraLogo } from "@/shared/components/KemkendraLogo";
+import { PasswordInput } from "@/shared/components/PasswordInput";
 
 function LoginForm() {
   const router = useRouter();
@@ -155,6 +156,7 @@ function LoginForm() {
                   id="email"
                   type="email"
                   required
+                  autoFocus
                   autoComplete="email"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
@@ -180,22 +182,15 @@ function LoginForm() {
                   Forgot password?
                 </Link>
               </div>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#64748B]">
-                  <Lock className="w-3.5 h-3.5" />
-                </div>
-                <input
-                  id="password"
-                  type="password"
-                  required
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  disabled={loading}
-                  className="w-full h-9 rounded-[6px] border border-[#E4E4E7] pl-8.5 pr-3 text-xs text-[#0F172A] placeholder:text-[#94A3B8] outline-none transition-colors focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC] bg-white disabled:bg-[#F4F4F5]"
-                  placeholder="••••••••••••"
-                />
-              </div>
+              <PasswordInput
+                id="password"
+                required
+                autoComplete="current-password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                disabled={loading}
+                placeholder="••••••••••••"
+              />
             </div>
 
             <button

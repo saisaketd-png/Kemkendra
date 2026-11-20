@@ -4,6 +4,8 @@ services:
     image: postgres:16-alpine
     container_name: kemkendra-prod-postgres
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
 
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-kemkendra}
@@ -32,6 +34,8 @@ services:
 
     container_name: kemkendra-prod-backend
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
 
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
@@ -90,6 +94,8 @@ services:
 
     container_name: kemkendra-prod-frontend
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
 
     environment:
       HOSTNAME: "0.0.0.0"
@@ -118,6 +124,8 @@ services:
     image: nginx:alpine
     container_name: kemkendra-prod-nginx
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
 
     ports:
       - "80:80"

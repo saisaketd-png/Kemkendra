@@ -6,6 +6,7 @@ import Link from "next/link";
 import { resetPassword } from "@/features/auth/api/auth";
 import { Lock, Eye, EyeOff, ArrowRight, CheckCircle2, ShieldAlert, KeyRound } from "lucide-react";
 import { KemKendraLogo } from "@/shared/components/KemkendraLogo";
+import { PasswordStrengthMeter } from "@/shared/components/PasswordStrengthMeter";
 
 function ResetPasswordForm() {
   const searchParams = useSearchParams();
@@ -169,15 +170,12 @@ function ResetPasswordForm() {
               </div>
             </div>
 
-            {/* Password Validation Indicator */}
+            {/* Password Strength Meter & Live Match Indicator */}
             {password && (
-              <div className="text-[11px] space-y-1 pt-1">
-                <p className={password.length >= 8 ? "text-emerald-600 flex items-center gap-1.5" : "text-slate-400 flex items-center gap-1.5"}>
-                  <span className={`w-1.5 h-1.5 rounded-full ${password.length >= 8 ? "bg-emerald-500" : "bg-slate-300"}`} />
-                  At least 8 characters
-                </p>
+              <div className="space-y-2 pt-1">
+                <PasswordStrengthMeter password={password} />
                 {confirmPassword && (
-                  <p className={password === confirmPassword ? "text-emerald-600 flex items-center gap-1.5" : "text-rose-500 flex items-center gap-1.5"}>
+                  <p className={password === confirmPassword ? "text-emerald-600 flex items-center gap-1.5 text-[11px] font-medium" : "text-rose-500 flex items-center gap-1.5 text-[11px] font-medium"}>
                     <span className={`w-1.5 h-1.5 rounded-full ${password === confirmPassword ? "bg-emerald-500" : "bg-rose-500"}`} />
                     {password === confirmPassword ? "Passwords match" : "Passwords do not match"}
                   </p>

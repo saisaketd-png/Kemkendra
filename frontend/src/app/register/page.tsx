@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { registerBuyer, getAuthUser } from "@/features/auth/api/auth";
 import { parseApiError } from "@/shared/utils/errorParser";
-import { ArrowRight, Mail, CheckCircle2, ShieldCheck } from "lucide-react";
+import { ArrowRight, Mail, CheckCircle2, ShieldCheck, AlertCircle } from "lucide-react";
 import { KemKendraLogo } from "@/shared/components/KemkendraLogo";
+import { PasswordInput } from "@/shared/components/PasswordInput";
+import { PasswordStrengthMeter } from "@/shared/components/PasswordStrengthMeter";
 
 function RegisterForm() {
   const router = useRouter();
@@ -223,15 +225,14 @@ function RegisterForm() {
                 >
                   Password <span className="text-[#DC2626]">*</span>
                 </label>
-                <input
+                <PasswordInput
                   id="password"
-                  type="password"
                   required
+                  showIcon={false}
                   autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
-                  className="w-full h-9 rounded-[6px] border border-[#E4E4E7] px-3 text-xs text-[#0F172A] placeholder:text-[#94A3B8] outline-none transition-colors focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC] bg-white disabled:bg-[#F4F4F5]"
                   placeholder="Min. 8 characters"
                 />
               </div>
@@ -243,19 +244,38 @@ function RegisterForm() {
                 >
                   Confirm Password <span className="text-[#DC2626]">*</span>
                 </label>
-                <input
+                <PasswordInput
                   id="confirmPassword"
-                  type="password"
                   required
+                  showIcon={false}
                   autoComplete="new-password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   disabled={loading}
-                  className="w-full h-9 rounded-[6px] border border-[#E4E4E7] px-3 text-xs text-[#0F172A] placeholder:text-[#94A3B8] outline-none transition-colors focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC] bg-white disabled:bg-[#F4F4F5]"
                   placeholder="Repeat password"
                 />
+                {confirmPassword.length > 0 && (
+                  <div className={`flex items-center gap-1 text-[11px] font-medium pt-0.5 ${
+                    password === confirmPassword ? "text-[#059669]" : "text-[#DC2626]"
+                  }`}>
+                    {password === confirmPassword ? (
+                      <>
+                        <CheckCircle2 className="w-3 h-3 text-[#059669] flex-shrink-0" />
+                        <span>Passwords match</span>
+                      </>
+                    ) : (
+                      <>
+                        <AlertCircle className="w-3 h-3 text-[#DC2626] flex-shrink-0" />
+                        <span>Passwords do not match</span>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
+
+            {/* Password Strength Meter */}
+            <PasswordStrengthMeter password={password} />
 
             {/* Terms of Service and Privacy Policy Required Checkboxes */}
             <div className="pt-2 pb-1 space-y-2 border-t border-[#E4E4E7]">
