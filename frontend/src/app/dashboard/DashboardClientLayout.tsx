@@ -152,6 +152,11 @@ export default function DashboardClientLayout({
           exact: true,
         },
         {
+          name: "KemKendra Sourcing",
+          href: "/dashboard/buyer/sourcing",
+          icon: FlaskConical,
+        },
+        {
           name: "My Sourcing RFQs",
           href: "/dashboard/rfqs",
           icon: FileText,
@@ -314,6 +319,11 @@ export default function DashboardClientLayout({
           name: "User Administration",
           href: "/dashboard/admin/users",
           icon: Users,
+        },
+        {
+          name: "Sourcing Desk",
+          href: "/dashboard/admin/sourcing",
+          icon: FlaskConical,
         },
         {
           name: "RFQ Oversight",

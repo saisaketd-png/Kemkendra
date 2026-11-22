@@ -21,4 +21,11 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long>, JpaSp
     Page<Supplier> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
     List<Supplier> findByVerificationStatus(SupplierVerificationStatus verificationStatus);
+
+    Optional<Supplier> findFirstByNameIgnoreCase(String name);
+
+    Optional<Supplier> findFirstByBusinessEmailIgnoreCase(String businessEmail);
+
+    @org.springframework.data.jpa.repository.Query("SELECT s FROM Supplier s WHERE LOWER(s.name) LIKE LOWER(CONCAT('%', :query, '%')) OR (s.legalName IS NOT NULL AND LOWER(s.legalName) LIKE LOWER(CONCAT('%', :query, '%'))) OR (s.businessEmail IS NOT NULL AND LOWER(s.businessEmail) LIKE LOWER(CONCAT('%', :query, '%')))")
+    List<Supplier> searchSuppliersForSourcing(@org.springframework.data.repository.query.Param("query") String query, Pageable pageable);
 }

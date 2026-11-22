@@ -80,6 +80,7 @@ public class Notification {
     public static NotificationCategory deriveCategoryFromType(NotificationType type) {
         if (type == null) return NotificationCategory.SYSTEM;
         String name = type.name();
+        if (name.startsWith("SOURCING_")) return NotificationCategory.RFQ;
         if (name.startsWith("RFQ")) return NotificationCategory.RFQ;
         if (name.startsWith("QUOTATION") || name.startsWith("COUNTER_OFFER")) return NotificationCategory.QUOTATION;
         if (name.startsWith("PURCHASE_ORDER") || name.startsWith("PO_")) return NotificationCategory.PURCHASE_ORDER;
@@ -120,6 +121,8 @@ public class Notification {
                  INVOICE_CANCELLED, INVOICE_DISPUTED,
                  PAYMENT_REJECTED, PAYMENT_DISPUTED,
                  DISPUTE_CREATED, DISPUTE_ESCALATED -> NotificationPriority.HIGH;
+            case SOURCING_MORE_INFORMATION_REQUIRED, SOURCING_PROPOSAL_PUBLISHED -> NotificationPriority.HIGH;
+            case SOURCING_REQUEST_CLOSED -> NotificationPriority.LOW;
             case ORDER_DELIVERED, RFQ_EXPIRED -> NotificationPriority.LOW;
             default -> NotificationPriority.NORMAL;
         };

@@ -16,6 +16,7 @@ export default function robots(): MetadataRoute.Robots {
     "/suppliers/*",
     "/about",
     "/contact",
+    "/sourcing",
     "/industries",
     "/resources",
     "/terms",

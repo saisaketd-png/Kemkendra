@@ -231,6 +231,12 @@ public class SecurityConfig {
                                 "/api/v1/orders/**"
                         ).authenticated()
 
+                        // KemKendra Sourcing
+                        .requestMatchers(
+                                "/api/v1/sourcing/**",
+                                "/api/v1/admin/sourcing/**"
+                        ).authenticated()
+
                         // Everything else
                         .anyRequest().authenticated()
                 )

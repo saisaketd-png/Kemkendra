@@ -18,6 +18,9 @@ package com.kemkendra.notification;
  */
 public enum NotificationEntityType {
 
+    /** A custom Sourcing Request — maps to /sourcing/track/{entityId} */
+    SOURCING_REQUEST,
+
     /** An RFQ — maps to /dashboard/rfqs/{entityId} */
     RFQ,
 

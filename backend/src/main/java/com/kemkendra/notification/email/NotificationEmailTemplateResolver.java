@@ -39,6 +39,7 @@ public class NotificationEmailTemplateResolver {
         }
 
         return switch (entityType) {
+            case SOURCING_REQUEST -> appBaseUrl + "/sourcing/track/" + entityId;
             case RFQ -> appBaseUrl + "/dashboard/rfqs/" + entityId;
             case QUOTATION -> appBaseUrl + "/dashboard/rfqs/" + entityId;
             case PURCHASE_ORDER -> appBaseUrl + "/dashboard/orders/" + entityId;
@@ -62,6 +63,7 @@ public class NotificationEmailTemplateResolver {
         }
 
         return switch (entityType) {
+            case SOURCING_REQUEST -> "Track Sourcing Request";
             case RFQ -> "View RFQ";
             case QUOTATION -> "View Quotation";
             case PURCHASE_ORDER -> "View Purchase Order";

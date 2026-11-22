@@ -3,6 +3,7 @@ package com.kemkendra.rfq.sourcing;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -18,6 +19,48 @@ public class SourcingRequest {
 
     @Column(name = "buyer_id", nullable = false)
     private UUID buyerId;
+
+    @Column(name = "product_name")
+    private String productName;
+
+    @Column(name = "cas_number", length = 100)
+    private String casNumber;
+
+    @Column(name = "category", length = 100)
+    private String category;
+
+    @Column(name = "grade", length = 100)
+    private String grade;
+
+    @Column(name = "specifications", columnDefinition = "TEXT")
+    private String specifications;
+
+    @Column(name = "pharmacopeial_standard", length = 50)
+    private String pharmacopeialStandard;
+
+    @Column(name = "delivery_location")
+    private String deliveryLocation;
+
+    @Column(name = "packaging", length = 150)
+    private String packaging;
+
+    @Column(name = "target_price", precision = 18, scale = 2)
+    private BigDecimal targetPrice;
+
+    @Column(name = "currency", length = 10)
+    private String currency;
+
+    @Column(name = "expected_delivery_date")
+    private LocalDate expectedDeliveryDate;
+
+    @Column(name = "additional_requirements", columnDefinition = "TEXT")
+    private String additionalRequirements;
+
+    @Column(name = "attachment_references", columnDefinition = "TEXT")
+    private String attachmentReferences;
+
+    @Column(name = "assigned_to_user_id")
+    private UUID assignedToUserId;
 
     @Column(name = "master_product_id")
     private UUID masterProductId;
@@ -53,7 +96,7 @@ public class SourcingRequest {
             id = UUID.randomUUID();
         }
         if (status == null) {
-            status = SourcingRequestStatus.OPEN;
+            status = SourcingRequestStatus.SUBMITTED;
         }
         LocalDateTime now = LocalDateTime.now();
         if (createdAt == null) {
@@ -63,6 +106,9 @@ public class SourcingRequest {
         if (sourcingRequestReference == null) {
             String prefix = id.toString().substring(0, 8).toUpperCase();
             sourcingRequestReference = String.format("SRQ-%d-%s", createdAt.getYear(), prefix);
+        }
+        if (currency == null) {
+            currency = "INR";
         }
     }
 
@@ -95,6 +141,118 @@ public class SourcingRequest {
         this.buyerId = buyerId;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getCasNumber() {
+        return casNumber;
+    }
+
+    public void setCasNumber(String casNumber) {
+        this.casNumber = casNumber;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public String getSpecifications() {
+        return specifications;
+    }
+
+    public void setSpecifications(String specifications) {
+        this.specifications = specifications;
+    }
+
+    public String getPharmacopeialStandard() {
+        return pharmacopeialStandard;
+    }
+
+    public void setPharmacopeialStandard(String pharmacopeialStandard) {
+        this.pharmacopeialStandard = pharmacopeialStandard;
+    }
+
+    public String getDeliveryLocation() {
+        return deliveryLocation;
+    }
+
+    public void setDeliveryLocation(String deliveryLocation) {
+        this.deliveryLocation = deliveryLocation;
+    }
+
+    public String getPackaging() {
+        return packaging;
+    }
+
+    public void setPackaging(String packaging) {
+        this.packaging = packaging;
+    }
+
+    public BigDecimal getTargetPrice() {
+        return targetPrice;
+    }
+
+    public void setTargetPrice(BigDecimal targetPrice) {
+        this.targetPrice = targetPrice;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public LocalDate getExpectedDeliveryDate() {
+        return expectedDeliveryDate;
+    }
+
+    public void setExpectedDeliveryDate(LocalDate expectedDeliveryDate) {
+        this.expectedDeliveryDate = expectedDeliveryDate;
+    }
+
+    public String getAdditionalRequirements() {
+        return additionalRequirements;
+    }
+
+    public void setAdditionalRequirements(String additionalRequirements) {
+        this.additionalRequirements = additionalRequirements;
+    }
+
+    public String getAttachmentReferences() {
+        return attachmentReferences;
+    }
+
+    public void setAttachmentReferences(String attachmentReferences) {
+        this.attachmentReferences = attachmentReferences;
+    }
+
+    public UUID getAssignedToUserId() {
+        return assignedToUserId;
+    }
+
+    public void setAssignedToUserId(UUID assignedToUserId) {
+        this.assignedToUserId = assignedToUserId;
+    }
+
     public UUID getMasterProductId() {
         return masterProductId;
     }
@@ -117,6 +275,14 @@ public class SourcingRequest {
 
     public void setTargetQuantity(BigDecimal targetQuantity) {
         this.targetQuantity = targetQuantity;
+    }
+
+    public BigDecimal getQuantity() {
+        return targetQuantity;
+    }
+
+    public void setQuantity(BigDecimal quantity) {
+        this.targetQuantity = quantity;
     }
 
     public String getUnit() {
@@ -155,7 +321,15 @@ public class SourcingRequest {
         return createdAt;
     }
 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
