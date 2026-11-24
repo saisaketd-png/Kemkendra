@@ -1,8 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import { FileCheck } from "lucide-react";
-import RfqModal from "./RfqModal";
+
+const RfqModal = dynamic(() => import("./RfqModal"), {
+  ssr: false,
+});
 
 export type RequestQuoteButtonProps = {
   productId: string;

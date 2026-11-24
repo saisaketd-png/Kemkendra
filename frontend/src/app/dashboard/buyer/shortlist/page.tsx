@@ -15,8 +15,12 @@ import {
   Star
 } from "lucide-react";
 import { authenticatedFetch } from "@/features/auth/api/authenticatedFetch";
-import RfqModal from "@/features/rfq/components/RfqModal";
+import dynamic from "next/dynamic";
 import { useToast } from "@/shared/context/ToastContext";
+
+const RfqModal = dynamic(() => import("@/features/rfq/components/RfqModal"), {
+  ssr: false,
+});
 
 export default function BuyerShortlistPage() {
   const toast = useToast();

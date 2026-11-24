@@ -1,12 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ChevronRight, ChevronDown, ChevronUp, ShieldCheck, AlertCircle } from "lucide-react";
 import { MasterProduct } from "@/features/supplier-products/api/masterCatalogApi";
 import { fetchProductSuppliers } from "@/lib/api";
 import { ExpandableSupplierOfferingsDrawer, SupplierOffering } from "./ExpandableSupplierOfferingsDrawer";
-import RfqModal from "../../rfq/components/RfqModal";
+
+const RfqModal = dynamic(() => import("../../rfq/components/RfqModal"), {
+  ssr: false,
+});
 
 interface MasterProductCardProps {
   product: MasterProduct;

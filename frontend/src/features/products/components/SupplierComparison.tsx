@@ -20,12 +20,18 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { fetchProductSuppliers, resolveClientImageUrl } from "@/lib/api";
 import { authenticatedFetch } from "@/features/auth/api/authenticatedFetch";
 import { SupplierLogo } from "@/features/suppliers/components/SupplierLogo";
-import RfqModal from "../../rfq/components/RfqModal";
-import SupplierOfferingModal from "./SupplierOfferingModal";
 import { useToast } from "@/shared/context/ToastContext";
+
+const RfqModal = dynamic(() => import("../../rfq/components/RfqModal"), {
+  ssr: false,
+});
+const SupplierOfferingModal = dynamic(() => import("./SupplierOfferingModal"), {
+  ssr: false,
+});
 
 export type ProductSupplier = {
   id: string;
