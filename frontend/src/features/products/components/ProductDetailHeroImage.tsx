@@ -29,9 +29,12 @@ export function ProductDetailHeroImage({
         <img
           src={imageUrl!}
           alt={`${productName} chemical structure monograph`}
-          className="w-full h-full object-contain p-2"
+          className="w-full h-full object-contain p-2 aspect-[4/3]"
           onError={() => setHasError(true)}
           loading="eager"
+          fetchPriority="high"
+          width={600}
+          height={380}
         />
       ) : (
         <div className="w-full h-full flex items-center justify-center">

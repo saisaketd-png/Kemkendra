@@ -11,6 +11,15 @@ const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
   preload: true,
+  fallback: [
+    "system-ui",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "Roboto",
+    "sans-serif",
+  ],
+  adjustFontFallback: true,
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -18,6 +27,8 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   display: "swap",
   preload: true,
+  fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
+  adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {
