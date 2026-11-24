@@ -69,4 +69,8 @@ export const userAppealApi = {
     }
     return res.json();
   },
+
+  async respondToAppeal(appealId: string, response: string): Promise<UserAppeal> {
+    return this.respondToInformation(appealId, response);
+  },
 };

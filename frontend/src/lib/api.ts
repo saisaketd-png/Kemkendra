@@ -47,14 +47,19 @@ export async function fetchProductDetail(idOrCode: string) {
   }
 
   // Fallback for legacy ID lookups
-  const res = await fetch(resolveApiUrl(`/api/v1/products/${encodeURIComponent(idOrCode)}/detail`), {
-    cache: "no-store",
-  });
+  try {
+    const res = await fetch(resolveApiUrl(`/api/v1/products/${encodeURIComponent(idOrCode)}/detail`), {
+      cache: "no-store",
+    });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch product");
+    if (res.ok) {
+      return res.json();
+    }
+  } catch {
+    // Network or lookup error
   }
-  return res.json();
+
+  throw new Error("Failed to fetch product");
 }
 
 export async function fetchProductSuppliers(idOrCode: string) {
@@ -104,9 +109,9 @@ export async function fetchProductSuppliers(idOrCode: string) {
       });
       if (res.ok) return res.json();
     }
-
-    return [];
   } catch {
-    return [];
+    // Network or server error
   }
+
+  return [];
 }

@@ -206,55 +206,55 @@ export default function SupplierComparison({ productId, productName }: SupplierC
       </div>
 
       {/* 2. Compact Procurement Filter Ribbon */}
-      <div className="p-3 bg-[#FAFBFC] border border-[#DFE1E6] rounded-lg flex flex-wrap items-center gap-3 text-xs">
+      <div className="p-3 bg-[#F8F9FA] border border-slate-200/80 rounded-xl flex flex-wrap items-center gap-3 text-xs">
         <input
           type="number"
           placeholder="Max Price"
           value={maxPrice}
           onChange={(e) => setMaxPrice(e.target.value)}
-          className="px-2.5 py-1 bg-white border border-[#DFE1E6] rounded w-28 text-xs font-medium focus:outline-none focus:border-[#0052CC]"
+          className="px-3 py-1.5 bg-white border border-slate-300 rounded-lg w-28 text-xs font-medium focus:outline-none focus:border-[#0052CC] shadow-2xs"
         />
         <input
           type="number"
           placeholder="Min Purity %"
           value={minPurity}
           onChange={(e) => setMinPurity(e.target.value)}
-          className="px-2.5 py-1 bg-white border border-[#DFE1E6] rounded w-28 text-xs font-medium focus:outline-none focus:border-[#0052CC]"
+          className="px-3 py-1.5 bg-white border border-slate-300 rounded-lg w-28 text-xs font-medium focus:outline-none focus:border-[#0052CC] shadow-2xs"
         />
         <input
           type="number"
           placeholder="Max MOQ (kg)"
           value={maxMoq}
           onChange={(e) => setMaxMoq(e.target.value)}
-          className="px-2.5 py-1 bg-white border border-[#DFE1E6] rounded w-28 text-xs font-medium focus:outline-none focus:border-[#0052CC]"
+          className="px-3 py-1.5 bg-white border border-slate-300 rounded-lg w-28 text-xs font-medium focus:outline-none focus:border-[#0052CC] shadow-2xs"
         />
 
-        <div className="h-4 w-px bg-[#DFE1E6] hidden sm:block" />
+        <div className="h-4 w-px bg-slate-300 hidden sm:block" />
 
-        <label className="flex items-center gap-1.5 cursor-pointer font-semibold text-[#172B4D] select-none hover:text-[#091E42]">
+        <label className="flex items-center gap-1.5 cursor-pointer font-semibold text-slate-700 select-none hover:text-[#0F172A]">
           <input
             type="checkbox"
             checked={filterCoa}
             onChange={(e) => setFilterCoa(e.target.checked)}
-            className="rounded border-[#DFE1E6] text-[#0052CC]"
+            className="rounded border-slate-300 text-[#0052CC]"
           />
           COA Available
         </label>
-        <label className="flex items-center gap-1.5 cursor-pointer font-semibold text-[#172B4D] select-none hover:text-[#091E42]">
+        <label className="flex items-center gap-1.5 cursor-pointer font-semibold text-slate-700 select-none hover:text-[#0F172A]">
           <input
             type="checkbox"
             checked={filterMsds}
             onChange={(e) => setFilterMsds(e.target.checked)}
-            className="rounded border-[#DFE1E6] text-[#0052CC]"
+            className="rounded border-slate-300 text-[#0052CC]"
           />
           MSDS Available
         </label>
-        <label className="flex items-center gap-1.5 cursor-pointer font-semibold text-[#172B4D] select-none hover:text-[#091E42]">
+        <label className="flex items-center gap-1.5 cursor-pointer font-semibold text-slate-700 select-none hover:text-[#0F172A]">
           <input
             type="checkbox"
             checked={filterExport}
             onChange={(e) => setFilterExport(e.target.checked)}
-            className="rounded border-[#DFE1E6] text-[#0052CC]"
+            className="rounded border-slate-300 text-[#0052CC]"
           />
           Export Ready
         </label>

@@ -108,29 +108,29 @@ export default function CreateMasterProductPage() {
 
       {/* Pre-Validation Alert */}
       {duplicateCandidate && (
-        <div className="p-5 bg-purple-50 border border-purple-200 rounded-2xl space-y-3">
-          <div className="flex items-center gap-2 text-purple-900 font-extrabold text-xs uppercase tracking-wide">
-            <AlertTriangle className="w-4 h-4 text-purple-600" />
+        <div className="p-5 bg-amber-50 border border-amber-200 rounded-2xl space-y-3">
+          <div className="flex items-center gap-2 text-amber-900 font-extrabold text-xs uppercase tracking-wide">
+            <AlertTriangle className="w-4 h-4 text-amber-600" />
             POTENTIAL DUPLICATE DETECTED
           </div>
-          <div className="p-3 bg-white border border-purple-100 rounded-xl text-xs space-y-1">
+          <div className="p-3 bg-white border border-amber-100 rounded-xl text-xs space-y-1">
             <div className="font-bold text-slate-900">{duplicateCandidate.name} ({duplicateCandidate.masterProductCode})</div>
             <div className="text-slate-600">CAS: {duplicateCandidate.casNumber || "N/A"} | Category: {duplicateCandidate.category}</div>
           </div>
           <div className="flex items-center gap-3">
             <Link
               href={`/dashboard/admin/catalog/master-products/${duplicateCandidate.id}`}
-              className="px-4 py-2 bg-purple-600 text-white rounded-xl text-xs font-bold hover:bg-purple-700 transition-colors"
+              className="px-4 py-2 bg-amber-600 text-white rounded-xl text-xs font-bold hover:bg-amber-700 transition-colors"
             >
               USE EXISTING MASTER PRODUCT
             </Link>
-            <span className="text-xs text-purple-700 font-medium">or provide override reason below to proceed with creation.</span>
+            <span className="text-xs text-amber-800 font-medium">or provide override reason below to proceed with creation.</span>
           </div>
         </div>
       )}
 
       {/* Creation Form */}
-      <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xs">
+      <form onSubmit={handleSubmit} className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 space-y-6 shadow-tactile-card">
         <div className="space-y-4 text-xs font-medium">
           <h3 className="text-sm font-extrabold text-slate-900 border-b border-slate-100 pb-2">Canonical Chemical Identity</h3>
           
@@ -216,9 +216,9 @@ export default function CreateMasterProductPage() {
               <button
                 type="button"
                 onClick={handlePreValidate}
-                className="w-full py-2.5 bg-purple-50 border border-purple-200 text-purple-800 hover:bg-purple-100 rounded-xl font-bold transition-colors flex items-center justify-center gap-1.5"
+                className="w-full py-2.5 bg-blue-50 border border-blue-200 text-[#0052CC] hover:bg-blue-100 rounded-xl font-bold transition-colors flex items-center justify-center gap-1.5"
               >
-                <ShieldCheck className="w-4 h-4 text-purple-600" />
+                <ShieldCheck className="w-4 h-4 text-[#0052CC]" />
                 {preValidationChecked ? "Re-Run Pre-Validation" : "Pre-Validate Candidate"}
               </button>
             </div>

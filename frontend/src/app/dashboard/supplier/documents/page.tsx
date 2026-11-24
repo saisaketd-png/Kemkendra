@@ -134,14 +134,14 @@ export default function SupplierDocumentsVaultPage() {
           <div className="flex items-center gap-2">
             <Link
               href="/dashboard/supplier/verification"
-              className="h-8 px-3 text-xs font-medium bg-white text-[#0F172A] border border-[#E4E4E7] hover:bg-[#FAFAFA] rounded-[6px] transition-colors shadow-xs flex items-center gap-1.5"
+              className="h-9 px-3.5 text-xs font-semibold bg-white text-[#0F172A] border border-slate-200 hover:bg-[#F8F9FA] rounded-lg transition-colors shadow-2xs flex items-center gap-1.5 press-tactile"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-[#059669]" />
               <span>Verification Status</span>
             </Link>
             <button
               onClick={loadSupplierProfile}
-              className="h-8 px-3 text-xs font-medium text-[#0F172A] bg-white border border-[#E4E4E7] hover:bg-[#FAFAFA] rounded-[6px] transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer"
+              className="h-9 px-3.5 text-xs font-semibold text-[#0F172A] bg-white border border-slate-200 hover:bg-[#F8F9FA] rounded-lg transition-colors shadow-2xs flex items-center gap-1.5 cursor-pointer press-tactile"
               title="Refresh documents"
             >
               <RefreshCw className="w-3.5 h-3.5" />
@@ -153,60 +153,60 @@ export default function SupplierDocumentsVaultPage() {
 
       {/* 2. Overview Metric Cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-3.5 shadow-tactile-card">
+        <div className="bg-white border border-slate-200/90 rounded-xl p-3.5 shadow-tactile-card">
           <div className="flex items-center justify-between text-[#64748B] mb-1">
-            <span className="text-[10px] font-semibold uppercase tracking-wider font-mono">Active Records</span>
+            <span className="text-[11px] font-semibold">Active Records</span>
             <FolderOpen className="w-3.5 h-3.5 text-[#0052CC]" />
           </div>
-          <div className="text-xl font-bold font-mono text-[#0F172A]">{stats.total}</div>
+          <div className="text-xl font-bold text-[#0F172A]">{stats.total}</div>
           <div className="text-[11px] text-[#64748B] mt-0.5">Governed records</div>
         </div>
 
-        <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-3.5 shadow-tactile-card">
+        <div className="bg-white border border-slate-200/90 rounded-xl p-3.5 shadow-tactile-card">
           <div className="flex items-center justify-between text-[#64748B] mb-1">
-            <span className="text-[10px] font-semibold uppercase tracking-wider font-mono">Valid & Verified</span>
+            <span className="text-[11px] font-semibold">Valid & Verified</span>
             <CheckCircle2 className="w-3.5 h-3.5 text-[#059669]" />
           </div>
-          <div className="text-xl font-bold font-mono text-[#059669]">{stats.valid}</div>
+          <div className="text-xl font-bold text-[#059669]">{stats.valid}</div>
           <div className="text-[11px] text-[#64748B] mt-0.5">Compliant & current</div>
         </div>
 
-        <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-3.5 shadow-tactile-card">
+        <div className="bg-white border border-slate-200/90 rounded-xl p-3.5 shadow-tactile-card">
           <div className="flex items-center justify-between text-[#64748B] mb-1">
-            <span className="text-[10px] font-semibold uppercase tracking-wider font-mono">Expiring Soon</span>
-            <Clock className="w-3.5 h-3.5 text-[#D97706]" />
+            <span className="text-[11px] font-semibold">Expiring Soon</span>
+            <Clock className="w-3.5 h-3.5 text-amber-600" />
           </div>
-          <div className="text-xl font-bold font-mono text-[#D97706]">{stats.expiringSoon}</div>
+          <div className="text-xl font-bold text-amber-600">{stats.expiringSoon}</div>
           <div className="text-[11px] text-[#64748B] mt-0.5">Within 30 days</div>
         </div>
 
-        <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-3.5 shadow-tactile-card">
+        <div className="bg-white border border-slate-200/90 rounded-xl p-3.5 shadow-tactile-card">
           <div className="flex items-center justify-between text-[#64748B] mb-1">
-            <span className="text-[10px] font-semibold uppercase tracking-wider font-mono">Expired</span>
-            <AlertTriangle className="w-3.5 h-3.5 text-[#DC2626]" />
+            <span className="text-[11px] font-semibold">Expired</span>
+            <AlertTriangle className="w-3.5 h-3.5 text-red-600" />
           </div>
-          <div className="text-xl font-bold font-mono text-[#DC2626]">{stats.expired}</div>
+          <div className="text-xl font-bold text-red-600">{stats.expired}</div>
           <div className="text-[11px] text-[#64748B] mt-0.5">Requires renewal</div>
         </div>
 
-        <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-3.5 shadow-tactile-card">
+        <div className="bg-white border border-slate-200/90 rounded-xl p-3.5 shadow-tactile-card">
           <div className="flex items-center justify-between text-[#64748B] mb-1">
-            <span className="text-[10px] font-semibold uppercase tracking-wider font-mono">Audit Lineage</span>
+            <span className="text-[11px] font-semibold">Audit Lineage</span>
             <FileText className="w-3.5 h-3.5 text-[#64748B]" />
           </div>
-          <div className="text-xl font-bold font-mono text-[#0F172A]">{stats.versions}</div>
+          <div className="text-xl font-bold text-[#0F172A]">{stats.versions}</div>
           <div className="text-[11px] text-[#64748B] mt-0.5">Version revisions</div>
         </div>
       </div>
 
       {/* 3. Category Filter Tabs */}
-      <div className="flex items-center gap-1.5 border-b border-[#E4E4E7] pb-2 overflow-x-auto">
+      <div className="flex items-center gap-1.5 border-b border-slate-200 pb-2 overflow-x-auto">
         <button
           onClick={() => setActiveTab("ALL")}
-          className={`px-3 py-1.5 text-xs font-medium rounded-[6px] transition-colors whitespace-nowrap cursor-pointer ${
+          className={`h-9 px-3.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap cursor-pointer press-tactile ${
             activeTab === "ALL"
               ? "bg-[#0052CC] text-white shadow-xs"
-              : "text-[#64748B] hover:text-[#0F172A] hover:bg-[#F4F4F5]"
+              : "text-[#64748B] hover:text-[#0F172A] hover:bg-slate-100"
           }`}
         >
           All Vault Records
@@ -214,10 +214,10 @@ export default function SupplierDocumentsVaultPage() {
 
         <button
           onClick={() => setActiveTab("COMPLIANCE")}
-          className={`px-3 py-1.5 text-xs font-medium rounded-[6px] transition-colors whitespace-nowrap cursor-pointer ${
+          className={`h-9 px-3.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap cursor-pointer press-tactile ${
             activeTab === "COMPLIANCE"
               ? "bg-[#0052CC] text-white shadow-xs"
-              : "text-[#64748B] hover:text-[#0F172A] hover:bg-[#F4F4F5]"
+              : "text-[#64748B] hover:text-[#0F172A] hover:bg-slate-100"
           }`}
         >
           Statutory & Compliance
@@ -225,10 +225,10 @@ export default function SupplierDocumentsVaultPage() {
 
         <button
           onClick={() => setActiveTab("QUALITY")}
-          className={`px-3 py-1.5 text-xs font-medium rounded-[6px] transition-colors whitespace-nowrap cursor-pointer ${
+          className={`h-9 px-3.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap cursor-pointer press-tactile ${
             activeTab === "QUALITY"
               ? "bg-[#0052CC] text-white shadow-xs"
-              : "text-[#64748B] hover:text-[#0F172A] hover:bg-[#F4F4F5]"
+              : "text-[#64748B] hover:text-[#0F172A] hover:bg-slate-100"
           }`}
         >
           Quality & Certifications (ISO/GMP)
@@ -236,10 +236,10 @@ export default function SupplierDocumentsVaultPage() {
 
         <button
           onClick={() => setActiveTab("TECHNICAL")}
-          className={`px-3 py-1.5 text-xs font-medium rounded-[6px] transition-colors whitespace-nowrap cursor-pointer ${
+          className={`h-9 px-3.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap cursor-pointer press-tactile ${
             activeTab === "TECHNICAL"
               ? "bg-[#0052CC] text-white shadow-xs"
-              : "text-[#64748B] hover:text-[#0F172A] hover:bg-[#F4F4F5]"
+              : "text-[#64748B] hover:text-[#0F172A] hover:bg-slate-100"
           }`}
         >
           Technical Data (TDS/MSDS/COA)
@@ -247,10 +247,10 @@ export default function SupplierDocumentsVaultPage() {
 
         <button
           onClick={() => setActiveTab("COMMERCIAL")}
-          className={`px-3 py-1.5 text-xs font-medium rounded-[6px] transition-colors whitespace-nowrap cursor-pointer ${
+          className={`h-9 px-3.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap cursor-pointer press-tactile ${
             activeTab === "COMMERCIAL"
               ? "bg-[#0052CC] text-white shadow-xs"
-              : "text-[#64748B] hover:text-[#0F172A] hover:bg-[#F4F4F5]"
+              : "text-[#64748B] hover:text-[#0F172A] hover:bg-slate-100"
           }`}
         >
           Commercial & Shipments

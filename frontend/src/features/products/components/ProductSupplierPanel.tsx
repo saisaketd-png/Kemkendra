@@ -147,11 +147,11 @@ export function ProductSupplierPanel({ productId }: Props) {
 
   const renderHeader = () => (
     <div className="flex items-center gap-3 mb-6">
-      <div className="w-10 h-10 rounded-lg bg-purple-50 border border-purple-100 flex items-center justify-center shrink-0">
-        <Store className="w-5 h-5 text-purple-600" />
+      <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
+        <Store className="w-5 h-5 text-[#0052CC]" />
       </div>
       <div>
-        <h2 className="text-base font-extrabold text-slate-900 uppercase tracking-tight">
+        <h2 className="text-base font-extrabold text-slate-900 tracking-tight">
           Marketplace Offering
         </h2>
         <p className="text-xs text-slate-500 mt-0.5">
@@ -191,7 +191,7 @@ export function ProductSupplierPanel({ productId }: Props) {
             value={form.purity ?? ""}
             onChange={e => updateField("purity", e.target.value)}
             placeholder="e.g. ≥99.5%"
-            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400"
+            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
           />
         </div>
         <div>
@@ -204,7 +204,7 @@ export function ProductSupplierPanel({ productId }: Props) {
             value={form.grade ?? ""}
             onChange={e => updateField("grade", e.target.value)}
             placeholder="e.g. USP Grade"
-            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400"
+            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
           />
         </div>
         <div>
@@ -219,7 +219,7 @@ export function ProductSupplierPanel({ productId }: Props) {
             value={form.moqKg ?? ""}
             onChange={e => updateField("moqKg", e.target.value ? Number(e.target.value) : undefined)}
             placeholder="e.g. 25"
-            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400"
+            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
           />
         </div>
         <div>
@@ -232,7 +232,7 @@ export function ProductSupplierPanel({ productId }: Props) {
             value={form.packaging ?? ""}
             onChange={e => updateField("packaging", e.target.value)}
             placeholder="e.g. 25kg Fiber Drum"
-            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400"
+            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
           />
         </div>
         <div>
@@ -246,7 +246,7 @@ export function ProductSupplierPanel({ productId }: Props) {
             value={form.leadTimeDays ?? ""}
             onChange={e => updateField("leadTimeDays", e.target.value ? Number(e.target.value) : undefined)}
             placeholder="e.g. 14"
-            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400"
+            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
           />
         </div>
         <div className="flex flex-col justify-end gap-2">
@@ -256,7 +256,7 @@ export function ProductSupplierPanel({ productId }: Props) {
               type="checkbox"
               checked={form.coaAvailable ?? false}
               onChange={e => updateField("coaAvailable", e.target.checked)}
-              className="w-4 h-4 rounded border-slate-300 text-purple-600 focus:ring-purple-400"
+              className="w-4 h-4 rounded border-slate-300 text-[#0052CC] focus:ring-blue-500"
             />
             <span className="text-sm font-medium text-slate-700">COA Available</span>
           </label>
@@ -266,7 +266,7 @@ export function ProductSupplierPanel({ productId }: Props) {
               type="checkbox"
               checked={form.msdsAvailable ?? false}
               onChange={e => updateField("msdsAvailable", e.target.checked)}
-              className="w-4 h-4 rounded border-slate-300 text-purple-600 focus:ring-purple-400"
+              className="w-4 h-4 rounded border-slate-300 text-[#0052CC] focus:ring-blue-500"
             />
             <span className="text-sm font-medium text-slate-700">MSDS Available</span>
           </label>
@@ -278,7 +278,7 @@ export function ProductSupplierPanel({ productId }: Props) {
           id="offering-save-btn"
           onClick={handleSave}
           disabled={panelState === "SAVING"}
-          className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold transition-colors disabled:opacity-60"
+          className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-sm font-bold transition-colors disabled:opacity-60 shadow-sm"
         >
           {panelState === "SAVING" ? (
             <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
@@ -290,7 +290,7 @@ export function ProductSupplierPanel({ productId }: Props) {
           id="offering-cancel-btn"
           onClick={cancelEditing}
           disabled={panelState === "SAVING"}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold transition-colors"
         >
           <X className="w-4 h-4" /> Cancel
         </button>
@@ -364,7 +364,7 @@ export function ProductSupplierPanel({ productId }: Props) {
   // -----------------------------------------------------------------------
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+    <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card">
       {renderHeader()}
       {renderFeedback()}
 
@@ -383,7 +383,7 @@ export function ProductSupplierPanel({ productId }: Props) {
           <button
             id="offering-add-btn"
             onClick={startEditing}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold transition-colors shadow-sm"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-sm font-bold transition-colors shadow-sm"
           >
             <Plus className="w-4 h-4" /> Add to Marketplace
           </button>

@@ -431,10 +431,10 @@ export default function SupplierOnboardingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-8">
+      <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center p-8">
         <div className="text-center space-y-3">
-          <Loader2 className="w-8 h-8 text-purple-600 animate-spin mx-auto" />
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest font-mono">
+          <Loader2 className="w-8 h-8 text-[#0052CC] animate-spin mx-auto" />
+          <p className="text-xs font-semibold text-slate-500">
             Loading Supplier Onboarding Workspace...
           </p>
         </div>
@@ -444,39 +444,39 @@ export default function SupplierOnboardingPage() {
 
   if (submittedSuccess || profile?.verificationStatus === "PENDING" || profile?.verificationStatus === "UNDER_REVIEW") {
     return (
-      <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-xl p-8 sm:p-12 text-center space-y-6">
-          <div className="w-16 h-16 bg-purple-50 border border-purple-200 rounded-full flex items-center justify-center mx-auto text-purple-600 shadow-sm">
+      <div className="min-h-screen bg-[#F8F9FA] py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200/90 shadow-tactile-card p-8 sm:p-12 text-center space-y-6">
+          <div className="w-16 h-16 bg-blue-50 border border-blue-200/80 rounded-full flex items-center justify-center mx-auto text-[#0052CC] shadow-2xs">
             <Clock className="w-8 h-8 animate-pulse" />
           </div>
 
           <div className="space-y-2">
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-purple-600 font-mono">
-              APPLICATION SUBMITTED &bull; STATUS: {profile?.verificationStatus || "PENDING"}
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#0052CC] border border-blue-200/80">
+              Application Submitted · Status: {profile?.verificationStatus || "PENDING"}
             </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#091E42] tracking-tight">
               Company Verification in Review
             </h1>
-            <p className="text-sm text-slate-600 max-w-lg mx-auto">
+            <p className="text-sm text-slate-600 max-w-lg mx-auto leading-relaxed">
               Thank you, <strong className="text-slate-900">{profile?.name}</strong>. Your official company identity and KYC documents have been submitted to KemKendra Compliance administrators.
             </p>
           </div>
 
-          <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200/80 text-left space-y-3 text-xs text-slate-700">
+          <div className="p-5 bg-slate-50/70 rounded-xl border border-slate-200 text-left space-y-3 text-xs text-slate-700">
             <div className="flex items-center justify-between font-bold border-b border-slate-200 pb-2">
               <span>Marketplace Verification Checklist</span>
-              <span className="text-purple-600 font-mono">Awaiting Review</span>
+              <span className="text-[#0052CC]">Awaiting Review</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
               <span>Company Information & Registered Address Recorded</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
               <span>Official Company Logo: {logoUrl ? "Uploaded" : "Standard Icon"}</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
               <span>KYC Compliance Documents: {documents.length} File(s) Attached</span>
             </div>
           </div>
@@ -484,13 +484,14 @@ export default function SupplierOnboardingPage() {
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/dashboard/supplier"
-              className="w-full sm:w-auto px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-md flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-2.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-bold rounded-lg transition-colors shadow-2xs flex items-center justify-center gap-2 cursor-pointer"
             >
-              Go to Supplier Dashboard <ArrowRight className="w-4 h-4" />
+              <span>Go to Supplier Dashboard</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
             <button
               onClick={() => { setSubmittedSuccess(false); setCurrentStep(1); }}
-              className="w-full sm:w-auto px-6 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold uppercase tracking-wider rounded-xl transition"
+              className="w-full sm:w-auto px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-lg transition-colors cursor-pointer"
             >
               Edit Application
             </button>
@@ -502,30 +503,30 @@ export default function SupplierOnboardingPage() {
 
   if (profile?.verified || profile?.verificationStatus === "VERIFIED") {
     return (
-      <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-emerald-200 shadow-xl p-8 sm:p-12 text-center space-y-6">
-          <div className="w-16 h-16 bg-emerald-50 border border-emerald-200 rounded-full flex items-center justify-center mx-auto text-emerald-600 shadow-sm">
+      <div className="min-h-screen bg-[#F8F9FA] py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-emerald-200 shadow-tactile-card p-8 sm:p-12 text-center space-y-6">
+          <div className="w-16 h-16 bg-emerald-50 border border-emerald-200 rounded-full flex items-center justify-center mx-auto text-emerald-600 shadow-2xs">
             <ShieldCheck className="w-8 h-8" />
           </div>
 
           <div className="space-y-2">
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-emerald-600 font-mono">
-              VERIFIED SUPPLIER PARTNER
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+              Verified Supplier Partner
             </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#091E42] tracking-tight">
               Company Identity Fully Verified
             </h1>
-            <p className="text-sm text-slate-600 max-w-lg mx-auto">
+            <p className="text-sm text-slate-600 max-w-lg mx-auto leading-relaxed">
               Your company profile is fully accredited. Your listings and verified logo are eligible for public display across the Chemical Catalog.
             </p>
           </div>
 
-          <div className="flex items-center justify-center gap-3 p-4 bg-emerald-50/60 rounded-2xl border border-emerald-100">
+          <div className="flex items-center justify-center gap-3 p-4 bg-emerald-50/60 rounded-xl border border-emerald-100">
             {logoUrl && (
-              <img src={logoUrl} alt="Logo" className="w-12 h-12 object-contain rounded-xl border border-emerald-200 bg-white p-1" />
+              <img src={logoUrl} alt="Logo" className="w-12 h-12 object-contain rounded-lg border border-emerald-200 bg-white p-1" />
             )}
             <div className="text-left">
-              <span className="font-extrabold text-slate-900 text-base block">{profile.name}</span>
+              <span className="font-bold text-slate-900 text-base block">{profile.name}</span>
               <span className="text-xs font-semibold text-emerald-700 flex items-center gap-1">
                 <Check className="w-3.5 h-3.5" /> Official KemKendra Verified Accreditation
               </span>
@@ -535,9 +536,10 @@ export default function SupplierOnboardingPage() {
           <div className="pt-4">
             <Link
               href="/dashboard/supplier"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-bold rounded-lg transition-colors shadow-2xs cursor-pointer"
             >
-              Enter Supplier Workspace <ArrowRight className="w-4 h-4" />
+              <span>Enter Supplier Workspace</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
@@ -546,16 +548,16 @@ export default function SupplierOnboardingPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#F8F9FA] py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto space-y-8">
         
         {/* Top Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-6">
           <div>
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-purple-600 font-mono">
-              SUPPLIER ONBOARDING &bull; STEP {currentStep} OF {STEPS.length}
+            <span className="text-[11px] font-semibold text-[#0052CC]">
+              Supplier Onboarding · Step {currentStep} of {STEPS.length}
             </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#091E42] tracking-tight mt-1">
               Company Verification Profile
             </h1>
             <p className="text-xs text-slate-500 mt-1">
@@ -568,15 +570,15 @@ export default function SupplierOnboardingPage() {
               type="button"
               onClick={() => handleSaveDraft(false)}
               disabled={saving}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl transition shadow-2xs disabled:opacity-60"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-lg transition-colors shadow-2xs disabled:opacity-60 cursor-pointer"
             >
               {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5 text-slate-500" />}
-              <span>{saving ? "SAVING..." : "SAVE DRAFT"}</span>
+              <span>{saving ? "Saving..." : "Save Draft"}</span>
             </button>
 
             <Link
               href="/dashboard/supplier"
-              className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded-xl transition"
+              className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold rounded-lg transition-colors"
             >
               Exit
             </Link>
@@ -585,22 +587,22 @@ export default function SupplierOnboardingPage() {
 
         {/* Notifications / Alerts */}
         {error && (
-          <div className="p-4 bg-red-50 border border-red-200 rounded-2xl text-xs font-bold text-red-700 flex items-start gap-2 animate-fadeIn">
-            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+          <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-700 flex items-start gap-2 shadow-2xs">
+            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-600" />
             <span>{error}</span>
           </div>
         )}
 
         {successMessage && (
-          <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-xs font-bold text-emerald-800 flex items-center gap-2 animate-fadeIn">
+          <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-semibold text-emerald-800 flex items-center gap-2 shadow-2xs">
             <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
             <span>{successMessage}</span>
           </div>
         )}
 
         {profile?.adminRequestInfoNotes && (
-          <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-900 space-y-1">
-            <span className="font-extrabold text-amber-800 uppercase tracking-wider block">
+          <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 space-y-1">
+            <span className="font-bold text-amber-800 block">
               Attention: Admin Verification Feedback
             </span>
             <p>{profile.adminRequestInfoNotes}</p>
@@ -618,24 +620,24 @@ export default function SupplierOnboardingPage() {
                 key={step.id}
                 type="button"
                 onClick={() => setCurrentStep(step.id)}
-                className={`p-3 rounded-2xl border text-left transition-all ${
+                className={`p-3 rounded-xl border text-left transition-colors cursor-pointer ${
                   isActive
-                    ? "bg-purple-600 text-white border-purple-600 shadow-md ring-2 ring-purple-600/20"
+                    ? "bg-[#0052CC] text-white border-[#0052CC] shadow-2xs"
                     : isCompleted
-                    ? "bg-purple-50 text-purple-900 border-purple-200 hover:bg-purple-100/50"
+                    ? "bg-blue-50 text-blue-900 border-blue-200 hover:bg-blue-100/60"
                     : "bg-white text-slate-500 border-slate-200 hover:border-slate-300"
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className={`text-[10px] font-mono font-bold uppercase ${isActive ? "text-purple-200" : isCompleted ? "text-purple-600" : "text-slate-400"}`}>
+                  <span className={`text-[10px] font-bold ${isActive ? "text-blue-100" : isCompleted ? "text-[#0052CC]" : "text-slate-400"}`}>
                     0{step.id}
                   </span>
-                  {isCompleted && <Check className="w-3.5 h-3.5 text-purple-600" />}
+                  {isCompleted && <Check className="w-3.5 h-3.5 text-[#0052CC]" />}
                 </div>
                 <div className={`text-xs font-bold truncate ${isActive ? "text-white" : "text-slate-800"}`}>
                   {step.label}
                 </div>
-                <div className={`text-[10px] truncate ${isActive ? "text-purple-100" : "text-slate-400"}`}>
+                <div className={`text-[10px] truncate ${isActive ? "text-blue-100" : "text-slate-400"}`}>
                   {step.desc}
                 </div>
               </button>
@@ -644,13 +646,13 @@ export default function SupplierOnboardingPage() {
         </div>
 
         {/* Wizard Form Workspace */}
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-10">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-tactile-card p-6 sm:p-10">
           
           {/* STEP 1: COMPANY IDENTITY & LOGO */}
           {currentStep === 1 && (
             <div className="space-y-6 animate-fadeIn">
               <div className="border-b border-slate-100 pb-4">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-purple-600 font-mono">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#0052CC] font-semibold">
                   SECTION 01 / LEGAL IDENTITY & LOGO
                 </span>
                 <h2 className="text-xl font-extrabold text-slate-900 mt-1">
@@ -697,7 +699,7 @@ export default function SupplierOnboardingPage() {
                       htmlFor="logo-upload"
                       className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-lg transition shadow-2xs"
                     >
-                      <Upload className="w-3.5 h-3.5 text-purple-600" />
+                      <Upload className="w-3.5 h-3.5 text-[#0052CC]" />
                       <span>{logoUrl ? "Replace Logo" : "Upload Logo"}</span>
                     </label>
                     {logoUrl && (
@@ -726,7 +728,7 @@ export default function SupplierOnboardingPage() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Apex Fine Chemicals Ltd."
-                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                   />
                 </div>
 
@@ -740,7 +742,7 @@ export default function SupplierOnboardingPage() {
                     value={legalName}
                     onChange={(e) => setLegalName(e.target.value)}
                     placeholder="e.g. Apex Fine Chemicals Private Limited"
-                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                   />
                 </div>
 
@@ -753,7 +755,7 @@ export default function SupplierOnboardingPage() {
                     value={tradeName}
                     onChange={(e) => setTradeName(e.target.value)}
                     placeholder="e.g. Apex Chem"
-                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                   />
                 </div>
 
@@ -764,7 +766,7 @@ export default function SupplierOnboardingPage() {
                   <select
                     value={businessType}
                     onChange={(e) => setBusinessType(e.target.value)}
-                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none bg-white"
+                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none bg-white"
                   >
                     <option value="MANUFACTURER">Manufacturer / Chemical Producer</option>
                     <option value="DISTRIBUTOR">Authorized Chemical Distributor</option>
@@ -783,7 +785,7 @@ export default function SupplierOnboardingPage() {
                     value={companyRegistrationNumber}
                     onChange={(e) => setCompanyRegistrationNumber(e.target.value)}
                     placeholder="e.g. U24110MH2012PTC234567"
-                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none font-mono"
+                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none font-mono"
                   />
                 </div>
 
@@ -796,7 +798,7 @@ export default function SupplierOnboardingPage() {
                     value={taxVatNumber}
                     onChange={(e) => setTaxVatNumber(e.target.value)}
                     placeholder="e.g. 27AABCA1234F1Z5"
-                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none font-mono"
+                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none font-mono"
                   />
                 </div>
 
@@ -811,7 +813,7 @@ export default function SupplierOnboardingPage() {
                     value={yearsInBusiness}
                     onChange={(e) => setYearsInBusiness(e.target.value === "" ? "" : Number(e.target.value))}
                     placeholder="e.g. 15"
-                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                   />
                 </div>
               </div>
@@ -822,7 +824,7 @@ export default function SupplierOnboardingPage() {
           {currentStep === 2 && (
             <div className="space-y-6 animate-fadeIn">
               <div className="border-b border-slate-100 pb-4">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-purple-600 font-mono">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#0052CC] font-semibold">
                   SECTION 02 / OFFICIAL LOCATION
                 </span>
                 <h2 className="text-xl font-extrabold text-slate-900 mt-1">
@@ -843,7 +845,7 @@ export default function SupplierOnboardingPage() {
                     value={registeredAddress}
                     onChange={(e) => setRegisteredAddress(e.target.value)}
                     placeholder="e.g. Plot No. 42, MIDC Industrial Area, Phase II"
-                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                   />
                 </div>
 
@@ -857,7 +859,7 @@ export default function SupplierOnboardingPage() {
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
                       placeholder="e.g. Mumbai"
-                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                     />
                   </div>
 
@@ -870,7 +872,7 @@ export default function SupplierOnboardingPage() {
                       value={stateProvince}
                       onChange={(e) => setStateProvince(e.target.value)}
                       placeholder="e.g. Maharashtra"
-                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                     />
                   </div>
 
@@ -883,7 +885,7 @@ export default function SupplierOnboardingPage() {
                       value={postalCode}
                       onChange={(e) => setPostalCode(e.target.value)}
                       placeholder="e.g. 400001"
-                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none font-mono"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none font-mono"
                     />
                   </div>
 
@@ -896,7 +898,7 @@ export default function SupplierOnboardingPage() {
                       value={countryName}
                       onChange={(e) => setCountryName(e.target.value)}
                       placeholder="e.g. India"
-                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                     />
                   </div>
                 </div>
@@ -908,7 +910,7 @@ export default function SupplierOnboardingPage() {
           {currentStep === 3 && (
             <div className="space-y-6 animate-fadeIn">
               <div className="border-b border-slate-100 pb-4">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-purple-600 font-mono">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#0052CC] font-semibold">
                   SECTION 03 / CAPABILITIES & OPERATIONS
                 </span>
                 <h2 className="text-xl font-extrabold text-slate-900 mt-1">
@@ -929,7 +931,7 @@ export default function SupplierOnboardingPage() {
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
                     placeholder="https://www.apexchemicals.example.com"
-                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                   />
                 </div>
 
@@ -942,7 +944,7 @@ export default function SupplierOnboardingPage() {
                     value={businessDescription}
                     onChange={(e) => setBusinessDescription(e.target.value)}
                     placeholder="Describe your production facility, synthesis reactors, purity standards, and market history..."
-                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                   />
                 </div>
 
@@ -956,7 +958,7 @@ export default function SupplierOnboardingPage() {
                       value={primaryCategories}
                       onChange={(e) => setPrimaryCategories(e.target.value)}
                       placeholder="e.g. APIs, Intermediates, Fine Chemicals, Solvents"
-                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                     />
                   </div>
 
@@ -969,7 +971,7 @@ export default function SupplierOnboardingPage() {
                       value={countriesServed}
                       onChange={(e) => setCountriesServed(e.target.value)}
                       placeholder="e.g. USA, Germany, Japan, United Kingdom"
-                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                     />
                   </div>
                 </div>
@@ -988,7 +990,7 @@ export default function SupplierOnboardingPage() {
                       onChange={(e) => setExportReady(e.target.checked)}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0052CC]"></div>
                   </label>
                 </div>
               </div>
@@ -999,7 +1001,7 @@ export default function SupplierOnboardingPage() {
           {currentStep === 4 && (
             <div className="space-y-6 animate-fadeIn">
               <div className="border-b border-slate-100 pb-4">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-purple-600 font-mono">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#0052CC] font-semibold">
                   SECTION 04 / CONTACTS & IDENTITY VERIFICATION
                 </span>
                 <h2 className="text-xl font-extrabold text-slate-900 mt-1">
@@ -1021,7 +1023,7 @@ export default function SupplierOnboardingPage() {
                       value={authorizedRepresentativeName}
                       onChange={(e) => setAuthorizedRepresentativeName(e.target.value)}
                       placeholder="e.g. Dr. Rajesh Kumar"
-                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                     />
                   </div>
 
@@ -1034,7 +1036,7 @@ export default function SupplierOnboardingPage() {
                       value={authorizedRepresentativeDesignation}
                       onChange={(e) => setAuthorizedRepresentativeDesignation(e.target.value)}
                       placeholder="e.g. Managing Director / Head of Sales"
-                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none"
                     />
                   </div>
                 </div>
@@ -1074,7 +1076,7 @@ export default function SupplierOnboardingPage() {
                       <button
                         type="button"
                         onClick={handleVerifyEmail}
-                        className="px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl transition shadow-2xs flex items-center gap-1.5"
+                        className="px-3.5 py-2 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-bold rounded-xl transition shadow-2xs flex items-center gap-1.5"
                       >
                         Verify Email Now
                       </button>
@@ -1093,7 +1095,7 @@ export default function SupplierOnboardingPage() {
                       value={businessPhone}
                       onChange={(e) => setBusinessPhone(e.target.value)}
                       placeholder="+91 98765 43210"
-                      className="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none bg-white font-mono"
+                      className="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 outline-none bg-white font-mono"
                     />
                   </div>
 
@@ -1106,7 +1108,7 @@ export default function SupplierOnboardingPage() {
                       <button
                         type="button"
                         onClick={handleVerifyPhone}
-                        className="px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl transition shadow-2xs"
+                        className="px-3.5 py-2 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-bold rounded-xl transition shadow-2xs"
                       >
                         Verify Phone Now
                       </button>
@@ -1121,7 +1123,7 @@ export default function SupplierOnboardingPage() {
           {currentStep === 5 && (
             <div className="space-y-6 animate-fadeIn">
               <div className="border-b border-slate-100 pb-4">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-purple-600 font-mono">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#0052CC] font-semibold">
                   SECTION 05 / KYC COMPLIANCE & SUBMISSION
                 </span>
                 <h2 className="text-xl font-extrabold text-slate-900 mt-1">
@@ -1136,7 +1138,7 @@ export default function SupplierOnboardingPage() {
               <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <div className="flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-purple-600" />
+                    <FileText className="w-5 h-5 text-[#0052CC]" />
                     <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
                       Attach KYC Evidence Document
                     </span>
@@ -1151,7 +1153,7 @@ export default function SupplierOnboardingPage() {
                     <select
                       value={selectedDocType}
                       onChange={(e) => setSelectedDocType(e.target.value)}
-                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs text-slate-900 bg-white font-medium outline-none focus:border-purple-500"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs text-slate-900 bg-white font-medium outline-none focus:border-[#0052CC]"
                     >
                       <option value="COMPANY_REGISTRATION">Certificate of Incorporation / Registration</option>
                       <option value="TAX_ID">Tax / GST / VAT Registration Document</option>
@@ -1172,7 +1174,7 @@ export default function SupplierOnboardingPage() {
                     />
                     <label
                       htmlFor="kyc-doc-upload"
-                      className={`cursor-pointer w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl transition shadow-2xs ${
+                      className={`cursor-pointer w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-bold rounded-xl transition shadow-2xs ${
                         docUploading ? "opacity-50 pointer-events-none" : ""
                       }`}
                     >
@@ -1200,7 +1202,7 @@ export default function SupplierOnboardingPage() {
                           className="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between gap-3 text-xs"
                         >
                           <div className="flex items-center gap-2 min-w-0">
-                            <FileText className="w-4 h-4 text-purple-600 shrink-0" />
+                            <FileText className="w-4 h-4 text-[#0052CC] shrink-0" />
                             <div className="min-w-0">
                               <span className="font-bold text-slate-900 block truncate">{doc.fileName}</span>
                               <span className="text-[10px] text-slate-400 font-mono">
@@ -1213,7 +1215,7 @@ export default function SupplierOnboardingPage() {
                             href={`/api/v1/documents/${doc.id}/download`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="px-2.5 py-1 text-purple-600 hover:bg-purple-50 rounded-lg text-xs font-semibold inline-flex items-center gap-1"
+                            className="px-2.5 py-1 text-[#0052CC] hover:bg-blue-50 rounded-lg text-xs font-semibold inline-flex items-center gap-1"
                           >
                             <ExternalLink className="w-3.5 h-3.5" /> Download
                           </a>
@@ -1225,13 +1227,13 @@ export default function SupplierOnboardingPage() {
               </div>
 
               {/* Summary Overview */}
-              <div className="p-5 bg-purple-50/50 rounded-2xl border border-purple-100 space-y-3">
-                <div className="flex items-center gap-2 text-purple-900 font-extrabold text-sm">
-                  <Sparkles className="w-4 h-4 text-purple-600" />
+              <div className="p-5 bg-blue-50/50 rounded-xl border border-blue-100 space-y-3">
+                <div className="flex items-center gap-2 text-blue-900 font-bold text-sm">
+                  <Sparkles className="w-4 h-4 text-[#0052CC]" />
                   <span>Ready to Submit Application</span>
                 </div>
-                <p className="text-xs text-purple-800 leading-relaxed">
-                  Upon submission, your application will transition to <strong className="font-mono">PENDING VERIFICATION</strong>. KemKendra marketplace compliance officers will review your documents within 1 business day.
+                <p className="text-xs text-blue-800 leading-relaxed">
+                  Upon submission, your application will transition to <strong className="font-semibold text-blue-950">Pending Verification</strong>. KemKendra marketplace compliance officers will review your documents within 1 business day.
                 </p>
               </div>
             </div>
@@ -1256,7 +1258,7 @@ export default function SupplierOnboardingPage() {
                 <button
                   type="button"
                   onClick={() => setCurrentStep((prev) => prev + 1)}
-                  className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-md"
+                  className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-md"
                 >
                   Continue <ArrowRight className="w-3.5 h-3.5" />
                 </button>
@@ -1265,7 +1267,7 @@ export default function SupplierOnboardingPage() {
                   type="button"
                   onClick={handleSubmitVerification}
                   disabled={submitting}
-                  className="inline-flex items-center gap-2 px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white text-xs font-extrabold uppercase tracking-widest rounded-xl transition shadow-lg disabled:opacity-60"
+                  className="inline-flex items-center gap-2 px-8 py-3 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-extrabold uppercase tracking-widest rounded-xl transition shadow-lg disabled:opacity-60"
                 >
                   {submitting ? (
                     <>
@@ -1274,7 +1276,7 @@ export default function SupplierOnboardingPage() {
                     </>
                   ) : (
                     <>
-                      <Send className="w-4 h-4 text-purple-200" />
+                      <Send className="w-4 h-4 text-blue-200" />
                       SUBMIT FOR VERIFICATION
                     </>
                   )}

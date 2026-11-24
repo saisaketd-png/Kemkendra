@@ -81,28 +81,28 @@ export default function SupplierDashboardOverviewPage() {
 
       {/* 2. Verification Status Alert Banner */}
       {!loading && !isVerified && (
-        <div className="p-4 rounded-[10px] bg-amber-50 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
-              <ShieldAlert className="w-4 h-4" />
+        <div className="p-5 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-tactile-card">
+          <div className="flex items-center gap-3.5">
+            <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+              <ShieldAlert className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs sm:text-sm font-bold text-amber-900">
+                <span className="text-sm font-bold text-amber-900">
                   Verification Status: {status}
                 </span>
-                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-amber-200/70 text-amber-800 uppercase font-semibold">
+                <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md bg-amber-200/70 text-amber-900">
                   Action Recommended
                 </span>
               </div>
-              <p className="text-xs text-amber-800/90 mt-0.5">
+              <p className="text-xs text-amber-800/90 mt-1">
                 Complete compliance verification and KYC to unlock verified supplier badges, priority ranking, and unlimited quote responses.
               </p>
             </div>
           </div>
           <Link
             href="/dashboard/supplier/verification"
-            className="h-8 px-3 text-xs font-semibold text-white bg-amber-700 hover:bg-amber-800 rounded-[6px] transition-colors inline-flex items-center justify-center gap-1.5 shrink-0 shadow-2xs"
+            className="h-9 px-4 text-xs font-bold text-white bg-amber-800 hover:bg-amber-900 rounded-lg transition-colors inline-flex items-center justify-center gap-1.5 shrink-0 shadow-2xs active:scale-[0.98]"
           >
             <span>Submit Verification</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -117,23 +117,23 @@ export default function SupplierDashboardOverviewPage() {
       <PendingActionsCard actions={data?.pendingActions || []} loading={loading} />
 
       {/* 5. Structured Operational KPI Strip */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Catalog Offerings */}
         <Link
           href="/dashboard/supplier/products"
-          className="p-3.5 bg-white border border-[#E4E4E7] rounded-[8px] hover:border-[#0052CC] transition-colors group shadow-xs block"
+          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-2xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-tactile-card block"
         >
-          <div className="flex items-center justify-between text-[#64748B]">
-            <span className="text-[10px] font-semibold uppercase tracking-wider font-mono">
+          <div className="flex items-center justify-between text-slate-500">
+            <span className="text-xs font-semibold text-slate-500">
               Live Chemical Offerings
             </span>
-            <FlaskConical className="w-3.5 h-3.5 group-hover:text-[#0052CC] transition-colors" />
+            <FlaskConical className="w-4 h-4 group-hover:text-[#0052CC] transition-colors" />
           </div>
-          <div className="mt-2 flex items-baseline justify-between">
-            <strong className="text-xl font-bold font-mono text-[#0F172A] group-hover:text-[#0052CC] transition-colors">
+          <div className="mt-3 flex items-baseline justify-between">
+            <strong className="text-2xl font-bold font-mono text-slate-900 group-hover:text-[#0052CC] transition-colors">
               {loading ? "—" : data?.activeOfferings || 0}
             </strong>
-            <span className="text-[11px] text-[#64748B]">
+            <span className="text-xs text-slate-500">
               {data?.totalOfferings || 0} total
             </span>
           </div>
@@ -142,23 +142,23 @@ export default function SupplierDashboardOverviewPage() {
         {/* Incoming RFQs */}
         <Link
           href="/dashboard/supplier/rfqs"
-          className="p-3.5 bg-white border border-[#E4E4E7] rounded-[8px] hover:border-[#0052CC] transition-colors group shadow-xs block"
+          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-2xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-tactile-card block"
         >
-          <div className="flex items-center justify-between text-[#64748B]">
-            <span className="text-[10px] font-semibold uppercase tracking-wider font-mono">
+          <div className="flex items-center justify-between text-slate-500">
+            <span className="text-xs font-semibold text-slate-500">
               RFQs Pending Quote
             </span>
-            <FileText className="w-3.5 h-3.5 group-hover:text-[#0052CC] transition-colors" />
+            <FileText className="w-4 h-4 group-hover:text-[#0052CC] transition-colors" />
           </div>
-          <div className="mt-2 flex items-baseline justify-between">
+          <div className="mt-3 flex items-baseline justify-between">
             <strong
-              className={`text-xl font-bold font-mono ${
-                (data?.pendingRfqs || 0) > 0 ? "text-[#0052CC]" : "text-[#0F172A]"
+              className={`text-2xl font-bold font-mono ${
+                (data?.pendingRfqs || 0) > 0 ? "text-[#0052CC]" : "text-slate-900"
               }`}
             >
               {loading ? "—" : data?.pendingRfqs || 0}
             </strong>
-            <span className="text-[11px] text-[#64748B]">
+            <span className="text-xs text-slate-500">
               {data?.rfqsReceived || 0} total
             </span>
           </div>
@@ -167,19 +167,19 @@ export default function SupplierDashboardOverviewPage() {
         {/* Orders in Fulfillment */}
         <Link
           href="/dashboard/supplier/orders"
-          className="p-3.5 bg-white border border-[#E4E4E7] rounded-[8px] hover:border-[#0052CC] transition-colors group shadow-xs block"
+          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-2xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-tactile-card block"
         >
-          <div className="flex items-center justify-between text-[#64748B]">
-            <span className="text-[10px] font-semibold uppercase tracking-wider font-mono">
+          <div className="flex items-center justify-between text-slate-500">
+            <span className="text-xs font-semibold text-slate-500">
               Orders in Progress
             </span>
-            <Package className="w-3.5 h-3.5 group-hover:text-[#0052CC] transition-colors" />
+            <Package className="w-4 h-4 group-hover:text-[#0052CC] transition-colors" />
           </div>
-          <div className="mt-2 flex items-baseline justify-between">
-            <strong className="text-xl font-bold font-mono text-[#0F172A] group-hover:text-[#0052CC] transition-colors">
+          <div className="mt-3 flex items-baseline justify-between">
+            <strong className="text-2xl font-bold font-mono text-slate-900 group-hover:text-[#0052CC] transition-colors">
               {loading ? "—" : data?.pendingOrders || 0}
             </strong>
-            <span className="text-[11px] text-[#64748B]">
+            <span className="text-xs text-slate-500">
               {data?.totalOrders || 0} total
             </span>
           </div>
@@ -188,23 +188,23 @@ export default function SupplierDashboardOverviewPage() {
         {/* Open Disputes */}
         <Link
           href="/dashboard/supplier/disputes"
-          className="p-3.5 bg-white border border-[#E4E4E7] rounded-[8px] hover:border-[#0052CC] transition-colors group shadow-xs block"
+          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-2xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-tactile-card block"
         >
-          <div className="flex items-center justify-between text-[#64748B]">
-            <span className="text-[10px] font-semibold uppercase tracking-wider font-mono">
+          <div className="flex items-center justify-between text-slate-500">
+            <span className="text-xs font-semibold text-slate-500">
               Customer Disputes
             </span>
-            <MessageSquare className="w-3.5 h-3.5 group-hover:text-[#0052CC] transition-colors" />
+            <MessageSquare className="w-4 h-4 group-hover:text-[#0052CC] transition-colors" />
           </div>
-          <div className="mt-2 flex items-baseline justify-between">
+          <div className="mt-3 flex items-baseline justify-between">
             <strong
-              className={`text-xl font-bold font-mono ${
-                (data?.openDisputes || 0) > 0 ? "text-amber-600" : "text-[#0F172A]"
+              className={`text-2xl font-bold font-mono ${
+                (data?.openDisputes || 0) > 0 ? "text-amber-600" : "text-slate-900"
               }`}
             >
               {loading ? "—" : data?.openDisputes || 0}
             </strong>
-            <span className="text-[11px] text-[#64748B]">
+            <span className="text-xs text-slate-500">
               {(data?.openDisputes || 0) > 0 ? "Action needed" : "Zero open"}
             </span>
           </div>
@@ -216,11 +216,13 @@ export default function SupplierDashboardOverviewPage() {
         {/* Left 2 Cols: Invoicing & Payment Settlements */}
         <div className="lg:col-span-2 space-y-6">
           {/* Financial Settlement Card */}
-          <div className="bg-white border border-[#E4E4E7] rounded-[10px] p-5 shadow-xs space-y-4">
-            <div className="flex items-center justify-between border-b border-[#F1F5F9] pb-3">
-              <div className="flex items-center gap-2">
-                <Receipt className="w-4 h-4 text-[#0052CC]" />
-                <h3 className="text-xs sm:text-sm font-bold text-[#0F172A] tracking-tight">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-tactile-card space-y-5">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0052CC] border border-blue-100 flex items-center justify-center">
+                  <Receipt className="w-4 h-4" />
+                </div>
+                <h3 className="text-sm font-bold text-slate-900 tracking-tight">
                   Invoice Receivables & Settlement Pipeline
                 </h3>
               </div>
@@ -234,61 +236,61 @@ export default function SupplierDashboardOverviewPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-lg bg-amber-50/50 border border-amber-200/80 space-y-1">
+              <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 space-y-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-amber-800 font-bold block">
+                  <span className="text-xs uppercase tracking-wider text-amber-800 font-bold block">
                     Outstanding Receivables
                   </span>
-                  <span className="text-[10px] font-mono font-semibold px-1.5 py-0.2 rounded bg-amber-100 text-amber-800">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-amber-100 text-amber-800">
                     {data?.outstandingInvoices || 0} invoices
                   </span>
                 </div>
-                <strong className="text-xl sm:text-2xl font-extrabold font-mono text-amber-900 block">
+                <strong className="text-2xl font-extrabold font-mono text-amber-900 block mt-1">
                   {loading ? "—" : formatCurrency(data?.outstandingInvoiceAmount)}
                 </strong>
-                <p className="text-[11px] text-[#64748B]">
+                <p className="text-xs text-slate-500">
                   Invoices issued awaiting buyer payment receipt or verification.
                 </p>
               </div>
 
-              <div className="p-4 rounded-lg bg-[#E3FCEF]/50 border border-[#ABF5D1] space-y-1">
+              <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200/80 space-y-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#006644] font-bold block">
+                  <span className="text-xs uppercase tracking-wider text-emerald-800 font-bold block">
                     Confirmed Payments
                   </span>
-                  <span className="text-[10px] font-mono font-semibold px-1.5 py-0.2 rounded bg-[#E3FCEF] text-[#006644]">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800">
                     {data?.confirmedPayments || 0} settled
                   </span>
                 </div>
-                <strong className="text-xl sm:text-2xl font-extrabold font-mono text-[#006644] block">
+                <strong className="text-2xl font-extrabold font-mono text-emerald-800 block mt-1">
                   {loading ? "—" : formatCurrency(data?.confirmedPaymentAmount)}
                 </strong>
-                <p className="text-[11px] text-[#64748B]">
+                <p className="text-xs text-slate-500">
                   Verified commercial wire transfers completed by buyers.
                 </p>
               </div>
             </div>
 
-            <div className="text-[11px] text-[#64748B] pt-1">
+            <div className="text-xs text-slate-400 pt-1">
               * Payments are recorded directly between buyer and supplier. KemKendra operates on zero-custody verified records.
             </div>
           </div>
 
           {/* Catalog & Verification Quick Links */}
-          <div className="bg-[#FAFAFA] border border-[#E4E4E7] rounded-[10px] p-5 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#475569] font-mono">
+          <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-5 sm:p-6 space-y-3.5">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">
               Manufacturer Tools & Compliance
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <Link
                 href="/dashboard/supplier/verification"
-                className="p-3 bg-white border border-[#E4E4E7] rounded-lg hover:border-[#0052CC] transition-colors flex items-center justify-between group shadow-2xs"
+                className="p-4 bg-white border border-slate-200/80 rounded-xl hover:border-[#0052CC] transition-colors flex items-center justify-between group shadow-2xs"
               >
                 <div>
-                  <span className="text-xs font-bold text-[#0F172A] group-hover:text-[#0052CC] block">
+                  <span className="text-xs font-bold text-slate-900 group-hover:text-[#0052CC] block">
                     KYC & Due Diligence
                   </span>
-                  <span className="text-[11px] text-[#64748B]">
+                  <span className="text-xs text-slate-500">
                     Manage manufacturing licenses and audit evidence
                   </span>
                 </div>
@@ -297,13 +299,13 @@ export default function SupplierDashboardOverviewPage() {
 
               <Link
                 href="/dashboard/supplier/documents"
-                className="p-3 bg-white border border-[#E4E4E7] rounded-lg hover:border-[#0052CC] transition-colors flex items-center justify-between group shadow-2xs"
+                className="p-4 bg-white border border-slate-200/80 rounded-xl hover:border-[#0052CC] transition-colors flex items-center justify-between group shadow-2xs"
               >
                 <div>
-                  <span className="text-xs font-bold text-[#0F172A] group-hover:text-[#0052CC] block">
+                  <span className="text-xs font-bold text-slate-900 group-hover:text-[#0052CC] block">
                     COA & MSDS Vault
                   </span>
-                  <span className="text-[11px] text-[#64748B]">
+                  <span className="text-xs text-slate-500">
                     Upload batch certificates and safety data sheets
                   </span>
                 </div>
@@ -319,14 +321,14 @@ export default function SupplierDashboardOverviewPage() {
 
           {/* Notifications Widget */}
           {data?.recentNotifications && data.recentNotifications.length > 0 && (
-            <div className="bg-white border border-[#E4E4E7] rounded-[10px] p-4 shadow-xs space-y-3">
-              <div className="flex items-center justify-between border-b border-[#F1F5F9] pb-2">
-                <span className="text-xs font-bold text-[#0F172A]">
+            <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-tactile-card space-y-3.5">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                <span className="text-xs font-bold text-slate-900">
                   Recent Supplier Alerts
                 </span>
                 <Link
                   href="/dashboard/notifications"
-                  className="text-[11px] text-[#0052CC] hover:underline font-medium"
+                  className="text-xs text-[#0052CC] hover:underline font-bold"
                 >
                   View All
                 </Link>
@@ -336,12 +338,12 @@ export default function SupplierDashboardOverviewPage() {
                   <Link
                     key={n.id}
                     href={n.targetRoute || "/dashboard/notifications"}
-                    className="block p-2 rounded-md hover:bg-slate-50 transition-colors text-xs space-y-0.5"
+                    className="block p-2.5 rounded-xl hover:bg-slate-50 transition-colors text-xs space-y-0.5"
                   >
-                    <div className="font-semibold text-[#0F172A] truncate">
+                    <div className="font-bold text-slate-900 truncate">
                       {n.title}
                     </div>
-                    <div className="text-[11px] text-[#64748B] line-clamp-1">
+                    <div className="text-xs text-slate-500 line-clamp-1">
                       {n.message}
                     </div>
                   </Link>

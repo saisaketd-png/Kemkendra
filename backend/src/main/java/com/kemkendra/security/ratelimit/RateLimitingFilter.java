@@ -25,10 +25,14 @@ public class RateLimitingFilter extends OncePerRequestFilter {
     private final RateLimitProperties properties;
     private final RateLimiterStorage storage;
     private final ObjectMapper objectMapper;
+    private final com.kemkendra.security.ClientIpResolver clientIpResolver;
 
-    public RateLimitingFilter(RateLimitProperties properties, RateLimiterStorage storage) {
+    public RateLimitingFilter(RateLimitProperties properties,
+                              RateLimiterStorage storage,
+                              com.kemkendra.security.ClientIpResolver clientIpResolver) {
         this.properties = properties;
         this.storage = storage;
+        this.clientIpResolver = clientIpResolver;
         this.objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
     }
 
@@ -140,87 +144,6 @@ public class RateLimitingFilter extends OncePerRequestFilter {
      * 3. Fall back safely to request.getRemoteAddr() if no valid forwarded IP is resolved.
      */
     private String resolveClientIp(HttpServletRequest request) {
-        String remoteAddr = request.getRemoteAddr();
-        if (remoteAddr == null || remoteAddr.isBlank()) {
-            remoteAddr = "127.0.0.1";
-        }
-        remoteAddr = remoteAddr.trim();
-
-        // 1. Direct connection from an untrusted public peer: ignore all forwarding headers.
-        if (!isTrustedProxy(remoteAddr)) {
-            return remoteAddr;
-        }
-
-        // 2. Request arrived from a trusted proxy (e.g. Render proxy, local dev, Docker network):
-        String xForwardedFor = request.getHeader("X-Forwarded-For");
-        if (xForwardedFor != null && !xForwardedFor.isBlank()) {
-            String[] hops = xForwardedFor.split(",");
-            // Scan backwards from right to left to find the first client IP before trusted internal proxies
-            for (int i = hops.length - 1; i >= 0; i--) {
-                String candidate = hops[i].trim();
-                if (isValidIpAddress(candidate)) {
-                    if (!isTrustedProxy(candidate)) {
-                        return candidate;
-                    }
-                }
-            }
-            // If all hops were internal IPs, use the leftmost valid IP
-            for (String hop : hops) {
-                String candidate = hop.trim();
-                if (isValidIpAddress(candidate)) {
-                    return candidate;
-                }
-            }
-        }
-
-        String cfConnectingIp = request.getHeader("CF-Connecting-IP");
-        if (cfConnectingIp != null && !cfConnectingIp.isBlank()) {
-            String candidate = cfConnectingIp.trim();
-            if (isValidIpAddress(candidate)) {
-                return candidate;
-            }
-        }
-
-        String xRealIp = request.getHeader("X-Real-IP");
-        if (xRealIp != null && !xRealIp.isBlank()) {
-            String candidate = xRealIp.trim();
-            if (isValidIpAddress(candidate)) {
-                return candidate;
-            }
-        }
-
-        return remoteAddr;
-    }
-
-    private boolean isTrustedProxy(String ip) {
-        if (ip == null || ip.isBlank() || "unknown".equalsIgnoreCase(ip)) {
-            return false;
-        }
-        String cleanIp = ip.trim();
-        if ("127.0.0.1".equals(cleanIp) || "::1".equals(cleanIp) || "0:0:0:0:0:0:0:1".equals(cleanIp) || "localhost".equalsIgnoreCase(cleanIp)) {
-            return true;
-        }
-        try {
-            java.net.InetAddress addr = java.net.InetAddress.getByName(cleanIp);
-            return addr.isLoopbackAddress() || addr.isSiteLocalAddress() || addr.isLinkLocalAddress();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private boolean isValidIpAddress(String ip) {
-        if (ip == null || ip.isBlank()) {
-            return false;
-        }
-        String clean = ip.trim();
-        if (clean.length() > 45 || clean.contains(" ") || clean.contains("/") || clean.contains(";")) {
-            return false;
-        }
-        try {
-            java.net.InetAddress.getByName(clean);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return clientIpResolver.resolveClientIp(request);
     }
 }

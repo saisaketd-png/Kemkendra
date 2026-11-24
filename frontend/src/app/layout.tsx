@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/shared/context/ToastContext";
 import { MobileBottomNav } from "@/shared/components/MobileBottomNav";
 import { OfflineBanner } from "@/shared/components/OfflineBanner";
+import { CommandPalette } from "@/features/search/components/CommandPalette";
 
-const inter = Inter({
-  variable: "--font-inter",
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
   preload: true,
@@ -66,11 +67,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${plusJakarta.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="font-sans min-h-full flex flex-col bg-[#FAFAFA] text-[#0F172A] pb-16 lg:pb-0">
+      <body className="font-sans min-h-full flex flex-col bg-[#F8F9FA] text-[#0F172A] pb-16 lg:pb-0">
         <ToastProvider>
           <OfflineBanner />
+          <CommandPalette />
           {children}
           <MobileBottomNav />
         </ToastProvider>

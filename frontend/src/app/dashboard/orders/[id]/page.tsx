@@ -461,57 +461,59 @@ export default function BuyerOrderDetailPage() {
           />
 
           {/* 1. Order Summary Card */}
-          <div className="bg-white border border-[#DFE1E6] rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
-            <div className="flex items-center justify-between border-b border-[#DFE1E6] pb-3">
-              <div className="flex items-center gap-2">
-                <Package className="w-4 h-4 text-[#0052CC]" />
-                <h2 className="text-xs font-bold uppercase tracking-wider text-[#091E42]">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-tactile-card space-y-5">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0052CC] border border-blue-100 flex items-center justify-center">
+                  <Package className="w-4 h-4" />
+                </div>
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900">
                   Order Summary
                 </h2>
               </div>
-              <span className="text-[10px] font-mono font-bold text-[#0052CC] bg-[#DEEBFF] px-2 py-0.5 rounded uppercase">
+              <span className="text-[11px] font-mono font-bold text-[#0052CC] bg-blue-50 border border-blue-100 px-2.5 py-1 rounded-md uppercase">
                 Contract #{order.poNumber}
               </span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
-              <div className="p-3.5 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 text-xs">
+              <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/60 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
                   Product / Compound
                 </span>
-                <strong className="text-sm font-bold text-[#091E42] block truncate">
+                <strong className="text-sm font-bold text-slate-900 block truncate">
                   {order.productName || "Specialty Chemical"}
                 </strong>
                 {order.masterProductCode && (
-                  <span className="text-[10px] font-mono text-[#64748B] block">
+                  <span className="text-[11px] font-mono text-slate-500 block">
                     Code: {order.masterProductCode}
                   </span>
                 )}
               </div>
 
-              <div className="p-3.5 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block">
+              <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/60 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
                   Consignment Quantity
                 </span>
-                <span className="font-mono text-sm font-bold text-[#091E42] block">
+                <span className="font-mono text-sm font-bold text-slate-900 block">
                   {order.quantity.toLocaleString()} {order.unit.toUpperCase()}
                 </span>
               </div>
 
-              <div className="p-3.5 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block">
+              <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/60 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
                   Unit Price
                 </span>
-                <span className="font-mono text-sm font-bold text-[#091E42] block">
+                <span className="font-mono text-sm font-bold text-slate-900 block">
                   {order.currency} {order.unitPrice.toFixed(2)} / {order.unit.toUpperCase()}
                 </span>
               </div>
 
-              <div className="p-3.5 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block">
+              <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/60 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
                   Tax / GST
                 </span>
-                <span className="font-mono text-sm font-semibold text-[#475569] block">
+                <span className="font-mono text-sm font-semibold text-slate-700 block">
                   {order.currency} {(order.taxAmount ?? 0).toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
@@ -519,11 +521,11 @@ export default function BuyerOrderDetailPage() {
                 </span>
               </div>
 
-              <div className="p-3.5 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block">
+              <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/60 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
                   Total Order Amount
                 </span>
-                <span className="font-mono text-sm font-bold text-[#006644] block">
+                <span className="font-mono text-sm font-bold text-emerald-600 block">
                   {order.currency} {order.totalAmount.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
@@ -531,11 +533,11 @@ export default function BuyerOrderDetailPage() {
                 </span>
               </div>
 
-              <div className="p-3.5 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block">
+              <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/60 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
                   Expected Delivery
                 </span>
-                <span className="font-mono text-sm font-bold text-[#091E42] block">
+                <span className="font-mono text-sm font-bold text-slate-900 block">
                   {order.expectedDeliveryDate || (order.agreedLeadTimeDays ? `${order.agreedLeadTimeDays} Days SLA` : "Standard SLA")}
                 </span>
               </div>
@@ -543,45 +545,47 @@ export default function BuyerOrderDetailPage() {
           </div>
 
           {/* 2. Agreed Procurement & Shipping Snapshot */}
-          <div className="bg-white border border-[#DFE1E6] rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
-            <div className="flex items-center justify-between border-b border-[#DFE1E6] pb-3">
-              <div className="flex items-center gap-2">
-                <FileCheck2 className="w-4 h-4 text-[#0052CC]" />
-                <h2 className="text-xs font-bold uppercase tracking-wider text-[#091E42]">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-tactile-card space-y-5">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0052CC] border border-blue-100 flex items-center justify-center">
+                  <FileCheck2 className="w-4 h-4" />
+                </div>
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900">
                   Agreed Procurement & Shipping
                 </h2>
               </div>
-              <span className="text-[10px] font-mono font-bold text-[#006644] bg-[#E3FCEF] px-2 py-0.5 rounded uppercase">
+              <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md uppercase">
                 Immutable Contract
               </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div className="p-4 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block">
+              <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/60 space-y-1.5">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
                   Delivery / Consignment Destination
                 </span>
-                <p className="font-medium text-[#172B4D] leading-relaxed whitespace-pre-wrap">
+                <p className="font-medium text-slate-800 leading-relaxed whitespace-pre-wrap">
                   {order.shippingAddress}
                 </p>
               </div>
 
-              <div className="p-4 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block">
+              <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/60 space-y-1.5">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
                   Billing & Procurement Contact
                 </span>
-                <p className="font-medium text-[#172B4D] leading-relaxed whitespace-pre-wrap">
+                <p className="font-medium text-slate-800 leading-relaxed whitespace-pre-wrap">
                   {order.billingContact}
                 </p>
               </div>
             </div>
 
             {order.notes && (
-              <div className="p-4 bg-[#FAFBFC] rounded-xl border border-[#DFE1E6] text-xs">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block mb-1">
+              <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/60 text-xs">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
                   Special Delivery Instructions
                 </span>
-                <p className="text-[#172B4D] italic">{order.notes}</p>
+                <p className="text-slate-700 italic">{order.notes}</p>
               </div>
             )}
           </div>
@@ -590,7 +594,7 @@ export default function BuyerOrderDetailPage() {
           <OrderTimelineSection orderId={order.id} />
 
           {/* 4. Commercial & Shipping Document Vault */}
-          <div className="bg-white border border-[#DFE1E6] rounded-2xl p-5 sm:p-6 shadow-xs">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-tactile-card">
             <GenericDocumentManager
               title="Commercial & Shipping Document Vault"
               description="Official purchase orders, tax invoices, waybills, certificates of analysis, and delivery receipts."
@@ -613,20 +617,20 @@ export default function BuyerOrderDetailPage() {
         {/* Right Sidebar (4 Cols): Order Status, Supplier, Sourcing Reference */}
         <div className="lg:col-span-4 space-y-6">
           {/* 1. Order Status & Actions Card */}
-          <div className="bg-white border border-[#DFE1E6] rounded-2xl p-5 shadow-xs space-y-4">
-            <div className="flex items-center justify-between border-b border-[#DFE1E6] pb-3">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#091E42]">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-tactile-card space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
                 Order Status
               </h3>
               <StatusBadge status={order.status} size="sm" />
             </div>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3.5 text-xs">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5E6C84] block mb-0.5">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
                   Next Step
                 </span>
-                <p className="text-xs text-[#091E42] leading-relaxed">
+                <p className="text-xs text-slate-700 leading-relaxed">
                   {order.status === "PLACED"
                     ? "Awaiting supplier confirmation of commercial terms and delivery schedule."
                     : order.status === "CONFIRMED"
@@ -641,22 +645,22 @@ export default function BuyerOrderDetailPage() {
                 </p>
               </div>
 
-              <div className="pt-2 border-t border-[#DFE1E6] space-y-2">
+              <div className="pt-3 border-t border-slate-100 space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-[#5E6C84]">Placed Date</span>
-                  <span className="font-mono font-bold text-[#091E42]">
+                  <span className="text-slate-500">Placed Date</span>
+                  <span className="font-mono font-bold text-slate-900">
                     {new Date(order.placedAt).toLocaleDateString("en-GB")}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-[#5E6C84]">Confirmed Date</span>
-                  <span className="font-mono font-bold text-[#091E42]">
+                  <span className="text-slate-500">Confirmed Date</span>
+                  <span className="font-mono font-bold text-slate-900">
                     {order.confirmedAt ? new Date(order.confirmedAt).toLocaleDateString("en-GB") : "Pending"}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-[#5E6C84]">Dispatch Date</span>
-                  <span className="font-mono font-bold text-[#091E42]">
+                  <span className="text-slate-500">Dispatch Date</span>
+                  <span className="font-mono font-bold text-slate-900">
                     {order.shippedAt ? new Date(order.shippedAt).toLocaleDateString("en-GB") : "Pending"}
                   </span>
                 </div>
@@ -670,7 +674,7 @@ export default function BuyerOrderDetailPage() {
                   type="button"
                   onClick={handleConfirmReceipt}
                   disabled={actionLoading}
-                  className="w-full h-11 bg-[#00875A] hover:bg-[#006644] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors duration-150 shadow-2xs flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 active:scale-[0.98]"
                 >
                   <CheckCircle2 className="w-4 h-4" />
                   <span>{actionLoading ? "Confirming..." : "Confirm Consignment Receipt"}</span>
@@ -680,52 +684,52 @@ export default function BuyerOrderDetailPage() {
           </div>
 
           {/* 2. Supplier Profile Card */}
-          <div className="bg-white border border-[#DFE1E6] rounded-2xl p-5 shadow-xs space-y-4 text-xs">
-            <div className="flex items-center justify-between border-b border-[#DFE1E6] pb-3">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#091E42]">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-tactile-card space-y-4 text-xs">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
                 Supplier
               </h3>
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#006644] bg-[#E3FCEF] border border-[#ABF5D1] px-2 py-0.5 rounded">
-                <ShieldCheck className="w-3 h-3 text-[#00875A]" /> Verified
+              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Verified
               </span>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               <div>
-                <strong className="text-sm font-bold text-[#091E42] block">
+                <strong className="text-sm font-bold text-slate-900 block">
                   {supplierProfile?.name || supplierName || `Supplier #${order.supplierId}`}
                 </strong>
-                <span className="text-[11px] text-[#5E6C84]">
+                <span className="text-xs text-slate-500">
                   {supplierProfile?.countryName || "Certified Chemical Manufacturer"}
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#DFE1E6]">
-                <div className="p-2.5 bg-[#FAFBFC] rounded-lg border border-[#DFE1E6]">
-                  <span className="text-[10px] font-bold uppercase text-[#5E6C84] block">Country</span>
-                  <strong className="text-xs text-[#091E42] block mt-0.5 truncate">
+              <div className="grid grid-cols-2 gap-2.5 pt-2 border-t border-slate-100">
+                <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200/60">
+                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Country</span>
+                  <strong className="text-xs text-slate-900 block mt-0.5 truncate">
                     {supplierProfile?.countryName || "India"}
                   </strong>
                 </div>
 
-                <div className="p-2.5 bg-[#FAFBFC] rounded-lg border border-[#DFE1E6]">
-                  <span className="text-[10px] font-bold uppercase text-[#5E6C84] block">Experience</span>
-                  <strong className="text-xs text-[#091E42] block mt-0.5">
+                <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200/60">
+                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Experience</span>
+                  <strong className="text-xs text-slate-900 block mt-0.5">
                     {supplierProfile?.yearsInBusiness ? `${supplierProfile.yearsInBusiness}+ Years` : "5+ Years"}
                   </strong>
                 </div>
               </div>
 
               <div className="flex justify-between items-center pt-1">
-                <span className="text-[#5E6C84]">Fulfillment Rate</span>
-                <span className="font-bold text-[#00875A]">100% Verified</span>
+                <span className="text-slate-500">Fulfillment Rate</span>
+                <span className="font-bold text-emerald-600">100% Verified</span>
               </div>
 
               {order.supplierId && (
                 <div className="pt-2">
                   <Link
                     href={`/suppliers/${order.supplierId}`}
-                    className="inline-flex items-center justify-center gap-1.5 w-full py-2 bg-[#F4F5F7] hover:bg-[#EBECF0] text-[#0052CC] font-bold text-xs rounded-xl border border-[#DFE1E6] transition-colors"
+                    className="inline-flex items-center justify-center gap-2 w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-[#0052CC] font-bold text-xs rounded-xl border border-slate-200 transition-colors shadow-2xs active:scale-[0.98]"
                   >
                     <span>View Supplier Profile</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -736,23 +740,23 @@ export default function BuyerOrderDetailPage() {
           </div>
 
           {/* Tax Invoice & Commercial Settlement Card */}
-          <div className="bg-white border border-[#DFE1E6] rounded-2xl p-5 shadow-xs space-y-3 text-xs">
-            <div className="flex items-center justify-between border-b border-[#DFE1E6] pb-2">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#091E42] flex items-center gap-1.5">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-tactile-card space-y-3.5 text-xs">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
                 <Receipt className="w-3.5 h-3.5 text-[#0052CC]" />
                 <span>Invoices & Settlement</span>
               </h3>
-              <span className="text-[10px] font-mono text-[#00875A] bg-[#E3FCEF] px-1.5 py-0.5 rounded font-bold">
+              <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md font-bold">
                 GST Ready
               </span>
             </div>
-            <p className="text-[#5E6C84] leading-relaxed">
+            <p className="text-slate-500 leading-relaxed">
               Track statutory tax invoices, record direct non-custodial bank settlement proofs (UTR/NEFT/RTGS), or report discrepancies.
             </p>
             <div className="pt-1">
               <Link
                 href="/dashboard/buyer/invoices"
-                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-[#0052CC] hover:bg-[#0047B3] text-white font-bold text-xs rounded-xl transition-colors shadow-xs"
+                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white font-bold text-xs rounded-xl transition-colors shadow-2xs"
               >
                 <span>View Invoices & Payments</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -761,14 +765,14 @@ export default function BuyerOrderDetailPage() {
           </div>
 
           {/* 3. Sourcing Reference Card */}
-          <div className="bg-white border border-[#DFE1E6] rounded-2xl p-5 shadow-xs space-y-3 text-xs">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#091E42] border-b border-[#DFE1E6] pb-2">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-tactile-card space-y-3 text-xs">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-100 pb-2.5">
               Sourcing Reference
             </h3>
 
             <div className="space-y-2.5">
               <div className="flex justify-between items-center">
-                <span className="text-[#5E6C84]">RFQ Reference</span>
+                <span className="text-slate-500">RFQ Reference</span>
                 <Link
                   href={`/dashboard/rfqs/${order.rfqId}`}
                   className="font-mono font-bold text-[#0052CC] hover:underline flex items-center gap-1"
@@ -779,15 +783,15 @@ export default function BuyerOrderDetailPage() {
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="text-[#5E6C84]">Chemical Grade</span>
-                <span className="font-bold text-[#091E42] uppercase">
+                <span className="text-slate-500">Chemical Grade</span>
+                <span className="font-bold text-slate-900 uppercase">
                   {order.unit} Bulk Supply
                 </span>
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="text-[#5E6C84]">Quotation Terms</span>
-                <span className="font-bold text-[#091E42]">Agreed Commercials</span>
+                <span className="text-slate-500">Quotation Terms</span>
+                <span className="font-bold text-slate-900">Agreed Commercials</span>
               </div>
             </div>
           </div>

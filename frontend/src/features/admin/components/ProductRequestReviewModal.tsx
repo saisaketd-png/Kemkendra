@@ -200,9 +200,9 @@ export function ProductRequestReviewModal({
                     <button
                       type="button"
                       onClick={() => setMode("LINK")}
-                      className="px-4 py-2 bg-purple-50 text-purple-700 hover:bg-purple-100 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 border border-purple-200"
+                      className="px-4 py-2 bg-blue-50 text-[#0052CC] hover:bg-blue-100 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 border border-blue-200/80"
                     >
-                      <GitMerge className="w-4 h-4 text-purple-600" />
+                      <GitMerge className="w-4 h-4 text-[#0052CC]" />
                       Link to Existing
                     </button>
                   )}
@@ -231,7 +231,7 @@ export function ProductRequestReviewModal({
             <form onSubmit={handleLinkSubmit} className="space-y-5 text-xs font-medium">
               <div className="border-b border-slate-100 pb-3">
                 <h4 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
-                  <GitMerge className="w-4 h-4 text-purple-600" />
+                  <GitMerge className="w-4 h-4 text-[#0052CC]" />
                   Select Existing Canonical Master Product
                 </h4>
                 <p className="text-slate-500 text-xs mt-0.5">
@@ -241,12 +241,12 @@ export function ProductRequestReviewModal({
 
               {/* If a MasterProduct is already selected, show confirmation card */}
               {selectedMasterProduct ? (
-                <div className="p-4 bg-purple-50/80 border border-purple-200 rounded-2xl space-y-3">
+                <div className="p-4 bg-blue-50/80 border border-blue-200 rounded-2xl space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-extrabold text-purple-700 uppercase tracking-wider flex items-center gap-1.5">
-                      <Check className="w-3.5 h-3.5 text-purple-700" /> Selected Master Product
+                    <span className="text-[10px] font-extrabold text-[#0052CC] uppercase tracking-wider flex items-center gap-1.5">
+                      <Check className="w-3.5 h-3.5 text-[#0052CC]" /> Selected Master Product
                     </span>
-                    <span className="px-2.5 py-0.5 bg-purple-600 text-white font-mono text-[10px] font-bold rounded-lg uppercase">
+                    <span className="px-2.5 py-0.5 bg-[#0052CC] text-white font-mono text-[10px] font-bold rounded-lg uppercase">
                       {selectedMasterProduct.masterProductCode}
                     </span>
                   </div>
@@ -267,15 +267,15 @@ export function ProductRequestReviewModal({
                       </div>
                     </div>
                   </div>
-                  <div className="pt-2 border-t border-purple-200/60 flex items-center justify-between">
+                  <div className="pt-2 border-t border-blue-200/60 flex items-center justify-between">
                     <button
                       type="button"
                       onClick={() => setSelectedMasterProduct(null)}
-                      className="text-xs font-bold text-purple-700 hover:text-purple-900 hover:underline"
+                      className="text-xs font-bold text-[#0052CC] hover:text-[#0747A6] hover:underline"
                     >
                       ← Change Selection
                     </button>
-                    <span className="text-[11px] text-purple-600 font-medium">Ready to link</span>
+                    <span className="text-[11px] text-[#0052CC] font-medium">Ready to link</span>
                   </div>
                 </div>
               ) : (
@@ -294,7 +294,7 @@ export function ProductRequestReviewModal({
                           executeMasterProductSearch(e.target.value);
                         }}
                         placeholder="Search by product name, CAS, code (e.g. API-MP-696203), formula..."
-                        className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 text-xs"
+                        className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC] text-xs"
                       />
                     </div>
                   </div>
@@ -303,7 +303,7 @@ export function ProductRequestReviewModal({
                   <div className="border border-slate-200 rounded-xl overflow-hidden max-h-56 overflow-y-auto divide-y divide-slate-100 bg-white">
                     {isSearching ? (
                       <div className="p-6 text-center text-slate-400 flex items-center justify-center gap-2">
-                        <RefreshCw className="w-4 h-4 animate-spin text-purple-600" />
+                        <RefreshCw className="w-4 h-4 animate-spin text-[#0052CC]" />
                         <span>Searching catalog...</span>
                       </div>
                     ) : searchResults.length > 0 ? (
@@ -311,11 +311,11 @@ export function ProductRequestReviewModal({
                         <div
                           key={mp.id}
                           onClick={() => setSelectedMasterProduct(mp)}
-                          className="p-3 hover:bg-purple-50/50 cursor-pointer transition-colors flex items-center justify-between gap-3 group"
+                          className="p-3 hover:bg-blue-50/50 cursor-pointer transition-colors flex items-center justify-between gap-3 group"
                         >
                           <div className="space-y-0.5">
                             <div className="flex items-center gap-2">
-                              <strong className="text-slate-900 font-bold group-hover:text-purple-700 transition-colors">
+                              <strong className="text-slate-900 font-bold group-hover:text-[#0052CC] transition-colors">
                                 {mp.name}
                               </strong>
                               <span className="px-2 py-0.5 bg-slate-900 text-white font-mono text-[9px] font-bold rounded">
@@ -338,7 +338,7 @@ export function ProductRequestReviewModal({
                               e.stopPropagation();
                               setSelectedMasterProduct(mp);
                             }}
-                            className="px-3 py-1 bg-purple-50 text-purple-700 group-hover:bg-purple-600 group-hover:text-white rounded-lg text-xs font-bold transition-colors shrink-0"
+                            className="px-3 py-1 bg-blue-50 text-[#0052CC] group-hover:bg-[#0052CC] group-hover:text-white rounded-lg text-xs font-bold transition-colors shrink-0"
                           >
                             Select
                           </button>
@@ -367,7 +367,7 @@ export function ProductRequestReviewModal({
                 <button
                   type="submit"
                   disabled={isLoading || !selectedMasterProduct}
-                  className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm disabled:opacity-50 flex items-center gap-1.5"
+                  className="px-5 py-2 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white rounded-xl text-xs font-bold transition-colors shadow-sm disabled:opacity-50 flex items-center gap-1.5"
                 >
                   {isLoading ? "Linking..." : "Confirm & Link"}
                 </button>

@@ -116,16 +116,16 @@ export default function AdminActivityPage() {
 
       {/* Activity Timeline */}
       {loading ? (
-        <div className="p-8 bg-white border border-slate-200 rounded-3xl animate-pulse h-48"></div>
+        <div className="p-8 bg-white border border-slate-200/90 rounded-2xl animate-pulse h-48"></div>
       ) : filteredActivities.length > 0 ? (
-        <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-2xs divide-y divide-slate-100">
+        <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-tactile-card divide-y divide-slate-100">
           {filteredActivities.map((act) => {
             const targetRoute = resolveNotificationRoute(act, false, true);
 
             return (
               <div key={act.id} className="p-5 hover:bg-slate-50/80 transition-colors flex items-start justify-between gap-4">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0 mt-0.5 text-blue-600">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0 mt-0.5 text-[#0052CC]">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div className="space-y-1">
@@ -145,7 +145,7 @@ export default function AdminActivityPage() {
                 {targetRoute && (
                   <Link
                     href={targetRoute}
-                    className="px-3.5 py-2 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 font-bold rounded-xl text-xs flex items-center gap-1 transition-colors shrink-0"
+                    className="px-3.5 py-2 bg-slate-100 hover:bg-[#0052CC] hover:text-white text-slate-700 font-bold rounded-xl text-xs flex items-center gap-1 transition-colors shrink-0"
                   >
                     Inspect <ChevronRight className="w-3.5 h-3.5" />
                   </Link>
@@ -155,7 +155,7 @@ export default function AdminActivityPage() {
           })}
         </div>
       ) : (
-        <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-slate-200 space-y-3">
+        <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200 space-y-3">
           <Activity className="w-12 h-12 text-slate-300 mx-auto" />
           <h3 className="text-base font-extrabold text-slate-900">NO RECENT GOVERNANCE ACTIVITY</h3>
           <p className="text-xs text-slate-500 max-w-sm mx-auto">

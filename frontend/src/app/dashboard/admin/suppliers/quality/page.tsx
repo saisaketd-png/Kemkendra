@@ -74,10 +74,10 @@ export default function SupplierQualityPage() {
           Loading supplier due-diligence profiles...
         </div>
       ) : (
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-tactile-card overflow-hidden">
           <div className="p-6 border-b border-slate-100 flex items-center justify-between">
             <h2 className="text-sm font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-teal-600" />
+              <ShieldCheck className="w-4 h-4 text-[#0052CC]" />
               Supplier Quality Directory ({items.length})
             </h2>
           </div>
@@ -135,7 +135,7 @@ export default function SupplierQualityPage() {
                       <td className="py-4 px-6 text-right">
                         <Link
                           href={`/dashboard/admin/suppliers/verification/${sId}`}
-                          className="inline-flex items-center gap-1 text-xs font-bold text-purple-600 hover:text-purple-700 transition-colors"
+                          className="inline-flex items-center gap-1 text-xs font-bold text-[#0052CC] hover:text-[#0747A6] transition-colors"
                         >
                           Inspect Verification <ChevronRight className="w-3.5 h-3.5" />
                         </Link>

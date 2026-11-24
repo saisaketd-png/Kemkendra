@@ -84,7 +84,7 @@ export default async function SuppliersPage(props: {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F7F9FC] font-sans text-[#0F172A] antialiased">
+    <div className="min-h-screen flex flex-col bg-[#F8F9FA] font-sans text-[#0F172A] antialiased">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd) }}
@@ -94,7 +94,7 @@ export default async function SuppliersPage(props: {
       <main className="flex-1 py-8 sm:py-12">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           <nav className="flex items-center gap-2 text-xs font-semibold text-[#64748B]">
-            <Link href="/" className="hover:text-[#155EEF]">Home</Link>
+            <Link href="/" className="hover:text-[#0052CC]">Home</Link>
             <ChevronRight className="w-3.5 h-3.5 text-[#94A3B8]" />
             <span className="text-[#0F172A] font-extrabold">Chemical Suppliers</span>
           </nav>
@@ -103,7 +103,7 @@ export default async function SuppliersPage(props: {
             title="Supplier Directory"
             description="Discover verified chemical manufacturers, primary synthetic labs, and audited distributors for institutional procurement."
             badge={
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-[#EFF4FF] text-[#155EEF] border border-[#D1E0FF]">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-[#0052CC] border border-blue-200">
                 <ShieldCheck className="w-3.5 h-3.5" /> Verified Supplier Network
               </span>
             }
@@ -138,7 +138,7 @@ export default async function SuppliersPage(props: {
                       action={
                         <Link
                           href="/suppliers"
-                          className="px-4 py-2 text-xs font-bold text-white bg-[#155EEF] hover:bg-[#104EC6] rounded-xl transition-colors shadow-2xs"
+                          className="px-4 py-2 text-xs font-bold text-white bg-[#0052CC] hover:bg-[#0747A6] rounded-xl transition-colors shadow-2xs press-tactile"
                         >
                           Clear All Filters
                         </Link>

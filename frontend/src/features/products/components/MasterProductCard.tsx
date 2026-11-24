@@ -44,11 +44,11 @@ export function MasterProductCard({ product }: MasterProductCardProps) {
   const offeringCount = product.offeringCount || 0;
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all flex flex-col justify-between space-y-4 group overflow-hidden">
+    <div className="bg-white rounded-2xl border border-slate-200/90 hover:border-[#0052CC]/40 hover:-translate-y-1 hover:shadow-tactile-card transition-all flex flex-col justify-between space-y-4 group overflow-hidden">
       <div className="p-5 md:p-6 space-y-4">
         {/* Category & Master Code */}
         <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
-          <span className="px-2.5 py-0.5 bg-blue-50 text-blue-700 text-[11px] font-extrabold rounded-md uppercase tracking-wider">
+          <span className="px-2.5 py-0.5 bg-blue-50 text-[#0052CC] border border-blue-200/80 text-[11px] font-bold rounded-full uppercase tracking-wider">
             {product.category ? product.category.replace("_", " ") : "GENERAL"}
           </span>
           <span className="text-xs font-mono font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
@@ -57,7 +57,7 @@ export function MasterProductCard({ product }: MasterProductCardProps) {
         </div>
 
         {/* Chemical Name */}
-        <h3 className="text-xl font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors leading-snug">
+        <h3 className="text-xl font-bold text-[#091E42] group-hover:text-[#0052CC] transition-colors leading-snug">
           <Link href={`/products/${product.masterProductCode}`}>
             {product.name}
           </Link>
@@ -84,7 +84,7 @@ export function MasterProductCard({ product }: MasterProductCardProps) {
             <button
               type="button"
               onClick={handleToggleExpand}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100/70 text-emerald-800 text-xs font-extrabold rounded-xl border border-emerald-200 transition-all cursor-pointer shadow-2xs"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100/70 text-emerald-800 text-xs font-bold rounded-lg border border-emerald-200 transition-colors cursor-pointer shadow-2xs"
             >
               <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
               <span>
@@ -93,7 +93,7 @@ export function MasterProductCard({ product }: MasterProductCardProps) {
               {isExpanded ? <ChevronUp className="w-3.5 h-3.5 ml-0.5" /> : <ChevronDown className="w-3.5 h-3.5 ml-0.5" />}
             </button>
           ) : (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-800 text-xs font-bold rounded-xl border border-amber-200">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-800 text-xs font-semibold rounded-lg border border-amber-200">
               <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
               <span>Supplier offerings are currently being onboarded</span>
             </span>
@@ -101,7 +101,7 @@ export function MasterProductCard({ product }: MasterProductCardProps) {
 
           <Link
             href={`/products/${product.masterProductCode}`}
-            className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 hover:text-blue-700 shrink-0"
+            className="inline-flex items-center gap-1 text-xs font-bold text-[#0052CC] hover:text-[#0747A6] shrink-0"
           >
             <span>View Product</span>
             <ChevronRight className="w-4 h-4" />

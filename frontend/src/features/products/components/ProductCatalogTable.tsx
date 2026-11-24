@@ -29,6 +29,7 @@ import { ProductSupplier } from "./SupplierComparison";
 import { SupplierLogo } from "@/features/suppliers/components/SupplierLogo";
 import { authenticatedFetch } from "@/features/auth/api/authenticatedFetch";
 import { useToast } from "@/shared/context/ToastContext";
+import { ChemicalStructureVisual } from "@/shared/components/ChemicalStructureVisual";
 import dynamic from "next/dynamic";
 
 const RfqModal = dynamic(() => import("../../rfq/components/RfqModal"), {
@@ -43,6 +44,42 @@ interface ProductCatalogTableProps {
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
+
+function ProductThumbnail({
+  imageUrl,
+  productName,
+  casNumber,
+  category,
+}: {
+  imageUrl?: string | null;
+  productName: string;
+  casNumber?: string;
+  category?: string;
+}) {
+  const [hasError, setHasError] = useState(false);
+
+  if (!imageUrl || hasError) {
+    return (
+      <ChemicalStructureVisual
+        chemicalName={productName}
+        casNumber={casNumber}
+        category={category}
+        className="w-full h-full"
+      />
+    );
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={imageUrl}
+      alt={`${productName} chemical compound`}
+      className="w-full h-full object-contain"
+      onError={() => setHasError(true)}
+      loading="lazy"
+    />
+  );
+}
 
 export function ProductCatalogTable({ products }: ProductCatalogTableProps) {
   const toast = useToast();
@@ -176,7 +213,7 @@ export function ProductCatalogTable({ products }: ProductCatalogTableProps) {
         return (
           <article
             key={product.id}
-            className="bg-white border border-[#E4E4E7] hover:border-[#0052CC] rounded-[8px] p-4 sm:p-5 shadow-tactile-card transition-colors space-y-4"
+            className="bg-white border border-[#E4E4E7] hover:border-[#0052CC] rounded-[14px] p-4 sm:p-6 shadow-tactile-card card-elevation transition-all space-y-4"
           >
             {/* ======================================================================= */}
             {/* A. MOBILE-FIRST COMPACT CARD (< lg screens: 360px - 1023px)             */}
@@ -185,46 +222,32 @@ export function ProductCatalogTable({ products }: ProductCatalogTableProps) {
               {/* 1. Mobile Identity Row: Image + Details */}
               <div className="flex gap-3.5 items-start">
                 {/* 110–120px Dedicated Mobile Image Area */}
-                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-2 shrink-0 flex items-center justify-center relative overflow-hidden shadow-2xs">
-                  {resolvedImageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={resolvedImageUrl}
-                      alt={`${product.name} canonical compound`}
-                      className="w-full h-full object-contain"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="flex flex-col items-center justify-center text-center p-2 space-y-1 select-none">
-                      <FlaskConical className="w-7 h-7 text-[#0052CC] stroke-1.5" />
-                      <span className="text-[10px] font-mono font-bold text-slate-700 uppercase tracking-tight">Monograph</span>
-                    </div>
-                  )}
-                  {resolvedImageUrl && (
-                    <div className="absolute top-1.5 left-1.5">
-                      <span className="bg-[#E3FCEF] text-[#006644] border border-[#ABF5D1] px-1.5 py-0.2 rounded text-[9px] font-mono font-bold uppercase flex items-center gap-0.5">
-                        <ShieldCheck className="w-2.5 h-2.5" /> CANONICAL
-                      </span>
-                    </div>
-                  )}
+                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-xl border border-[#E2E8F0] bg-white p-2 shrink-0 flex items-center justify-center relative overflow-hidden shadow-2xs">
+                  <ProductThumbnail
+                    imageUrl={resolvedImageUrl}
+                    productName={product.name}
+                    casNumber={product.casNumber}
+                    category={product.category}
+                  />
                 </div>
 
-                {/* Right: Chemical Monograph Summary */}
+                {/* Right: Chemical Specification Summary */}
                 <div className="flex-1 min-w-0 space-y-1">
-                  <div className="flex items-center gap-1.5 flex-wrap">
+                  <div className="flex items-center gap-2 text-xs font-mono">
                     {product.category && (
-                      <span className="text-[10px] font-bold text-[#0747A6] bg-[#DEEBFF] px-2 py-0.2 rounded font-mono uppercase">
+                      <span className="text-[#0052CC] font-semibold">
                         {product.category.replace(/_/g, " ")}
                       </span>
                     )}
-                    <span className="text-[10px] font-bold text-[#006644] bg-[#E3FCEF] px-1.5 py-0.2 rounded font-mono inline-flex items-center gap-1">
-                      <CheckCircle2 className="w-2.5 h-2.5" /> Verified
+                    <span className="text-slate-300">&bull;</span>
+                    <span className="text-[#059669] font-medium">
+                      Verified
                     </span>
                   </div>
 
                   <Link
                     href={productUrl}
-                    className="text-base sm:text-lg font-bold text-[#091E42] hover:text-[#0052CC] uppercase tracking-tight block leading-snug line-clamp-2"
+                    className="text-base sm:text-lg font-bold text-[#0F172A] hover:text-[#0052CC] uppercase tracking-tight block leading-snug line-clamp-2"
                   >
                     {product.name}
                   </Link>
@@ -232,12 +255,12 @@ export function ProductCatalogTable({ products }: ProductCatalogTableProps) {
                   <div className="space-y-0.5 pt-0.5 font-mono text-xs text-[#475569]">
                     <div>
                       <span className="text-[#64748B] font-bold text-[11px]">CAS: </span>
-                      <span className="text-[#091E42] font-semibold">{product.casNumber || "N/A"}</span>
+                      <span className="text-[#0F172A] font-semibold">{product.casNumber || "N/A"}</span>
                     </div>
                     {product.molecularFormula && (
                       <div>
                         <span className="text-[#64748B] font-bold text-[11px]">Formula: </span>
-                        <span className="text-[#091E42] font-semibold">{product.molecularFormula}</span>
+                        <span className="text-[#0F172A] font-semibold">{product.molecularFormula}</span>
                       </div>
                     )}
                   </div>
@@ -294,7 +317,7 @@ export function ProductCatalogTable({ products }: ProductCatalogTableProps) {
                       </strong>
                     </div>
 
-                    <span className="text-[10px] font-bold text-[#006644] bg-[#E3FCEF] border border-[#ABF5D1] px-1.5 py-0.2 rounded shrink-0 font-mono">
+                    <span className="text-xs font-semibold text-[#059669] shrink-0 font-mono">
                       ✓ Verified
                     </span>
                   </div>
@@ -353,63 +376,41 @@ export function ProductCatalogTable({ products }: ProductCatalogTableProps) {
               {/* 1. MASTER CHEMICAL IDENTITY HERO */}
               <div className="flex flex-row gap-6 items-start">
                 {/* Dedicated Image Area (180–220px Wide, Contain Mode) */}
-                <div className="w-52 h-52 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 shrink-0 flex items-center justify-center relative overflow-hidden">
-                  {resolvedImageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={resolvedImageUrl}
-                      alt={`${product.name} canonical chemical compound`}
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    <div className="flex flex-col items-center justify-center text-[#64748B] space-y-2 text-center p-4 select-none">
-                      <div className="w-12 h-12 rounded-xl bg-blue-50/80 border border-blue-100 flex items-center justify-center text-[#0052CC]">
-                        <FlaskConical className="w-6 h-6 stroke-1.5 text-[#0052CC]" />
-                      </div>
-                      <div className="space-y-0.5">
-                        <span className="text-[11px] font-mono font-bold uppercase text-[#0F172A] block">
-                          Verified Specification
-                        </span>
-                        <span className="text-[10px] text-[#64748B] block">
-                          Technical Monograph Standard
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  {resolvedImageUrl && (
-                    <div className="absolute top-2.5 left-2.5">
-                      <span
-                        className="bg-[#E3FCEF] text-[#006644] border border-[#ABF5D1] px-2 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase flex items-center gap-1"
-                        title="Canonical Master Chemical"
-                      >
-                        <ShieldCheck className="w-3.5 h-3.5" /> CANONICAL
-                      </span>
-                    </div>
-                  )}
+                <div className="w-52 h-52 rounded-xl border border-[#E2E8F0] bg-white p-4 shrink-0 flex items-center justify-center relative overflow-hidden">
+                  <ProductThumbnail
+                    imageUrl={resolvedImageUrl}
+                    productName={product.name}
+                    casNumber={product.casNumber}
+                    category={product.category}
+                  />
                 </div>
 
-                {/* Chemical Identity & Monograph Details */}
+                {/* Chemical Identity & Specifications */}
                 <div className="flex-1 min-w-0 space-y-3">
-                  <div className="flex items-center gap-2.5 flex-wrap">
+                  <div className="flex items-center gap-3 text-xs font-mono">
                     {product.category && (
-                      <span className="text-xs font-bold text-[#0747A6] bg-[#DEEBFF] px-2.5 py-0.5 rounded-md uppercase font-mono">
+                      <span className="text-[#0052CC] font-semibold uppercase">
                         {product.category.replace(/_/g, " ")}
                       </span>
                     )}
                     {product.productCode && (
-                      <span className="font-mono text-xs font-bold text-[#091E42] bg-[#F8FAFC] border border-[#CBD5E1] px-2.5 py-0.5 rounded-md">
-                        {product.productCode}
-                      </span>
+                      <>
+                        <span className="text-slate-300">&bull;</span>
+                        <span className="text-slate-500">
+                          {product.productCode}
+                        </span>
+                      </>
                     )}
-                    <span className="text-xs font-bold text-[#006644] bg-[#E3FCEF] border border-[#ABF5D1] px-2.5 py-0.5 rounded-md inline-flex items-center gap-1 font-mono">
-                      <CheckCircle2 className="w-3.5 h-3.5" /> IDENTITY VERIFIED
+                    <span className="text-slate-300">&bull;</span>
+                    <span className="text-[#059669] font-medium">
+                      Verified Identity
                     </span>
                   </div>
 
                   <div>
                     <Link
                       href={productUrl}
-                      className="text-2xl sm:text-[26px] font-bold text-[#091E42] hover:text-[#0052CC] transition-colors uppercase tracking-tight block"
+                      className="text-2xl sm:text-[26px] font-bold text-[#0F172A] hover:text-[#0052CC] transition-colors uppercase tracking-tight block"
                     >
                       {product.name}
                     </Link>
@@ -435,15 +436,36 @@ export function ProductCatalogTable({ products }: ProductCatalogTableProps) {
                   )}
                 </div>
 
-                {/* View Chemical Monograph CTA */}
-                <div className="shrink-0 self-center">
+                {/* Action CTAs */}
+                <div className="shrink-0 self-center flex items-center gap-3">
                   <Link
                     href={productUrl}
-                    className="h-11 px-5 bg-white hover:bg-[#F8FAFC] border border-[#CBD5E1] text-[#091E42] rounded-xl text-sm font-bold transition-all inline-flex items-center gap-2 shadow-2xs hover:border-[#94A3B8]"
+                    className="h-10 px-4 bg-white hover:bg-slate-50 border border-slate-300 text-[#0F172A] rounded-lg text-xs sm:text-sm font-semibold transition-colors duration-150 inline-flex items-center gap-2 shadow-2xs hover:border-slate-400 group"
                   >
-                    <span>View Chemical Page</span>
-                    <ChevronRight className="w-4 h-4 text-[#64748B]" />
+                    <span className="group-hover:text-[#0052CC] transition-colors">Chemical Page</span>
+                    <ChevronRight className="w-3.5 h-3.5 text-[#64748B] group-hover:text-[#0052CC] group-hover:translate-x-0.5 transition-all" />
                   </Link>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setSelectedRfqOffering({
+                        offering: bestSupplier || {
+                          id: product.id,
+                          supplierOfferingId: product.id,
+                          masterProductId: product.id,
+                          supplierId: 1,
+                          name: "Verified Supplier",
+                          price: minPrice || 0,
+                        },
+                        productName: product.name,
+                      })
+                    }
+                    className="h-10 px-5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white rounded-lg text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-xs transition-colors duration-150 press-tactile"
+                  >
+                    <span>Request Quote</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
 
@@ -555,13 +577,13 @@ export function ProductCatalogTable({ products }: ProductCatalogTableProps) {
                                     {displayName}
                                   </Link>
 
-                                  <span className="inline-flex items-center gap-1 text-[9px] font-bold text-[#006644] bg-[#E3FCEF] border border-[#ABF5D1] px-1.5 py-0.5 rounded font-mono">
-                                    <ShieldCheck className="w-3 h-3 text-[#00875A]" /> VERIFIED SUPPLIER
+                                  <span className="text-xs font-semibold text-[#059669] font-mono">
+                                    ✓ Verified Supplier
                                   </span>
 
                                   {isBestMatch && (
-                                    <span className="inline-flex items-center gap-1 text-[9px] font-bold text-[#0747A6] bg-[#DEEBFF] border border-[#B3D4FF] px-1.5 py-0.5 rounded font-mono">
-                                      <Star className="w-2.5 h-2.5 fill-[#0747A6]" /> BEST MATCH
+                                    <span className="text-xs font-semibold text-[#0052CC] font-mono">
+                                      &bull; Best Match
                                     </span>
                                   )}
 
@@ -692,24 +714,24 @@ export function ProductCatalogTable({ products }: ProductCatalogTableProps) {
                                 Documentation:
                               </span>
                               {offering.coaAvailable ? (
-                                <span className="inline-flex items-center gap-1 text-[#006644] bg-[#E3FCEF] border border-[#ABF5D1] px-1.5 py-0.5 rounded font-mono text-[9px] font-bold">
-                                  <FileCheck className="w-3 h-3 text-[#00875A]" /> COA
+                                <span className="text-[#059669] font-mono text-xs font-semibold">
+                                  ✓ COA
                                 </span>
                               ) : (
                                 <span className="text-[#94A3B8] font-mono text-[10px]">COA on request</span>
                               )}
 
                               {offering.msdsAvailable ? (
-                                <span className="inline-flex items-center gap-1 text-[#006644] bg-[#E3FCEF] border border-[#ABF5D1] px-1.5 py-0.5 rounded font-mono text-[9px] font-bold">
-                                  <FileCheck className="w-3 h-3 text-[#00875A]" /> MSDS
+                                <span className="text-[#059669] font-mono text-xs font-semibold">
+                                  ✓ MSDS
                                 </span>
                               ) : (
                                 <span className="text-[#94A3B8] font-mono text-[10px]">MSDS on request</span>
                               )}
 
                               {offering.exportReady && (
-                                <span className="inline-flex items-center gap-1 text-[#006644] bg-[#E3FCEF] border border-[#ABF5D1] px-1.5 py-0.5 rounded font-mono text-[9px] font-bold">
-                                  <ShieldCheck className="w-3 h-3 text-[#00875A]" /> Export Ready
+                                <span className="text-[#059669] font-mono text-xs font-semibold">
+                                  ✓ Export Ready
                                 </span>
                               )}
                             </div>

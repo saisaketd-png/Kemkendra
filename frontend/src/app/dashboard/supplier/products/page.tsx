@@ -140,28 +140,23 @@ export default function SupplierProductsPage() {
       {/* ======================================================================= */}
       {/* 1. PAGE HEADER                                                          */}
       {/* ======================================================================= */}
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-[#DFE1E6] pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
-          <div className="flex items-center gap-2.5">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#0052CC] bg-[#DEEBFF] px-2.5 py-0.5 rounded">
-              COMMERCIAL CATALOG
-            </span>
-          </div>
-          <h1 className="text-2xl sm:text-[28px] font-bold text-[#091E42] tracking-tight mt-1">
-            PRODUCT OFFERINGS
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#091E42] tracking-tight">
+            Commercial Offerings
           </h1>
-          <p className="text-sm text-[#526581] mt-1 leading-normal">
+          <p className="text-xs sm:text-sm text-[#64748B] mt-1 leading-normal">
             Manage the chemicals you supply, commercial terms, quality specifications, and compliance documentation.
           </p>
 
           {/* Subtle Summary Direct Indicator */}
           {!loading && (
-            <div className="flex items-center gap-2 text-xs font-mono font-semibold text-[#5E6C84] mt-2.5">
+            <div className="flex items-center gap-2 text-xs font-semibold text-[#64748B] mt-2.5 flex-wrap">
               <span className="text-[#091E42]">
                 <strong>{totalCount}</strong> Total {totalCount === 1 ? "Offering" : "Offerings"}
               </span>
               <span>•</span>
-              <span className="text-[#00875A]">
+              <span className="text-emerald-700">
                 <strong>{approvedCount}</strong> Approved
               </span>
               <span>•</span>
@@ -171,7 +166,7 @@ export default function SupplierProductsPage() {
               {pendingCount > 0 && (
                 <>
                   <span>•</span>
-                  <span className="text-[#B35C00]">
+                  <span className="text-amber-700">
                     <strong>{pendingCount}</strong> Pending Review
                   </span>
                 </>
@@ -186,7 +181,7 @@ export default function SupplierProductsPage() {
             type="button"
             onClick={loadOfferings}
             disabled={loading}
-            className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-[#091E42] bg-white border border-[#DFE1E6] hover:bg-[#FAFBFC] rounded-lg transition-colors shadow-2xs disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-1.5 h-9 px-3.5 text-xs font-semibold text-[#091E42] bg-white border border-slate-200 hover:bg-[#F8F9FA] rounded-lg transition-colors shadow-2xs disabled:opacity-50 cursor-pointer press-tactile"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             <span>Refresh</span>
@@ -194,7 +189,7 @@ export default function SupplierProductsPage() {
 
           <Link
             href="/dashboard/supplier/products/new"
-            className="inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-bold text-white bg-[#0052CC] hover:bg-[#0747A6] rounded-lg transition-colors shadow-2xs cursor-pointer"
+            className="inline-flex items-center gap-2 h-9 px-4 text-xs font-semibold text-white bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] rounded-lg transition-colors shadow-xs cursor-pointer press-tactile"
           >
             <Plus className="w-4 h-4" />
             <span>Add Chemical Offering</span>
@@ -205,16 +200,16 @@ export default function SupplierProductsPage() {
       {/* ======================================================================= */}
       {/* 2. REFINED SEARCH & FILTER TOOLBAR                                      */}
       {/* ======================================================================= */}
-      <div className="bg-white border border-[#DFE1E6] rounded-xl p-3 sm:p-4 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="bg-white border border-slate-200/90 rounded-xl p-3 sm:p-4 shadow-tactile-card flex flex-col md:flex-row md:items-center justify-between gap-3">
         {/* Left: Search input */}
         <div className="relative w-full md:max-w-md">
-          <Search className="w-4 h-4 text-[#5E6C84] absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by chemical name, CAS, product code..."
-            className="w-full pl-9 pr-3 py-2 text-xs bg-[#FAFBFC] focus:bg-white border border-[#DFE1E6] rounded-lg focus:outline-none focus:border-[#0052CC] placeholder:text-[#5E6C84] transition-all text-[#091E42]"
+            className="w-full pl-9 pr-3 py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-blue-500/20 placeholder:text-slate-400 transition-colors text-[#091E42] shadow-2xs"
           />
         </div>
 
@@ -391,12 +386,12 @@ export default function SupplierProductsPage() {
                   {/* Status & Provenance Badges */}
                   <div className="flex items-center gap-2 self-start sm:self-auto shrink-0 flex-wrap">
                     {off.createdByRole === "ADMIN" ? (
-                      <span className="px-2.5 py-1 bg-purple-50 border border-purple-200 text-purple-800 text-xs font-bold rounded-lg flex items-center gap-1.5 shadow-2xs">
-                        <ShieldCheck className="w-3.5 h-3.5 text-purple-600" /> Listed by KemKendra Admin
+                      <span className="px-2.5 py-1 bg-blue-50 border border-blue-200 text-[#0052CC] text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-2xs">
+                        <ShieldCheck className="w-3.5 h-3.5 text-[#0052CC]" /> Listed by KemKendra Admin
                       </span>
                     ) : (
                       <span className="px-2.5 py-1 bg-slate-50 border border-slate-200 text-slate-600 text-xs font-medium rounded-lg">
-                        🏢 Self-Listed
+                        Direct Supplier Listing
                       </span>
                     )}
                     <StatusBadge status={modStatus} size="md" />

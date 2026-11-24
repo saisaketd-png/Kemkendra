@@ -68,91 +68,89 @@ export function IssuePoModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#0F172A]/50 backdrop-blur-[2px] overflow-y-auto">
-      <div className="bg-white rounded-[8px] shadow-tactile-modal border border-[#E4E4E7] w-full max-w-2xl overflow-hidden my-auto flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/60 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200">
+      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-2xl overflow-hidden my-auto flex flex-col max-h-[92vh]">
         {/* Modal Header */}
-        <div className="px-5 py-4 bg-[#FAFAFA] border-b border-[#E4E4E7] text-[#0F172A] flex justify-between items-center shrink-0">
+        <div className="px-5 py-4 bg-[#F8F9FA] border-b border-slate-200 text-[#0F172A] flex justify-between items-center shrink-0">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono font-medium tracking-wider text-[#0052CC] uppercase">
-                PROCUREMENT COMMITMENT
-              </span>
-            </div>
-            <h2 className="text-sm sm:text-base font-bold text-[#0F172A] mt-0.5 tracking-tight">
+            <h2 className="text-base sm:text-lg font-bold text-[#0F172A] tracking-tight">
               Issue Formal Purchase Order
             </h2>
+            <p className="text-xs text-[#64748B] mt-0.5">
+              Execute a binding commercial contract with the verified supplier.
+            </p>
           </div>
           <button
             type="button"
             onClick={onClose}
             disabled={submitting}
-            className="text-[#64748B] hover:text-[#0F172A] transition-colors p-1.5 rounded-[4px] hover:bg-[#F4F4F5]"
+            className="text-slate-400 hover:text-slate-700 transition-colors p-1.5 rounded-lg hover:bg-slate-100"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-5 sm:p-6 overflow-y-auto space-y-4 flex-1 text-xs">
           {error && (
-            <div className="p-3 bg-[#FEF2F2] border border-[rgba(220,38,38,0.2)] text-[#DC2626] text-xs rounded-[6px] flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-[#DC2626]" />
+            <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-600" />
               <span>{error}</span>
             </div>
           )}
 
           {/* Agreed Commercial Terms Summary (Read-Only Snapshot) */}
-          <div className="bg-[#FAFAFA] border border-[#E4E4E7] rounded-[6px] p-3.5 space-y-2.5">
-            <div className="flex items-center justify-between border-b border-[#E4E4E7] pb-1.5">
-              <span className="text-[10px] font-semibold text-[#64748B] uppercase tracking-wider font-mono">
-                ACCEPTED QUOTATION SNAPSHOT
+          <div className="bg-[#F8F9FA] border border-slate-200 rounded-xl p-4 space-y-3">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+              <span className="text-xs font-semibold text-[#0F172A]">
+                Agreed Quotation Terms
               </span>
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded-[4px] text-[10px] font-mono font-semibold bg-[#ECFDF5] text-[#059669] uppercase border border-[rgba(5,150,105,0.2)]">
-                <ShieldCheck className="w-3 h-3" />
-                Agreed Terms
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                Locked Commercial Agreement
               </span>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
               <div>
-                <span className="text-[10px] text-[#64748B] font-semibold uppercase block font-mono">Product</span>
-                <strong className="font-semibold text-[#0F172A] truncate block mt-0.5">{productName}</strong>
+                <span className="text-[11px] text-[#64748B] block">Product</span>
+                <strong className="font-bold text-[#0F172A] truncate block mt-0.5">{productName}</strong>
               </div>
 
               <div>
-                <span className="text-[10px] text-[#64748B] font-semibold uppercase block font-mono">Quantity</span>
-                <span className="font-mono font-semibold text-[#0F172A] block mt-0.5">
+                <span className="text-[11px] text-[#64748B] block">Quantity</span>
+                <span className="font-bold text-[#0F172A] block mt-0.5">
                   {quantity.toLocaleString()} {unit.toUpperCase()}
                 </span>
               </div>
 
               <div>
-                <span className="text-[10px] text-[#64748B] font-semibold uppercase block font-mono">Unit Price</span>
-                <span className="font-mono font-semibold text-[#0F172A] block mt-0.5">
+                <span className="text-[11px] text-[#64748B] block">Unit Price</span>
+                <span className="font-bold text-[#0F172A] block mt-0.5">
                   {currency} {unitPrice.toFixed(2)}
                 </span>
               </div>
 
               <div>
-                <span className="text-[10px] text-[#64748B] font-semibold uppercase block font-mono">Total Amount</span>
-                <strong className="font-mono font-bold text-sm text-[#059669] block mt-0.5">
+                <span className="text-[11px] text-[#64748B] block">Total Amount</span>
+                <strong className="font-bold text-sm text-emerald-700 block mt-0.5">
                   {currency} {totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </strong>
               </div>
             </div>
 
             {leadTimeDays && (
-              <div className="text-[11px] text-[#64748B] border-t border-[#E4E4E7] pt-2 flex items-center gap-1.5 font-mono">
-                <Clock className="w-3 h-3 text-[#0052CC]" />
-                <span>Agreed Fulfillment Lead Time:</span>
-                <strong className="text-[#0F172A]">{leadTimeDays} business days upon supplier acceptance</strong>
+              <div className="text-xs text-[#64748B] border-t border-slate-200 pt-2 flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-[#0052CC]" />
+                <span>Committed Delivery SLA:</span>
+                <strong className="text-[#0F172A]">{leadTimeDays} business days upon confirmation</strong>
               </div>
             )}
           </div>
 
           {/* Operational Input Fields */}
-          <div className="space-y-3.5">
+          <div className="space-y-4">
             <div>
-              <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#64748B] mb-1 font-mono">
+              <label className="block text-xs font-bold text-[#0F172A] mb-1">
                 Delivery / Shipping Address <span className="text-[#DC2626]">*</span>
               </label>
               <textarea
@@ -161,12 +159,12 @@ export function IssuePoModal({
                 value={shippingAddress}
                 onChange={(e) => setShippingAddress(e.target.value)}
                 placeholder="e.g. Warehouse 4B, 100 Industrial Chemical Logistics Hub, Navi Mumbai, MH 400705"
-                className="w-full text-xs rounded-[6px] border border-[#E4E4E7] p-2.5 text-[#0F172A] bg-white focus:outline-none focus:border-[#0052CC]"
+                className="w-full text-xs rounded-lg border border-slate-300 p-3 text-[#0F172A] bg-white focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-blue-500/20 shadow-2xs transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#64748B] mb-1 font-mono">
+              <label className="block text-xs font-bold text-[#0F172A] mb-1">
                 Billing / Procurement Contact <span className="text-[#DC2626]">*</span>
               </label>
               <input
@@ -175,12 +173,12 @@ export function IssuePoModal({
                 value={billingContact}
                 onChange={(e) => setBillingContact(e.target.value)}
                 placeholder="e.g. procurement@pharmaholdings.com / +91 98765 43210 (Accounts Dept)"
-                className="w-full text-xs rounded-[6px] border border-[#E4E4E7] px-3 py-2 text-[#0F172A] bg-white focus:outline-none focus:border-[#0052CC]"
+                className="w-full text-xs rounded-lg border border-slate-300 px-3 py-2.5 text-[#0F172A] bg-white focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-blue-500/20 shadow-2xs transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#64748B] mb-1 font-mono">
+              <label className="block text-xs font-bold text-[#0F172A] mb-1">
                 Special Logistics / Delivery Notes <span className="text-[#64748B] font-normal">(Optional)</span>
               </label>
               <textarea
@@ -188,35 +186,35 @@ export function IssuePoModal({
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="e.g. Temperature sensitive batch. Receiving dock 8am-4pm. Forklift available on site."
-                className="w-full text-xs rounded-[6px] border border-[#E4E4E7] p-2.5 text-[#0F172A] bg-white focus:outline-none focus:border-[#0052CC]"
+                className="w-full text-xs rounded-lg border border-slate-300 p-3 text-[#0F172A] bg-white focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-blue-500/20 shadow-2xs transition-colors"
               />
             </div>
           </div>
 
           {/* Modal Footer Buttons */}
-          <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-2.5 pt-3 border-t border-[#E4E4E7]">
+          <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-2.5 pt-3 border-t border-slate-200">
             <button
               type="button"
               onClick={onClose}
               disabled={submitting}
-              className="w-full sm:w-auto h-8 px-4 text-xs font-medium text-[#64748B] hover:text-[#0F172A] transition-colors cursor-pointer"
+              className="w-full sm:w-auto h-10 px-4 text-xs font-semibold text-slate-600 hover:text-slate-800 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="w-full sm:w-auto h-8 px-4 rounded-[6px] bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white font-medium text-xs shadow-xs transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 cursor-pointer active:scale-[0.99]"
+              className="w-full sm:w-auto h-10 px-5 rounded-lg bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white font-semibold text-xs shadow-xs transition-colors flex items-center justify-center gap-2 disabled:opacity-50 press-tactile"
             >
               {submitting ? (
                 <>
                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                  <span>Generating...</span>
+                  <span>Generating PO...</span>
                 </>
               ) : (
                 <>
                   <Send className="w-3.5 h-3.5" />
-                  <span>Confirm & Issue PO</span>
+                  <span>Confirm & Issue Purchase Order</span>
                 </>
               )}
             </button>

@@ -281,7 +281,7 @@ export default function AdminAccountGovernancePage() {
                 value={suspensionQuery}
                 onChange={(e) => setSuspensionQuery(e.target.value)}
                 placeholder="Search user name, email, or reason..."
-                className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
               />
             </div>
 
@@ -289,7 +289,7 @@ export default function AdminAccountGovernancePage() {
               <select
                 value={suspensionRole}
                 onChange={(e) => setSuspensionRole(e.target.value)}
-                className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
               >
                 <option value="">All Roles</option>
                 <option value="USER">Buyers (USER)</option>
@@ -301,7 +301,7 @@ export default function AdminAccountGovernancePage() {
                   type="checkbox"
                   checked={activeOnly}
                   onChange={(e) => setActiveOnly(e.target.checked)}
-                  className="rounded text-cyan-600 focus:ring-cyan-500"
+                  className="rounded text-[#0052CC] focus:ring-blue-500"
                 />
                 Active Only
               </label>
@@ -319,10 +319,10 @@ export default function AdminAccountGovernancePage() {
           </div>
 
           {/* Suspensions Table */}
-          <div className="bg-white rounded-3xl border border-slate-200 shadow-2xs overflow-hidden">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-tactile-card overflow-hidden">
             {suspensionsLoading ? (
               <div className="p-12 text-center text-slate-500">
-                <RefreshCw className="w-6 h-6 animate-spin mx-auto text-cyan-600 mb-2" />
+                <RefreshCw className="w-6 h-6 animate-spin mx-auto text-[#0052CC] mb-2" />
                 <p className="text-xs">Loading suspensions...</p>
               </div>
             ) : suspensionsData.content.length === 0 ? (
@@ -356,8 +356,8 @@ export default function AdminAccountGovernancePage() {
                           <span
                             className={`inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold ${
                               item.userRole === "SUPPLIER"
-                                ? "bg-purple-50 text-purple-700 border border-purple-200"
-                                : "bg-blue-50 text-blue-700 border border-blue-200"
+                                ? "bg-slate-100 text-slate-800 border border-slate-200"
+                                : "bg-blue-50 text-[#0052CC] border border-blue-200"
                             }`}
                           >
                             {item.userRole}
@@ -432,7 +432,7 @@ export default function AdminAccountGovernancePage() {
                 value={appealQuery}
                 onChange={(e) => setAppealQuery(e.target.value)}
                 placeholder="Search user name, email, or submitted reason..."
-                className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
               />
             </div>
 
@@ -440,7 +440,7 @@ export default function AdminAccountGovernancePage() {
               <select
                 value={appealStatusFilter}
                 onChange={(e) => setAppealStatusFilter(e.target.value)}
-                className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
               >
                 <option value="">All Statuses</option>
                 <option value="SUBMITTED">Submitted (New)</option>
@@ -465,12 +465,12 @@ export default function AdminAccountGovernancePage() {
           {/* Appeals Queue List */}
           <div className="space-y-4">
             {appealsLoading ? (
-              <div className="bg-white p-12 rounded-3xl border border-slate-200 text-center text-slate-500">
-                <RefreshCw className="w-6 h-6 animate-spin mx-auto text-cyan-600 mb-2" />
+              <div className="bg-white p-12 rounded-2xl border border-slate-200/90 shadow-tactile-card text-center text-slate-500">
+                <RefreshCw className="w-6 h-6 animate-spin mx-auto text-[#0052CC] mb-2" />
                 <p className="text-xs">Loading formal appeals queue...</p>
               </div>
             ) : appealsData.content.length === 0 ? (
-              <div className="bg-white p-12 rounded-3xl border border-slate-200 text-center text-slate-500">
+              <div className="bg-white p-12 rounded-2xl border border-slate-200/90 shadow-tactile-card text-center text-slate-500">
                 <CheckCircle2 className="w-8 h-8 mx-auto text-emerald-500 mb-2" />
                 <p className="text-sm font-bold text-slate-800">No appeals match current criteria</p>
                 <p className="text-xs text-slate-400 mt-1">All submitted appeals have been processed.</p>
@@ -479,7 +479,7 @@ export default function AdminAccountGovernancePage() {
               appealsData.content.map((appeal) => (
                 <div
                   key={appeal.id}
-                  className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow space-y-4"
+                  className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-tactile-card space-y-4"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
                     <div className="flex items-center gap-3">
@@ -524,8 +524,8 @@ export default function AdminAccountGovernancePage() {
 
                   {/* User Response if any */}
                   {appeal.userResponse && (
-                    <div className="p-4 rounded-2xl bg-cyan-50/50 border border-cyan-100 space-y-1">
-                      <span className="text-[10px] font-bold uppercase text-cyan-800">User Clarification / Response</span>
+                    <div className="p-4 rounded-xl bg-blue-50/50 border border-blue-100 space-y-1">
+                      <span className="text-[10px] font-bold uppercase text-[#0052CC]">User Clarification / Response</span>
                       <p className="text-xs text-slate-800 font-medium leading-relaxed">{appeal.userResponse}</p>
                     </div>
                   )}
@@ -560,7 +560,7 @@ export default function AdminAccountGovernancePage() {
                             setInternalNotesInput("");
                             setActionError(null);
                           }}
-                          className="px-4 py-1.5 bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-bold rounded-xl transition-all shadow-2xs"
+                          className="px-4 py-1.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-bold rounded-xl transition-all shadow-2xs"
                         >
                           Start Review
                         </button>
@@ -618,7 +618,7 @@ export default function AdminAccountGovernancePage() {
       {/* APPEAL ACTION MODAL */}
       {appealActionModal && selectedAppeal && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-xl border border-slate-200">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-xl border border-slate-200">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <h2 className="text-base font-bold text-slate-900">
                 {appealActionModal === "review" && "Begin Appeal Review"}
@@ -661,7 +661,7 @@ export default function AdminAccountGovernancePage() {
                     value={actionInput}
                     onChange={(e) => setActionInput(e.target.value)}
                     placeholder="Specify the additional documents or details required from the user..."
-                    className="w-full text-xs rounded-xl border border-slate-200 p-3 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="w-full text-xs rounded-xl border border-slate-200 p-3 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
                   />
                 </div>
               )}
@@ -680,7 +680,7 @@ export default function AdminAccountGovernancePage() {
                         ? "Enter approval note sent to the user (optional)..."
                         : "Enter rejection reason sent to the user..."
                     }
-                    className="w-full text-xs rounded-xl border border-slate-200 p-3 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="w-full text-xs rounded-xl border border-slate-200 p-3 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
                   />
                 </div>
               )}
@@ -694,7 +694,7 @@ export default function AdminAccountGovernancePage() {
                   value={internalNotesInput}
                   onChange={(e) => setInternalNotesInput(e.target.value)}
                   placeholder="Record internal compliance notes (never exposed to user)..."
-                  className="w-full text-xs rounded-xl border border-slate-200 p-3 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full text-xs rounded-xl border border-slate-200 p-3 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
                 />
               </div>
             </div>
@@ -713,7 +713,7 @@ export default function AdminAccountGovernancePage() {
                   type="button"
                   disabled={isProcessing}
                   onClick={() => handleStartReview(selectedAppeal.id)}
-                  className="px-5 py-2 bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-bold rounded-xl transition-all shadow-2xs"
+                  className="px-5 py-2 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-bold rounded-xl transition-all shadow-2xs"
                 >
                   {isProcessing ? "Starting..." : "Begin Review"}
                 </button>
@@ -759,7 +759,7 @@ export default function AdminAccountGovernancePage() {
       {/* REINSTATE USER MODAL */}
       {reinstateUserModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-6 shadow-xl border border-slate-200">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 space-y-6 shadow-xl border border-slate-200">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
                 <UserCheck className="w-5 h-5 text-emerald-600" />

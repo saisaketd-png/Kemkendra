@@ -15,42 +15,57 @@ export function ProductPagination({
 }: ProductPaginationProps) {
   const currentPage = queryParams.page || 0;
   const pageSize = queryParams.size || 20;
-  const hasNext = currentCount >= pageSize;
+  const totalPages = Math.ceil(totalElements / pageSize) || 1;
+  const hasNext = currentPage + 1 < totalPages && currentCount >= pageSize;
+  const hasPrev = currentPage > 0;
+
   const startCount = totalElements === 0 ? 0 : currentPage * pageSize + 1;
   const endCount = Math.min(totalElements, currentPage * pageSize + currentCount);
 
-  return (
-    <div className="flex flex-col sm:flex-row items-center justify-between border-t border-[#E2E8F0] pt-6 gap-4">
-      <p className="text-sm text-[#64748B] font-medium">
-        Showing <strong className="font-bold text-[#091E42]">{startCount}–{endCount}</strong> of{" "}
-        <strong className="font-bold text-[#091E42]">{totalElements}</strong> chemicals
-      </p>
+  const buildPageUrl = (targetPage: number) => {
+    const params = new URLSearchParams();
+    Object.entries(queryParams).forEach(([key, val]) => {
+      if (val !== undefined && val !== null && val !== "" && key !== "page") {
+        params.set(key, String(val));
+      }
+    });
+    params.set("page", String(targetPage));
+    return `?${params.toString()}`;
+  };
 
-      <div className="flex items-center gap-2.5">
+  return (
+    <div className="flex flex-col sm:flex-row items-center justify-between border-t border-slate-200/80 pt-6 gap-4">
+      <div className="text-xs sm:text-sm text-[#64748B] font-medium">
+        Showing <strong className="font-bold text-[#0F172A]">{startCount}–{endCount}</strong> of{" "}
+        <strong className="font-bold text-[#0F172A]">{totalElements}</strong> chemicals
+        <span className="text-slate-400 ml-1.5">(Page {currentPage + 1} of {Math.max(1, totalPages)})</span>
+      </div>
+
+      <div className="flex items-center gap-2">
         <Link
-          href={`?page=${Math.max(0, currentPage - 1)}`}
-          className={`h-10 px-4 border border-[#CBD5E1] rounded-xl text-sm font-semibold inline-flex items-center gap-1.5 transition-all shadow-2xs ${
-            currentPage === 0
-              ? "text-[#94A3B8] pointer-events-none bg-[#F8FAFC] opacity-60"
-              : "bg-white text-[#091E42] hover:bg-[#F1F5F9] hover:border-[#94A3B8]"
+          href={hasPrev ? buildPageUrl(currentPage - 1) : "#"}
+          className={`h-9 px-3.5 border border-slate-200 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 transition-all shadow-2xs ${
+            !hasPrev
+              ? "text-slate-300 pointer-events-none bg-slate-50 border-slate-100"
+              : "bg-white text-[#0F172A] hover:bg-slate-50 hover:border-slate-300 active:bg-slate-100"
           }`}
-          aria-disabled={currentPage === 0}
+          aria-disabled={!hasPrev}
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="w-3.5 h-3.5" />
           <span>Previous</span>
         </Link>
 
         <Link
-          href={`?page=${currentPage + 1}`}
-          className={`h-10 px-4 border border-[#CBD5E1] rounded-xl text-sm font-semibold inline-flex items-center gap-1.5 transition-all shadow-2xs ${
+          href={hasNext ? buildPageUrl(currentPage + 1) : "#"}
+          className={`h-9 px-3.5 border border-slate-200 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 transition-all shadow-2xs ${
             !hasNext
-              ? "text-[#94A3B8] pointer-events-none bg-[#F8FAFC] opacity-60"
-              : "bg-white text-[#091E42] hover:bg-[#F1F5F9] hover:border-[#94A3B8]"
+              ? "text-slate-300 pointer-events-none bg-slate-50 border-slate-100"
+              : "bg-white text-[#0F172A] hover:bg-slate-50 hover:border-slate-300 active:bg-slate-100"
           }`}
           aria-disabled={!hasNext}
         >
           <span>Next</span>
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="w-3.5 h-3.5" />
         </Link>
       </div>
     </div>

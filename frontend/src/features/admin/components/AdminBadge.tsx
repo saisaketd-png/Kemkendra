@@ -45,7 +45,7 @@ function getBadgeStyles(type: string): string {
     case "ADMIN":
       return "bg-rose-50 text-rose-700 border-rose-200";
     case "SUPPLIER":
-      return "bg-purple-50 text-purple-700 border-purple-200";
+      return "bg-slate-100 text-slate-800 border-slate-200";
     case "USER":
       return "bg-blue-50 text-blue-700 border-blue-200";
 

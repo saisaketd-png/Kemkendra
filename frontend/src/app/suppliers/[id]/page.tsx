@@ -136,7 +136,7 @@ export default async function SupplierProfilePage(props: {
   const certList = supplier.certifications ? supplier.certifications.split(",").map(c => c.trim()) : [];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F7F9FC] font-sans text-[#0F172A] antialiased">
+    <div className="min-h-screen flex flex-col bg-[#F8F9FA] font-sans text-[#0F172A] antialiased">
       {/* Inject Supplier Structured Data */}
       <script
         type="application/ld+json"
@@ -152,24 +152,24 @@ export default async function SupplierProfilePage(props: {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           {/* Breadcrumbs */}
           <nav className="text-xs text-[#64748B] flex items-center gap-2">
-            <Link href="/" className="hover:text-[#155EEF] font-medium">Home</Link>
+            <Link href="/" className="hover:text-[#0052CC] font-semibold transition-colors">Home</Link>
             <span>/</span>
-            <Link href="/suppliers" className="hover:text-[#155EEF] font-medium">Suppliers</Link>
+            <Link href="/suppliers" className="hover:text-[#0052CC] font-semibold transition-colors">Suppliers</Link>
             <span>/</span>
             <span className="text-[#0F172A] font-bold">{supplier.name}</span>
           </nav>
 
           {/* Supplier Header Banner Card */}
-          <div className="bg-white border border-[#E2E8F0] rounded-3xl shadow-xs overflow-hidden">
-            <div className="h-32 bg-gradient-to-r from-[#0B1F3A] to-[#07152A] relative px-8">
+          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-tactile-card overflow-hidden">
+            <div className="h-32 bg-[#091E42] relative px-8">
               <div className="absolute -bottom-10 left-8">
-                <div className="w-24 h-24 rounded-2xl bg-white border-4 border-white shadow-md flex items-center justify-center overflow-hidden p-1">
+                <div className="w-24 h-24 rounded-2xl bg-white border-4 border-white shadow-tactile-card flex items-center justify-center overflow-hidden p-1.5">
                   <SupplierLogo
                     src={resolvedLogoUrl}
                     alt={`${supplier.name} logo`}
                     fallbackText={supplier.name}
                     className="w-full h-full object-contain"
-                    iconClassName="w-10 h-10 text-[#94A3B8]"
+                    iconClassName="w-10 h-10 text-slate-400"
                   />
                 </div>
               </div>
@@ -179,31 +179,31 @@ export default async function SupplierProfilePage(props: {
               <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
                 <div className="space-y-2">
                   <div className="flex items-center gap-3 flex-wrap">
-                    <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A]">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A] tracking-tight">
                       {supplier.name}
                     </h1>
                     {supplier.verified && (
-                      <span className="inline-flex items-center gap-1 bg-[#ECFDF5] text-[#059669] px-3 py-1 rounded-full text-xs font-bold border border-[#A7F3D0]">
-                        <ShieldCheck className="w-3.5 h-3.5" />
-                        Verified Supplier
+                      <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 px-3 py-1 rounded-md text-xs font-semibold border border-emerald-200">
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                        Verified Manufacturer
                       </span>
                     )}
                   </div>
                   <div className="text-xs text-[#64748B] flex flex-wrap items-center gap-4 font-medium">
                     <span className="flex items-center gap-1.5">
-                      <MapPin className="w-4 h-4 text-[#94A3B8]" />
+                      <MapPin className="w-4 h-4 text-slate-400" />
                       {supplier.countryName || supplier.countryCode || "Global"}
                     </span>
                     {supplier.yearsInBusiness != null && (
                       <span className="flex items-center gap-1.5">
-                        <Clock className="w-4 h-4 text-[#94A3B8]" />
-                        {supplier.yearsInBusiness} Years in Business
+                        <Clock className="w-4 h-4 text-slate-400" />
+                        {supplier.yearsInBusiness} Years in Operation
                       </span>
                     )}
                     {supplier.website && (
-                      <a href={supplier.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[#155EEF] hover:underline font-semibold">
-                        <ExternalLink className="w-4 h-4 text-[#155EEF]" />
-                        Website
+                      <a href={supplier.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[#0052CC] hover:underline font-semibold">
+                        <ExternalLink className="w-4 h-4 text-[#0052CC]" />
+                        Official Portal
                       </a>
                     )}
                   </div>
@@ -212,30 +212,30 @@ export default async function SupplierProfilePage(props: {
                 <div className="flex items-center gap-3 shrink-0 flex-wrap">
                   <Link
                     href={`/contact?supplierId=${supplier.id}&company=${encodeURIComponent(supplier.name)}`}
-                    className="inline-flex items-center justify-center gap-2 bg-[#155EEF] hover:bg-[#104EC6] text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-2xs text-xs"
+                    className="inline-flex items-center justify-center gap-2 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white font-semibold py-2.5 px-6 rounded-lg transition-colors shadow-2xs press-tactile text-xs"
                   >
                     <FileCheck className="w-4 h-4" />
-                    Request Quote
+                    Request Direct Quotation
                   </Link>
                   <a
                     href="#catalog"
-                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A] font-bold py-2.5 px-5 rounded-xl transition-colors text-xs"
+                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold py-2.5 px-5 rounded-lg transition-colors shadow-2xs press-tactile text-xs"
                   >
-                    View Chemical Catalog
+                    View Catalog
                   </a>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6 border-t border-[#E2E8F0]">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6 border-t border-slate-100">
                 <div className="md:col-span-2 space-y-6">
                   <section className="space-y-2">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-[#475569]">Company Overview</h3>
+                    <h3 className="text-xs font-bold text-[#0F172A]">Company Overview</h3>
                     {supplier.aboutCompany ? (
-                       <p className="text-sm text-[#334155] leading-relaxed whitespace-pre-wrap">
+                       <p className="text-xs sm:text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">
                          {supplier.aboutCompany}
                        </p>
                     ) : (
-                       <p className="text-xs text-[#94A3B8] italic">No company description provided.</p>
+                       <p className="text-xs text-slate-400 italic">No company description provided.</p>
                     )}
                   </section>
                 </div>
@@ -243,14 +243,14 @@ export default async function SupplierProfilePage(props: {
                 <div className="space-y-6">
                   {certList.length > 0 && (
                     <section className="space-y-3">
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-[#475569] flex items-center gap-2">
-                        <Building2 className="w-4 h-4 text-[#64748B]" />
+                      <h3 className="text-xs font-bold text-[#0F172A] flex items-center gap-2">
+                        <Building2 className="w-4 h-4 text-slate-500" />
                         Compliance & Certifications
                       </h3>
                       <div className="space-y-2">
                         {certList.map((c) => (
-                          <div key={c} className="flex items-center gap-2 text-xs text-[#0F172A] bg-[#F8FAFC] border border-[#E2E8F0] p-2.5 rounded-xl">
-                            <Award className="w-4 h-4 text-[#0F9F9A] shrink-0" />
+                          <div key={c} className="flex items-center gap-2 text-xs text-[#0F172A] bg-[#F8F9FA] border border-slate-200 p-2.5 rounded-lg">
+                            <Award className="w-4 h-4 text-[#0052CC] shrink-0" />
                             <span className="font-semibold">{c}</span>
                           </div>
                         ))}
@@ -259,34 +259,34 @@ export default async function SupplierProfilePage(props: {
                   )}
 
                   <section className="space-y-3">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-[#475569]">RFQ Performance & Responsiveness</h3>
-                    <div className="bg-[#F8FAFC] border border-[#E2E8F0] p-4 rounded-2xl space-y-3 text-xs">
+                    <h3 className="text-xs font-bold text-[#0F172A]">Procurement Performance & Responsiveness</h3>
+                    <div className="bg-[#F8F9FA] border border-slate-200 p-4 rounded-xl space-y-3 text-xs">
                       <div className="flex justify-between items-center">
-                        <span className="text-[#64748B] font-semibold">Response Rate</span>
+                        <span className="text-[#64748B] font-medium">Response Rate:</span>
                         {supplier.responseRate !== null && supplier.responseRate !== undefined ? (
-                          <strong className="text-[#0F172A] font-mono">{supplier.responseRate}%</strong>
+                          <strong className="text-[#0F172A] font-bold">{supplier.responseRate}%</strong>
                         ) : (
-                          <span className="text-[#94A3B8] italic font-medium">No response history yet</span>
+                          <span className="text-slate-400 italic">No response history yet</span>
                         )}
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-[#64748B] font-semibold">Avg. Response Time</span>
+                        <span className="text-[#64748B] font-medium">Avg. Response Time:</span>
                         {supplier.formattedResponseTime ? (
-                          <strong className="text-[#0F172A] font-mono">{supplier.formattedResponseTime}</strong>
+                          <strong className="text-[#0F172A] font-bold">{supplier.formattedResponseTime}</strong>
                         ) : (
-                          <span className="text-[#94A3B8] italic font-medium">Not enough data</span>
+                          <span className="text-slate-400 italic">Not enough data</span>
                         )}
                       </div>
                       {supplier.eligibleRfqs !== undefined && supplier.eligibleRfqs !== null && supplier.eligibleRfqs > 0 && (
                         <div className="flex justify-between items-center">
-                          <span className="text-[#64748B] font-semibold">Responded RFQs</span>
-                          <strong className="text-[#0F172A] font-mono">{supplier.respondedRfqs ?? 0} / {supplier.eligibleRfqs}</strong>
+                          <span className="text-[#64748B] font-medium">Responded RFQs:</span>
+                          <strong className="text-[#0F172A] font-bold">{supplier.respondedRfqs ?? 0} / {supplier.eligibleRfqs}</strong>
                         </div>
                       )}
                       {supplier.exportReady && (
                         <div className="flex justify-between items-center">
-                          <span className="text-[#64748B] font-semibold">Export Ready</span>
-                          <strong className="text-[#059669]">Global Ready</strong>
+                          <span className="text-[#64748B] font-medium">Export Compliance:</span>
+                          <strong className="text-emerald-700 font-semibold">Global Ready</strong>
                         </div>
                       )}
                     </div>
@@ -294,8 +294,8 @@ export default async function SupplierProfilePage(props: {
                 </div>
               </div>
               
-              <div id="catalog" className="pt-8 border-t border-[#E2E8F0] space-y-6">
-                <h2 className="text-lg font-bold text-[#0F172A]">Chemical Product Portfolio</h2>
+              <div id="catalog" className="pt-8 border-t border-slate-100 space-y-6">
+                <h2 className="text-lg font-bold text-[#0F172A] tracking-tight">Chemical Product Portfolio</h2>
                 <SupplierProductCatalog products={products} supplierId={supplier.id.toString()} />
               </div>
             </div>

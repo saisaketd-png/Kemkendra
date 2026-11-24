@@ -73,7 +73,7 @@ export default function UnifiedAdminSearchPage() {
         <button
           type="submit"
           disabled={loading || !query.trim()}
-          className="px-6 py-3.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold text-sm rounded-2xl shadow-xs transition-colors"
+          className="px-6 py-3.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] disabled:opacity-50 text-white font-bold text-sm rounded-xl shadow-xs transition-colors"
         >
           {loading ? "Searching..." : "Search Platform"}
         </button>
@@ -81,7 +81,7 @@ export default function UnifiedAdminSearchPage() {
 
       {/* Results */}
       {searched && (
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-tactile-card overflow-hidden">
           <div className="p-6 border-b border-slate-100 flex items-center justify-between">
             <h2 className="text-sm font-extrabold uppercase tracking-wider text-slate-900">
               Search Results ({results.length})

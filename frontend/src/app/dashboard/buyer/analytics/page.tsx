@@ -178,7 +178,7 @@ export default function BuyerAnalyticsPage() {
               value={summary.quotationsReceived}
               subtitle="From verified suppliers"
               icon={TrendingUp}
-              tone="purple"
+              tone="emerald"
             />
             <KpiStatCard
               title="Supplier Turnaround"

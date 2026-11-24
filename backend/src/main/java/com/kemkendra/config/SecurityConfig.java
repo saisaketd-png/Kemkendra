@@ -194,8 +194,7 @@ public class SecurityConfig {
                                 "/api/v1/suppliers/**",
                                 "/api/v1/supplier/offerings/*/images",
                                 "/api/v1/supplier/offerings/*/images/**",
-                                "/api/v1/documents",
-                                "/api/v1/documents/**"
+                                "/api/v1/documents/*/download"
                         ).permitAll()
 
                         // Buyer RFQ operations

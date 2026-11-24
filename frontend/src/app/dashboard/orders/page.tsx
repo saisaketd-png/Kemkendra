@@ -171,17 +171,17 @@ export default function BuyerOrdersPage() {
             key={idx}
             type="button"
             onClick={m.onClick}
-            className={`p-3 bg-white border rounded-[8px] text-left transition-colors shadow-tactile-card group cursor-pointer ${
-              m.active ? "border-[#0052CC] ring-1 ring-[#0052CC]" : "border-[#E4E4E7] hover:border-[#0052CC]"
+            className={`p-3.5 bg-white border rounded-xl text-left transition-colors shadow-tactile-card group cursor-pointer ${
+              m.active ? "border-[#0052CC] ring-1 ring-[#0052CC]" : "border-slate-200/90 hover:border-[#0052CC]"
             }`}
           >
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] block font-mono truncate">
+            <span className="text-[11px] font-semibold text-[#64748B] block truncate">
               {m.label}
             </span>
-            <strong className="text-xl font-bold font-mono text-[#0F172A] block mt-0.5 group-hover:text-[#0052CC] transition-colors">
+            <strong className="text-xl font-bold text-[#0F172A] block mt-0.5 group-hover:text-[#0052CC] transition-colors">
               {m.value}
             </strong>
-            <span className="text-[11px] text-[#64748B] block mt-0.5 truncate">
+            <span className="text-xs text-[#64748B] block mt-0.5 truncate">
               {m.subtext}
             </span>
           </button>
@@ -189,28 +189,28 @@ export default function BuyerOrdersPage() {
       </div>
 
       {/* 3. Toolbar: Filter Tabs & Search */}
-      <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-3 shadow-tactile-card flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="bg-white border border-slate-200/90 rounded-xl p-3 shadow-tactile-card flex flex-col md:flex-row md:items-center justify-between gap-3">
         {/* Search */}
         <div className="relative w-full md:max-w-sm">
-          <Search className="w-3.5 h-3.5 text-[#64748B] absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search PO number, RFQ, chemical or supplier..."
-            className="w-full h-9 pl-8.5 pr-3 text-xs bg-[#FAFAFA] border border-[#E4E4E7] rounded-[6px] text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#0052CC] focus:bg-white"
+            className="w-full h-10 pl-9 pr-3 text-xs bg-white border border-slate-300 rounded-lg text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-blue-500/20 shadow-2xs transition-colors"
           />
         </div>
 
         {/* Filters & Sorting */}
         <div className="flex items-center gap-2 w-full md:w-auto justify-end">
-          <span className="text-[11px] text-[#64748B] font-mono uppercase tracking-wider">
-            Sort:
+          <span className="text-xs font-medium text-[#64748B]">
+            Sort by:
           </span>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortOption)}
-            className="h-9 px-2.5 text-xs bg-[#FAFAFA] border border-[#E4E4E7] rounded-[6px] font-normal text-[#0F172A] focus:outline-none focus:border-[#0052CC] cursor-pointer"
+            className="h-10 px-3 text-xs bg-white border border-slate-300 rounded-lg font-medium text-[#0F172A] focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-blue-500/20 shadow-2xs cursor-pointer transition-colors"
           >
             <option value="DATE_DESC">Newest First</option>
             <option value="DATE_ASC">Oldest First</option>
@@ -221,7 +221,7 @@ export default function BuyerOrdersPage() {
       </div>
 
       {/* 4. PO Table Container */}
-      <div className="bg-white border border-[#E4E4E7] rounded-[8px] shadow-tactile-card overflow-hidden">
+      <div className="bg-white border border-slate-200/90 rounded-xl shadow-tactile-card overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-xs text-[#64748B]">
             <div className="w-6 h-6 border-2 border-[#0052CC] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
@@ -229,11 +229,11 @@ export default function BuyerOrdersPage() {
           </div>
         ) : filteredOrders.length === 0 ? (
           <div className="py-12 px-4 text-center space-y-2 max-w-md mx-auto">
-            <Package className="w-8 h-8 text-[#94A3B8] mx-auto" />
+            <Package className="w-8 h-8 text-slate-400 mx-auto" />
             <h3 className="text-xs font-semibold text-[#0F172A]">
               No Purchase Orders Found
             </h3>
-            <p className="text-[11px] text-[#64748B]">
+            <p className="text-xs text-[#64748B] leading-relaxed">
               {searchQuery || statusFilter !== "ALL"
                 ? "No purchase orders match your current search or status filter."
                 : "Confirmed purchase orders will appear here once an RFQ quotation is accepted."}
@@ -241,17 +241,17 @@ export default function BuyerOrdersPage() {
             <div className="pt-2">
               <Link
                 href="/dashboard/rfqs"
-                className="inline-flex items-center gap-1.5 h-8 px-3.5 bg-[#0052CC] text-white text-xs font-medium rounded-[6px] hover:bg-[#0747A6] transition-colors shadow-xs"
+                className="inline-flex items-center gap-1.5 h-9 px-4 bg-[#0052CC] text-white text-xs font-semibold rounded-lg hover:bg-[#0747A6] transition-colors shadow-xs press-tactile"
               >
                 <span>Browse Active RFQs</span>
-                <ArrowRight className="w-3 h-3" />
+                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
         ) : (
-          <div className="divide-y divide-[#E4E4E7]">
+          <div className="divide-y divide-slate-100">
             {/* Desktop Table Header */}
-            <div className="hidden lg:grid grid-cols-12 gap-4 px-4 py-2.5 bg-[#FAFAFA] text-[10px] font-semibold font-mono uppercase tracking-wider text-[#64748B] border-b border-[#E4E4E7]">
+            <div className="hidden lg:grid grid-cols-12 gap-4 px-4 py-3 bg-[#F8F9FA] text-xs font-semibold text-[#64748B] border-b border-slate-200">
               <div className="col-span-2">PO Identifier</div>
               <div className="col-span-3">Chemical Compound</div>
               <div className="col-span-2">Supplier</div>
@@ -267,13 +267,13 @@ export default function BuyerOrdersPage() {
                 <div
                   key={order.id}
                   onClick={() => router.push(`/dashboard/orders/${order.id}`)}
-                  className="p-4 lg:px-4 lg:py-3 hover:bg-[#FAFAFA] transition-colors cursor-pointer group flex flex-col lg:grid lg:grid-cols-12 gap-3 lg:gap-4 items-start lg:items-center"
+                  className="p-4 lg:px-4 lg:py-3.5 hover:bg-[#F8F9FA] transition-colors cursor-pointer group flex flex-col lg:grid lg:grid-cols-12 gap-3 lg:gap-4 items-start lg:items-center"
                 >
                   <div className="lg:col-span-2 min-w-0">
-                    <span className="font-mono text-xs font-semibold text-[#0052CC] group-hover:underline block">
+                    <span className="text-xs font-bold text-[#0052CC] group-hover:underline block">
                       {order.poNumber}
                     </span>
-                    <span className="text-[10px] font-mono text-[#64748B]">
+                    <span className="text-[11px] text-[#64748B]">
                       {new Date(order.placedAt).toLocaleDateString("en-GB", {
                         day: "2-digit",
                         month: "short",
@@ -283,10 +283,10 @@ export default function BuyerOrdersPage() {
                   </div>
 
                   <div className="lg:col-span-3 min-w-0">
-                    <span className="text-xs font-medium text-[#0F172A] group-hover:text-[#0052CC] block truncate">
+                    <span className="text-xs font-semibold text-[#0F172A] group-hover:text-[#0052CC] block truncate">
                       {order.productName || "Chemical Product Consignment"}
                     </span>
-                    <span className="text-[10px] font-mono text-[#64748B]">
+                    <span className="text-[11px] text-[#64748B]">
                       RFQ-{order.rfqId ? order.rfqId.slice(0, 8).toUpperCase() : "N/A"}
                     </span>
                   </div>
@@ -295,17 +295,17 @@ export default function BuyerOrdersPage() {
                     Supplier #{order.supplierId}
                   </div>
 
-                  <div className="lg:col-span-2 font-mono text-xs text-[#0F172A]">
+                  <div className="lg:col-span-2 text-xs font-semibold text-[#0F172A]">
                     {order.quantity.toLocaleString()} {order.unit.toUpperCase()}
                   </div>
 
-                  <div className="lg:col-span-2 font-mono text-xs font-semibold text-[#0F172A]">
+                  <div className="lg:col-span-2 text-xs font-bold text-[#0F172A]">
                     {currency} {order.totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </div>
 
                   <div className="lg:col-span-1 flex items-center justify-between lg:justify-end gap-2 w-full lg:w-auto">
                     <StatusBadge status={order.status} />
-                    <ChevronRight className="w-3 h-3 text-[#94A3B8] lg:hidden" />
+                    <ChevronRight className="w-3.5 h-3.5 text-slate-400 lg:hidden" />
                   </div>
                 </div>
               );

@@ -286,7 +286,7 @@ export default function BuyerSourcingTrackPage({
       case "ACCEPTED":
         return {
           label: "Accepted for Sourcing",
-          bg: "bg-emerald-50 text-emerald-700 border-emerald-200",
+          bg: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
           dot: "bg-emerald-500",
           desc: "Requirement verified and accepted. Supplier matching is active.",
         };
@@ -294,38 +294,38 @@ export default function BuyerSourcingTrackPage({
       case "SUPPLIER_CONTACTED":
         return {
           label: "Sourcing in Progress",
-          bg: "bg-indigo-50 text-indigo-700 border-indigo-200",
-          dot: "bg-indigo-500 animate-ping",
+          bg: "bg-blue-50 text-[#0052CC] border-blue-200/80",
+          dot: "bg-[#0052CC]",
           desc: "Connecting directly with manufacturers and verified chemical distributors.",
         };
       case "QUOTATIONS_RECEIVED":
       case "PROPOSAL_READY":
         return {
           label: "Quotes Received",
-          bg: "bg-purple-50 text-purple-700 border-purple-200",
-          dot: "bg-purple-500",
+          bg: "bg-blue-50 text-blue-700 border-blue-200/80",
+          dot: "bg-blue-600",
           desc: "Supplier quotes received. Curating optimal commercial proposal.",
         };
       case "PROPOSAL_SENT":
         return {
           label: "Proposal Ready for Review",
-          bg: "bg-emerald-100 text-emerald-800 border-emerald-300 ring-2 ring-emerald-400/30",
+          bg: "bg-emerald-50 text-emerald-800 border-emerald-300",
           dot: "bg-emerald-600",
           desc: "Sourcing proposal published with curated supplier options.",
         };
       case "NEGOTIATION":
         return {
           label: "Option Selected / Negotiation",
-          bg: "bg-teal-50 text-teal-800 border-teal-300",
-          dot: "bg-teal-600",
+          bg: "bg-blue-50 text-blue-800 border-blue-200/80",
+          dot: "bg-blue-700",
           desc: "Supplier option selected. Terms and shipment schedules finalizing.",
         };
       case "FULFILLED":
       case "COMPLETED":
         return {
           label: "Fulfilled",
-          bg: "bg-green-50 text-green-700 border-green-200",
-          dot: "bg-green-600",
+          bg: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
+          dot: "bg-emerald-600",
           desc: "Procurement fulfilled and delivered successfully.",
         };
       case "CLOSED":
@@ -420,14 +420,14 @@ export default function BuyerSourcingTrackPage({
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 href={`/login?redirect=/sourcing/track/${requestId}`}
-                className="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-sm hover:shadow transition-all inline-flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 py-3 bg-[#0052CC] hover:bg-[#0747A6] text-white rounded-lg font-semibold shadow-xs transition-colors inline-flex items-center justify-center gap-2 press-tactile"
               >
                 Sign In to Account
                 <ChevronRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/sourcing"
-                className="w-full sm:w-auto px-6 py-3 border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-xl font-medium transition-all inline-flex items-center justify-center"
+                className="w-full sm:w-auto px-6 py-3 border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-lg font-medium transition-colors inline-flex items-center justify-center press-tactile"
               >
                 Learn About Sourcing
               </Link>
@@ -461,13 +461,13 @@ export default function BuyerSourcingTrackPage({
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 href="/dashboard/buyer/sourcing"
-                className="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-sm hover:shadow transition-all"
+                className="w-full sm:w-auto px-6 py-3 bg-[#0052CC] hover:bg-[#0747A6] text-white rounded-lg font-semibold shadow-xs transition-colors press-tactile"
               >
                 My Sourcing Requests
               </Link>
               <Link
                 href="/sourcing/request"
-                className="w-full sm:w-auto px-6 py-3 border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-xl font-medium transition-all"
+                className="w-full sm:w-auto px-6 py-3 border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-lg font-medium transition-colors press-tactile"
               >
                 Submit New Request
               </Link>
@@ -477,21 +477,21 @@ export default function BuyerSourcingTrackPage({
 
         {/* 4. Generic Error State */}
         {!loading && error && !isForbidden && (
-          <div className="bg-white rounded-2xl border border-slate-200 p-10 text-center max-w-lg mx-auto my-12 shadow-sm">
+          <div className="bg-white rounded-2xl border border-slate-200 p-10 text-center max-w-lg mx-auto my-12 shadow-tactile-card">
             <AlertCircle className="w-12 h-12 text-rose-500 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-slate-800 mb-2">Unable to Load Sourcing Request</h3>
             <p className="text-sm text-slate-600 mb-6">{error}</p>
             <div className="flex items-center justify-center gap-3">
               <button
                 onClick={loadData}
-                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition-all inline-flex items-center gap-2"
+                className="px-5 py-2.5 bg-[#0052CC] hover:bg-[#0747A6] text-white rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-2 shadow-xs press-tactile"
               >
                 <RefreshCw className="w-4 h-4" />
                 Retry
               </button>
               <Link
                 href="/sourcing"
-                className="px-5 py-2.5 border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-xl text-sm font-medium transition-all"
+                className="px-5 py-2.5 border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-lg text-sm font-medium transition-colors press-tactile"
               >
                 Back to Sourcing
               </Link>
@@ -635,7 +635,7 @@ export default function BuyerSourcingTrackPage({
                     return (
                       <div
                         key={m.step}
-                        className={`p-4 rounded-xl border flex md:flex-col items-center md:text-center gap-3 transition-all ${
+                        className={`p-4 rounded-xl border flex md:flex-col items-center md:text-center gap-3 transition-colors duration-150 ${
                           isCurrent
                             ? "bg-blue-50/70 border-blue-400/80 shadow-sm"
                             : isCompleted
@@ -755,7 +755,7 @@ export default function BuyerSourcingTrackPage({
                         <button
                           type="submit"
                           disabled={submittingInfo || !additionalInfoText.trim()}
-                          className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white font-semibold rounded-xl text-sm shadow transition-all flex items-center gap-2"
+                          className="px-6 py-2.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] disabled:bg-slate-300 text-white font-semibold rounded-lg text-sm shadow-xs transition-colors duration-150 flex items-center gap-2 press-tactile"
                         >
                           {submittingInfo ? (
                             <>
@@ -879,12 +879,12 @@ export default function BuyerSourcingTrackPage({
                 </div>
 
                 {/* KemKendra Assurance Card */}
-                <div className="bg-gradient-to-br from-blue-900 to-indigo-950 text-white rounded-2xl p-6 shadow-sm">
+                <div className="bg-[#091E42] text-white rounded-2xl p-6 shadow-tactile-card border border-slate-800">
                   <div className="flex items-center gap-3 mb-3">
                     <ShieldCheck className="w-6 h-6 text-emerald-400" />
                     <h3 className="font-bold text-base">KemKendra Sourcing Shield</h3>
                   </div>
-                  <ul className="text-xs text-blue-100 space-y-2.5">
+                  <ul className="text-xs text-slate-300 space-y-2.5">
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                       <span>Direct supplier identity protected under neutral broker NDA</span>
@@ -930,10 +930,10 @@ export default function BuyerSourcingTrackPage({
                         return (
                           <div
                             key={proposal.id}
-                            className={`rounded-2xl border p-6 transition-all ${
+                            className={`rounded-2xl border p-6 transition-colors duration-150 ${
                               isAccepted
                                 ? "border-emerald-300 bg-emerald-50/20 shadow-sm"
-                                : "border-slate-200 bg-white shadow-sm"
+                                : "border-slate-200 bg-white shadow-tactile-card"
                             }`}
                           >
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
@@ -982,7 +982,7 @@ export default function BuyerSourcingTrackPage({
                                   return (
                                     <div
                                       key={opt.id}
-                                      className={`p-4 rounded-xl border transition-all ${
+                                      className={`p-4 rounded-xl border transition-colors duration-150 ${
                                         isSelected
                                           ? "border-emerald-500 bg-emerald-50/40 ring-2 ring-emerald-500/20"
                                           : "border-slate-200 bg-white hover:border-slate-300"
@@ -1022,7 +1022,7 @@ export default function BuyerSourcingTrackPage({
                                                 setDecisionRemarks("");
                                                 setDecisionSuccess(null);
                                               }}
-                                              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all"
+                                              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-xs rounded-lg shadow-2xs transition-colors duration-150 press-tactile"
                                             >
                                               Select Option
                                             </button>
@@ -1121,7 +1121,7 @@ export default function BuyerSourcingTrackPage({
                                     <button
                                       onClick={() => handleSubmitClarification(proposal.id)}
                                       disabled={clarificationSubmitting || !clarificationQuestion.trim()}
-                                      className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white font-semibold text-xs rounded-lg transition-all flex items-center gap-1.5"
+                                      className="px-4 py-1.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] disabled:bg-slate-300 text-white font-semibold text-xs rounded-lg transition-colors duration-150 flex items-center gap-1.5 press-tactile"
                                     >
                                       {clarificationSubmitting ? (
                                         <Loader2 className="w-3.5 h-3.5 animate-spin" />

@@ -86,6 +86,8 @@ jwt:
   refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
 
 kemkendra:
+  test-data-reset:
+    enabled: false
   storage:
     local:
       root: ${STORAGE_ROOT:/app/storage}

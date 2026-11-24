@@ -105,14 +105,14 @@ function SupplierRegisterForm() {
   // Registration Confirmation / Check Inbox State
   if (registeredEmail) {
     return (
-      <main className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-12">
+      <main className="min-h-screen bg-[#F8F9FA] flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-lg">
           <div className="text-center mb-8">
             <KemKendraLogo href="/" size="xl" subtitle="Supplier Account Provisioned" />
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-8 sm:p-10 text-center space-y-6">
-            <div className="w-16 h-16 rounded-full bg-purple-50 border border-purple-200 text-purple-600 flex items-center justify-center mx-auto">
+          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-tactile-card p-8 sm:p-10 text-center space-y-6">
+            <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-100 text-[#0052CC] flex items-center justify-center mx-auto">
               <Mail className="w-8 h-8" />
             </div>
 
@@ -120,17 +120,17 @@ function SupplierRegisterForm() {
               <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
                 Verify Your Supplier Email
               </h1>
-              <p className="text-xs text-slate-600 leading-relaxed max-w-sm mx-auto">
+              <p className="text-xs text-slate-500 leading-relaxed max-w-sm mx-auto">
                 We have dispatched an activation link to <strong className="text-slate-900 font-mono">{registeredEmail}</strong>. Please check your inbox and click the link to activate your account.
               </p>
             </div>
 
-            <div className="rounded-xl border border-slate-100 bg-slate-50 p-4 text-xs text-slate-500 space-y-1 text-left">
-              <p className="font-semibold text-slate-700 flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-purple-600" />
+            <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 text-xs text-slate-600 space-y-1.5 text-left">
+              <p className="font-bold text-slate-900 flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
                 Next Steps After Verification
               </p>
-              <p>
+              <p className="text-xs text-slate-500 leading-relaxed">
                 Once verified, sign in to your dashboard to complete company verification, upload quality certificates (ISO/GMP), and list chemical catalog offerings.
               </p>
             </div>
@@ -138,14 +138,14 @@ function SupplierRegisterForm() {
             <div className="space-y-3 pt-2">
               <Link
                 href="/login"
-                className="w-full rounded-lg bg-[#0A192F] hover:bg-slate-800 px-4 py-3 text-xs font-bold uppercase tracking-widest text-white transition-all shadow-md flex items-center justify-center gap-2"
+                className="w-full rounded-lg bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] px-4 py-3 text-xs font-bold uppercase tracking-wider text-white transition-colors shadow-2xs flex items-center justify-center gap-2 active:scale-[0.98]"
               >
-                Proceed to Sign In
-                <ArrowRight className="w-4 h-4 text-purple-400" />
+                <span>Proceed to Sign In</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href={`/verify-email?email=${encodeURIComponent(registeredEmail)}`}
-                className="block text-xs font-semibold text-purple-600 hover:underline"
+                className="block text-xs font-semibold text-[#0052CC] hover:underline"
               >
                 Need to resend verification link or enter token manually?
               </Link>
@@ -157,7 +157,7 @@ function SupplierRegisterForm() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#F8F9FA] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         
         {/* Top Header */}
@@ -178,7 +178,7 @@ function SupplierRegisterForm() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Column: Form (8 cols) */}
-          <div className="lg:col-span-8 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-10">
+          <div className="lg:col-span-8 bg-white border border-slate-200/90 rounded-2xl shadow-tactile-card p-6 sm:p-10">
             <div className="border-b border-slate-100 pb-5 mb-6">
               <h2 className="text-xl font-bold text-slate-900">
                 Supplier Registration Application
@@ -189,7 +189,7 @@ function SupplierRegisterForm() {
             </div>
 
             {error && (
-              <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-xs font-mono text-red-700 flex items-start gap-2.5">
+              <div className="mb-6 rounded-xl border border-rose-200 bg-rose-50 p-4 text-xs text-rose-700 flex items-start gap-2.5">
                 <span className="font-bold shrink-0">ERROR:</span>
                 <span>{error}</span>
               </div>
@@ -199,8 +199,8 @@ function SupplierRegisterForm() {
               
               {/* SECTION A: COMPANY DETAILS */}
               <div>
-                <span className="block text-[10px] font-bold uppercase tracking-widest text-purple-600 mb-3 font-mono">
-                  01 / COMPANY IDENTIFICATION
+                <span className="block text-xs font-bold uppercase tracking-wider text-[#0052CC] mb-3">
+                  1. Company Identification & Operations
                 </span>
                 
                 <div className="space-y-4">
@@ -209,7 +209,7 @@ function SupplierRegisterForm() {
                       htmlFor="companyName"
                       className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wider"
                     >
-                      Legal Company Name <span className="text-red-500">*</span>
+                      Legal Company Name <span className="text-rose-500">*</span>
                     </label>
                     <input
                       id="companyName"
@@ -218,7 +218,7 @@ function SupplierRegisterForm() {
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
                       disabled={loading}
-                      className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 disabled:bg-slate-100"
+                      className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-colors focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 disabled:bg-slate-100 shadow-2xs"
                       placeholder="e.g. Apex Fine Chemicals Ltd."
                     />
                   </div>
@@ -229,7 +229,7 @@ function SupplierRegisterForm() {
                         htmlFor="country"
                         className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wider"
                       >
-                        Headquarters Country <span className="text-red-500">*</span>
+                        Headquarters Country <span className="text-rose-500">*</span>
                       </label>
                       <input
                         id="country"
@@ -238,7 +238,7 @@ function SupplierRegisterForm() {
                         value={country}
                         onChange={(e) => setCountry(e.target.value)}
                         disabled={loading}
-                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 disabled:bg-slate-100"
+                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-colors focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 disabled:bg-slate-100 shadow-2xs"
                         placeholder="e.g. Germany, India, USA"
                       />
                     </div>
@@ -257,7 +257,7 @@ function SupplierRegisterForm() {
                         value={countryCode}
                         onChange={(e) => setCountryCode(e.target.value.toUpperCase())}
                         disabled={loading}
-                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 disabled:bg-slate-100 uppercase"
+                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-colors focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 disabled:bg-slate-100 uppercase shadow-2xs font-mono"
                         placeholder="e.g. DE"
                       />
                     </div>
@@ -277,7 +277,7 @@ function SupplierRegisterForm() {
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
                         disabled={loading}
-                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 disabled:bg-slate-100"
+                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-colors focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 disabled:bg-slate-100 shadow-2xs"
                         placeholder="e.g. Mumbai / Frankfurt"
                       />
                     </div>
@@ -295,7 +295,7 @@ function SupplierRegisterForm() {
                         value={website}
                         onChange={(e) => setWebsite(e.target.value)}
                         disabled={loading}
-                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 disabled:bg-slate-100"
+                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-colors focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 disabled:bg-slate-100 shadow-2xs"
                         placeholder="https://company.com"
                       />
                     </div>
@@ -314,7 +314,7 @@ function SupplierRegisterForm() {
                       value={aboutCompany}
                       onChange={(e) => setAboutCompany(e.target.value)}
                       disabled={loading}
-                      className="w-full rounded-lg border border-slate-300 p-3 text-xs text-slate-900 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 disabled:bg-slate-100"
+                      className="w-full rounded-lg border border-slate-300 p-3 text-xs text-slate-900 outline-none transition-colors focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 disabled:bg-slate-100 shadow-2xs resize-y"
                       placeholder="Briefly describe your chemical manufacturing specialties, synthesis capabilities, or product categories..."
                     />
                   </div>
@@ -323,8 +323,8 @@ function SupplierRegisterForm() {
 
               {/* SECTION B: AUTHORIZED REPRESENTATIVE */}
               <div className="pt-4 border-t border-slate-100">
-                <span className="block text-[10px] font-bold uppercase tracking-widest text-purple-600 mb-3 font-mono">
-                  02 / AUTHORIZED REPRESENTATIVE & LOGIN
+                <span className="block text-xs font-bold uppercase tracking-wider text-[#0052CC] mb-3">
+                  2. Authorized Representative & Credentials
                 </span>
 
                 <div className="space-y-4">
@@ -334,7 +334,7 @@ function SupplierRegisterForm() {
                         htmlFor="name"
                         className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wider"
                       >
-                        Contact Person Name <span className="text-red-500">*</span>
+                        Contact Person Name <span className="text-rose-500">*</span>
                       </label>
                       <input
                         id="name"
@@ -343,7 +343,7 @@ function SupplierRegisterForm() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         disabled={loading}
-                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 disabled:bg-slate-100"
+                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-colors focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 disabled:bg-slate-100 shadow-2xs"
                         placeholder="e.g. Dr. Alex Vance"
                       />
                     </div>
@@ -361,7 +361,7 @@ function SupplierRegisterForm() {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         disabled={loading}
-                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 disabled:bg-slate-100"
+                        className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-colors focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 disabled:bg-slate-100 shadow-2xs"
                         placeholder="+49 30 1234567"
                       />
                     </div>
@@ -372,7 +372,7 @@ function SupplierRegisterForm() {
                       htmlFor="email"
                       className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wider"
                     >
-                      Official Business Email <span className="text-red-500">*</span>
+                      Official Business Email <span className="text-rose-500">*</span>
                     </label>
                     <input
                       id="email"
@@ -382,7 +382,7 @@ function SupplierRegisterForm() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       disabled={loading}
-                      className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 disabled:bg-slate-100"
+                      className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-colors focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 disabled:bg-slate-100 shadow-2xs"
                       placeholder="sales@company.com"
                     />
                   </div>
@@ -393,7 +393,7 @@ function SupplierRegisterForm() {
                         htmlFor="password"
                         className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wider"
                       >
-                        Account Password <span className="text-red-500">*</span>
+                        Account Password <span className="text-rose-500">*</span>
                       </label>
                       <PasswordInput
                         id="password"
@@ -412,7 +412,7 @@ function SupplierRegisterForm() {
                         htmlFor="confirmPassword"
                         className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wider"
                       >
-                        Confirm Password <span className="text-red-500">*</span>
+                        Confirm Password <span className="text-rose-500">*</span>
                       </label>
                       <PasswordInput
                         id="confirmPassword"
@@ -426,7 +426,7 @@ function SupplierRegisterForm() {
                       />
                       {confirmPassword.length > 0 && (
                         <div className={`flex items-center gap-1 text-[11px] font-medium pt-1 ${
-                          password === confirmPassword ? "text-emerald-600" : "text-red-600"
+                          password === confirmPassword ? "text-emerald-600" : "text-rose-600"
                         }`}>
                           {password === confirmPassword ? (
                             <>
@@ -435,7 +435,7 @@ function SupplierRegisterForm() {
                             </>
                           ) : (
                             <>
-                              <AlertCircle className="w-3.5 h-3.5 text-red-600 flex-shrink-0" />
+                              <AlertCircle className="w-3.5 h-3.5 text-rose-600 flex-shrink-0" />
                               <span>Passwords do not match</span>
                             </>
                           )}
@@ -458,18 +458,18 @@ function SupplierRegisterForm() {
                       checked={termsAccepted}
                       onChange={(e) => setTermsAccepted(e.target.checked)}
                       disabled={loading}
-                      className="mt-0.5 h-4 w-4 rounded border-slate-300 text-purple-600 focus:ring-2 focus:ring-purple-600/20"
+                      className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#0052CC] focus:ring-1 focus:ring-[#0052CC]"
                     />
                     <span>
                       I agree to the{" "}
                       <Link
                         href="/terms"
                         target="_blank"
-                        className="font-bold text-purple-600 hover:underline"
+                        className="font-bold text-[#0052CC] hover:underline"
                       >
                         Terms of Service
                       </Link>{" "}
-                      <span className="text-red-500">*</span>
+                      <span className="text-rose-500">*</span>
                     </span>
                   </label>
 
@@ -480,18 +480,18 @@ function SupplierRegisterForm() {
                       checked={privacyAccepted}
                       onChange={(e) => setPrivacyAccepted(e.target.checked)}
                       disabled={loading}
-                      className="mt-0.5 h-4 w-4 rounded border-slate-300 text-purple-600 focus:ring-2 focus:ring-purple-600/20"
+                      className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#0052CC] focus:ring-1 focus:ring-[#0052CC]"
                     />
                     <span>
                       I acknowledge the{" "}
                       <Link
                         href="/privacy"
                         target="_blank"
-                        className="font-bold text-purple-600 hover:underline"
+                        className="font-bold text-[#0052CC] hover:underline"
                       >
                         Privacy Policy
                       </Link>{" "}
-                      <span className="text-red-500">*</span>
+                      <span className="text-rose-500">*</span>
                     </span>
                   </label>
                 </div>
@@ -500,7 +500,7 @@ function SupplierRegisterForm() {
                   <button
                     type="submit"
                     disabled={loading || !termsAccepted || !privacyAccepted}
-                    className="w-full rounded-lg bg-purple-600 hover:bg-purple-700 px-4 py-3.5 text-xs font-bold uppercase tracking-widest text-white transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
+                    className="w-full rounded-lg bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-white transition-colors duration-150 shadow-2xs flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer active:scale-[0.98]"
                   >
                     {loading ? (
                       <>
@@ -510,7 +510,7 @@ function SupplierRegisterForm() {
                     ) : (
                       <>
                         COMPLETE SUPPLIER ONBOARDING
-                        <ArrowRight className="w-4 h-4 text-purple-200" />
+                        <ArrowRight className="w-4 h-4 text-blue-100" />
                       </>
                     )}
                   </button>
@@ -520,9 +520,9 @@ function SupplierRegisterForm() {
 
           {/* Right Column: Benefits & Trust Panel (4 cols) */}
           <div className="lg:col-span-4 space-y-6">
-            <div className="bg-[#0A192F] text-white rounded-2xl p-6 sm:p-8 shadow-md">
-              <span className="block text-[10px] font-bold uppercase tracking-widest text-teal-400 font-mono mb-3">
-                SUPPLIER ADVANTAGES
+            <div className="bg-[#091E42] border border-slate-800 text-white rounded-2xl p-6 sm:p-8 shadow-tactile-card">
+              <span className="block text-xs font-bold uppercase tracking-wider text-blue-400 mb-3">
+                Supplier Advantages
               </span>
               <h3 className="text-lg font-bold tracking-tight mb-4">
                 Why Sell with KemKendra?
@@ -530,21 +530,21 @@ function SupplierRegisterForm() {
               
               <ul className="space-y-4 text-xs text-slate-300">
                 <li className="flex items-start gap-3">
-                  <Globe className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                  <Globe className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                   <span>Reach verified buyers across pharmaceutical, agrochemical, and specialty chemical sectors worldwide.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Shield className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                  <Shield className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                   <span>Receive structured RFQs with CAS numbers, purity specifications, and verified volume requirements.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Award className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                  <Award className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                   <span>Manage end-to-end commercial document issuance (COA, MSDS, Invoices) and logistics fulfillment.</span>
                 </li>
               </ul>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card">
               <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
                 Need to source instead?
               </h4>
@@ -553,7 +553,7 @@ function SupplierRegisterForm() {
               </p>
               <Link
                 href="/register"
-                className="block text-center py-2.5 px-4 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-colors"
+                className="block text-center py-2.5 px-4 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold transition-colors shadow-2xs active:scale-[0.98]"
               >
                 Create Buyer Account →
               </Link>
@@ -562,7 +562,7 @@ function SupplierRegisterForm() {
             <div className="text-center">
               <p className="text-xs text-slate-500">
                 Already registered as a supplier?{" "}
-                <Link href="/login" className="font-bold text-purple-600 hover:text-purple-700 underline">
+                <Link href="/login" className="font-bold text-[#0052CC] hover:underline">
                   Sign In
                 </Link>
               </p>
@@ -580,8 +580,8 @@ export default function SupplierRegisterPage() {
   return (
     <Suspense
       fallback={
-        <main className="min-h-screen bg-slate-50 flex items-center justify-center">
-          <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
+        <main className="min-h-screen bg-[#F8F9FA] flex items-center justify-center">
+          <div className="w-8 h-8 border-3 border-[#0052CC] border-t-transparent rounded-full animate-spin" />
         </main>
       }
     >

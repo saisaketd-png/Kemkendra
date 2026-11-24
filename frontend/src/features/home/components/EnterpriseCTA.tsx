@@ -9,9 +9,6 @@ export function EnterpriseCTA() {
           
           {/* Left Column: Editorial Statement */}
           <div className="lg:col-span-8 space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-widest text-[#38BDF8] block">
-              Start Sourcing
-            </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
               Find the chemical materials your business needs.
             </h2>
@@ -24,16 +21,16 @@ export function EnterpriseCTA() {
           <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start lg:items-end justify-start lg:justify-end gap-3 shrink-0">
             <Link
               href="/products"
-              className="h-10 px-6 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white font-semibold text-xs rounded-[4px] transition-colors flex items-center justify-center gap-2 shadow-xs"
+              className="h-10 px-6 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white font-semibold text-xs rounded-[6px] transition-all flex items-center justify-center gap-2 shadow-xs press-tactile"
             >
-              <span>Explore the marketplace</span>
+              <span>Explore Marketplace</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
             <Link
-              href="/rfq"
-              className="h-10 px-6 bg-transparent hover:bg-white/5 border border-slate-700 text-slate-200 font-medium text-xs rounded-[4px] transition-colors flex items-center justify-center gap-2"
+              href="/sourcing/request"
+              className="h-10 px-5 bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs rounded-[6px] transition-all flex items-center justify-center gap-2 press-tactile"
             >
-              <span>Start an RFQ</span>
+              <span>Custom Sourcing</span>
             </Link>
           </div>
 

@@ -192,7 +192,7 @@ export default async function ProductDetailPage({
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC] font-sans text-[#1E293B] antialiased">
+    <div className="min-h-screen flex flex-col bg-[#F8F9FA] font-sans text-[#0F172A] antialiased">
       {/* Inject Structured Data */}
       <script
         type="application/ld+json"
@@ -238,10 +238,10 @@ export default async function ProductDetailPage({
           </nav>
 
           {/* 1. CHEMICAL MONOGRAPH HERO */}
-          <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-5 sm:p-6 shadow-tactile-card">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-tactile-card">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               
-              {/* Left: Product Image & Monograph Specification */}
+              {/* Left: Product Image & Monograph Visual */}
               <div className="lg:col-span-5 w-full">
                 <ProductDetailHeroImage
                   imageUrl={resolvedImageUrl}
@@ -253,63 +253,66 @@ export default async function ProductDetailPage({
               </div>
 
               {/* Right: Chemical Specification & Master Identity */}
-              <div className="lg:col-span-7 space-y-4">
-                <div className="flex items-center gap-2 flex-wrap">
+              <div className="lg:col-span-7 space-y-5">
+                <div className="flex items-center gap-2.5 text-xs flex-wrap font-medium">
                   {product.category && (
-                    <span className="text-xs font-semibold text-[#0052CC] bg-[#EFF6FF] border border-[#BFDBFE] px-2.5 py-1 rounded-[4px] font-mono uppercase">
-                      Category: {getCategoryAbbreviation(product.category)}
+                    <span className="text-[#0052CC] font-semibold">
+                      {getCategoryDisplayName(product.category)}
                     </span>
                   )}
-                  <span className="text-xs font-mono font-semibold text-[#0F172A] bg-[#F4F4F5] border border-[#E4E4E7] px-2.5 py-1 rounded-[4px]">
-                    Product Code: {canonicalCode}
+                  <span className="text-slate-300">&bull;</span>
+                  <span className="text-slate-600 font-mono">
+                    {canonicalCode}
                   </span>
-                  <span className="text-xs font-semibold text-[#059669] bg-[#ECFDF5] border border-[rgba(5,150,105,0.2)] px-2 py-0.5 rounded-[4px] inline-flex items-center gap-1 font-mono">
-                    <CheckCircle2 className="w-3 h-3" /> VERIFIED
+                  <span className="text-slate-300">&bull;</span>
+                  <span className="text-emerald-700 font-semibold flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                    Verified Specification
                   </span>
                 </div>
 
                 <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold text-[#0F172A] uppercase tracking-tight leading-tight">
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F172A] tracking-tight leading-tight">
                     {product.name}
                   </h1>
-                  <p className="text-xs text-[#64748B] mt-1 font-mono">
-                    Product Code: {canonicalCode} &bull; Category: {getCategoryDisplayName(product.category)}
+                  <p className="text-xs text-[#64748B] mt-1.5">
+                    Catalog Code: <span className="font-mono text-slate-800">{canonicalCode}</span> &bull; Classification: {getCategoryDisplayName(product.category)}
                   </p>
                 </div>
 
                 {/* Key Chemical Formula & CAS */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3.5 bg-[#FAFAFA] border border-[#E4E4E7] rounded-[6px] font-mono text-xs">
-                  <div>
-                    <span className="text-[#64748B] text-[10px] uppercase font-semibold block">CAS Registry</span>
-                    <strong className="text-sm font-semibold text-[#0F172A]">{product.casNumber || "N/A"}</strong>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4 bg-[#F8F9FA] border border-slate-200/80 rounded-xl text-xs">
+                  <div className="space-y-0.5">
+                    <span className="text-[#64748B] text-xs font-semibold block">CAS Registry</span>
+                    <strong className="text-sm font-bold font-mono text-[#0F172A]">{product.casNumber || "N/A"}</strong>
                   </div>
-                  <div>
-                    <span className="text-[#64748B] text-[10px] uppercase font-semibold block">Molecular Formula</span>
-                    <strong className="text-sm font-semibold text-[#0F172A]">{product.molecularFormula || "N/A"}</strong>
+                  <div className="space-y-0.5">
+                    <span className="text-[#64748B] text-xs font-semibold block">Molecular Formula</span>
+                    <strong className="text-sm font-bold font-mono text-[#0F172A]">{product.molecularFormula || "—"}</strong>
                   </div>
-                  <div className="col-span-2 sm:col-span-1">
-                    <span className="text-[#64748B] text-[10px] uppercase font-semibold block">Standard Purity</span>
-                    <strong className="text-sm font-semibold text-[#059669]">{product.purity || "≥ 99.0%"}</strong>
+                  <div className="col-span-2 sm:col-span-1 space-y-0.5">
+                    <span className="text-[#64748B] text-xs font-semibold block">Standard Purity</span>
+                    <strong className="text-sm font-bold text-emerald-700">{product.purity || "≥ 99.0%"}</strong>
                   </div>
                 </div>
 
                 {/* Chemical Description */}
                 {product.description && (
                   <div className="space-y-1">
-                    <h3 className="text-xs font-semibold text-[#0F172A] uppercase tracking-wider font-mono">
+                    <h3 className="text-xs font-semibold text-[#0F172A]">
                       Compound Overview
                     </h3>
-                    <p className="text-xs sm:text-sm text-[#475569] leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[#64748B] leading-relaxed">
                       {product.description}
                     </p>
                   </div>
                 )}
 
                 {/* Procurement CTA Buttons */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-2">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 flex-wrap">
                   <Link
                     href={`/rfq?productId=${product.id}&productName=${encodeURIComponent(product.name)}`}
-                    className="h-9 px-4 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-medium rounded-[6px] transition-colors shadow-xs flex items-center justify-center gap-1.5 active:scale-[0.99]"
+                    className="h-10 px-5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs sm:text-sm font-semibold rounded-lg transition-colors duration-150 shadow-xs flex items-center justify-center gap-2 press-tactile"
                   >
                     <span>Request Quotation</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -317,10 +320,18 @@ export default async function ProductDetailPage({
 
                   <a
                     href="#supplier-offerings"
-                    className="h-9 px-3.5 bg-white hover:bg-[#FAFAFA] border border-[#E4E4E7] text-[#0F172A] text-xs font-medium rounded-[6px] transition-colors flex items-center justify-center shadow-xs"
+                    className="h-10 px-4 bg-white hover:bg-slate-50 border border-slate-300 text-[#0F172A] text-xs sm:text-sm font-semibold rounded-lg transition-colors duration-150 flex items-center justify-center shadow-2xs press-tactile"
                   >
-                    View Supplier Offerings ({product.offeringCount || 0})
+                    <span>View Supplier Offerings ({product.offeringCount || 0})</span>
                   </a>
+
+                  <Link
+                    href={`/sourcing/request?productName=${encodeURIComponent(product.name)}&casNumber=${encodeURIComponent(product.casNumber || "")}&category=${encodeURIComponent(product.category || "")}`}
+                    className="h-10 px-4 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 text-xs sm:text-sm font-semibold rounded-lg transition-colors duration-150 flex items-center justify-center gap-1.5"
+                  >
+                    <FlaskConical className="w-3.5 h-3.5 text-blue-600" />
+                    <span>Need Custom Spec? Request Sourcing</span>
+                  </Link>
                 </div>
               </div>
 
@@ -328,7 +339,7 @@ export default async function ProductDetailPage({
           </div>
 
           {/* 2. PRIMARY MARKETPLACE SECTION: AVAILABLE FROM VERIFIED SUPPLIERS */}
-          <div id="supplier-offerings" className="bg-white border border-[#E4E4E7] rounded-[8px] p-5 shadow-tactile-card space-y-3">
+          <div id="supplier-offerings" className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-tactile-card space-y-4">
             <SupplierComparison
               productId={product.id || resolvedParams.id}
               productName={product.name}
@@ -336,37 +347,37 @@ export default async function ProductDetailPage({
           </div>
 
           {/* 3. TECHNICAL SPECIFICATION GRID */}
-          <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-5 shadow-tactile-card space-y-3">
-            <div className="flex items-center gap-2 border-b border-[#E4E4E7] pb-2.5">
-              <Layers className="w-3.5 h-3.5 text-[#0052CC]" />
-              <h2 className="text-xs font-semibold text-[#0F172A] uppercase tracking-wider font-mono">
-                Technical Information & Monograph Specifications
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-tactile-card space-y-4">
+            <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+              <Layers className="w-4 h-4 text-[#0052CC]" />
+              <h2 className="text-sm font-bold text-[#0F172A]">
+                Technical Information &amp; Specifications
               </h2>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 text-xs">
-              <div className="bg-[#FAFBFC] p-3 rounded-md border border-[#DFE1E6]">
-                <span className="text-[#5E6C84] block text-[10px] uppercase font-bold font-mono">Category</span>
-                <strong className="text-[#091E42] font-semibold">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 text-xs">
+              <div className="bg-[#F8F9FA] p-3.5 rounded-xl border border-slate-200/80 space-y-1">
+                <span className="text-[#64748B] block text-xs font-semibold">Category</span>
+                <strong className="text-[#0F172A] font-semibold text-xs sm:text-sm">
                   {product.category ? product.category.replace(/_/g, " ") : "Specialty"}
                 </strong>
               </div>
-              <div className="bg-[#FAFBFC] p-3 rounded-md border border-[#DFE1E6]">
-                <span className="text-[#5E6C84] block text-[10px] uppercase font-bold font-mono">CAS Registry</span>
-                <strong className="text-[#091E42] font-mono font-semibold">{product.casNumber || "N/A"}</strong>
+              <div className="bg-[#F8F9FA] p-3.5 rounded-xl border border-slate-200/80 space-y-1">
+                <span className="text-[#64748B] block text-xs font-semibold">CAS Registry</span>
+                <strong className="text-[#0F172A] font-mono font-semibold text-xs sm:text-sm">{product.casNumber || "N/A"}</strong>
               </div>
-              <div className="bg-[#FAFBFC] p-3 rounded-md border border-[#DFE1E6]">
-                <span className="text-[#5E6C84] block text-[10px] uppercase font-bold font-mono">Molecular Formula</span>
-                <strong className="text-[#091E42] font-mono font-semibold">{product.molecularFormula || "N/A"}</strong>
+              <div className="bg-[#F8F9FA] p-3.5 rounded-xl border border-slate-200/80 space-y-1">
+                <span className="text-[#64748B] block text-xs font-semibold">Molecular Formula</span>
+                <strong className="text-[#0F172A] font-mono font-semibold text-xs sm:text-sm">{product.molecularFormula || "—"}</strong>
               </div>
-              <div className="bg-[#FAFBFC] p-3 rounded-md border border-[#DFE1E6]">
-                <span className="text-[#5E6C84] block text-[10px] uppercase font-bold font-mono">Master Code</span>
-                <strong className="text-[#091E42] font-mono font-semibold">{canonicalCode}</strong>
+              <div className="bg-[#F8F9FA] p-3.5 rounded-xl border border-slate-200/80 space-y-1">
+                <span className="text-[#64748B] block text-xs font-semibold">Master Code</span>
+                <strong className="text-[#0F172A] font-mono font-semibold text-xs sm:text-sm">{canonicalCode}</strong>
               </div>
-              <div className="bg-[#FAFBFC] p-3 rounded-md border border-[#DFE1E6]">
-                <span className="text-[#5E6C84] block text-[10px] uppercase font-bold font-mono">Governance Status</span>
-                <strong className="text-[#00875A] font-semibold flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5" /> Verified Canonical
+              <div className="bg-[#F8F9FA] p-3.5 rounded-xl border border-slate-200/80 space-y-1">
+                <span className="text-[#64748B] block text-xs font-semibold">Governance Status</span>
+                <strong className="text-emerald-700 font-semibold flex items-center gap-1 text-xs sm:text-sm">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Verified Canonical
                 </strong>
               </div>
             </div>

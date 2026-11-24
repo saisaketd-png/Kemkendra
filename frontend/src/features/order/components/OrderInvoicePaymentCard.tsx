@@ -51,13 +51,13 @@ export function OrderInvoicePaymentCard({
 
   if (loading) {
     return (
-      <div className="bg-white rounded-[8px] border border-[#E4E4E7] p-5 shadow-tactile animate-pulse">
-        <div className="h-5 w-48 bg-[#F1F5F9] rounded mb-4" />
+      <div className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-tactile-card animate-pulse">
+        <div className="h-5 w-48 bg-slate-100 rounded-md mb-4" />
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="h-12 bg-[#F8FAFC] rounded" />
-          <div className="h-12 bg-[#F8FAFC] rounded" />
-          <div className="h-12 bg-[#F8FAFC] rounded" />
-          <div className="h-12 bg-[#F8FAFC] rounded" />
+          <div className="h-12 bg-slate-50 rounded-xl" />
+          <div className="h-12 bg-slate-50 rounded-xl" />
+          <div className="h-12 bg-slate-50 rounded-xl" />
+          <div className="h-12 bg-slate-50 rounded-xl" />
         </div>
       </div>
     );
@@ -65,12 +65,12 @@ export function OrderInvoicePaymentCard({
 
   if (error || !summary) {
     return (
-      <div className="bg-white rounded-[8px] border border-[#E4E4E7] p-5 shadow-tactile">
-        <div className="flex items-center gap-2 text-[#0F172A] font-semibold text-sm mb-2">
-          <Receipt className="w-4 h-4 text-[#0284C7]" />
+      <div className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-tactile-card">
+        <div className="flex items-center gap-2 text-slate-900 font-bold text-sm mb-2">
+          <Receipt className="w-4 h-4 text-[#0052CC]" />
           Invoice & Payment Tracking
         </div>
-        <p className="text-xs text-[#64748B]">
+        <p className="text-xs text-slate-500">
           {error || "No invoice generated yet for this purchase order."}
         </p>
       </div>
@@ -102,22 +102,22 @@ export function OrderInvoicePaymentCard({
   };
 
   return (
-    <div className="bg-white rounded-[8px] border border-[#E4E4E7] p-5 shadow-tactile flex flex-col gap-4">
+    <div className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-tactile-card flex flex-col gap-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#F1F5F9]">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-[6px] bg-[#E0F2FE] text-[#0369A1] flex items-center justify-center">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#0052CC] border border-blue-100 flex items-center justify-center">
             <Receipt className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-[#0F172A]">Invoice & Commercial Settlement</h3>
-            <p className="text-[11px] text-[#64748B]">
+            <h3 className="text-sm font-bold text-slate-900">Invoice & Commercial Settlement</h3>
+            <p className="text-xs text-slate-500">
               {summary.hasInvoice ? `Invoice Ref: ${summary.invoiceNumber}` : `Associated with PO #${poNumber}`}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           {summary.hasInvoice && summary.status && (
             <Badge variant={getInvoiceBadgeVariant(summary.status)}>
               {summary.status.replace(/_/g, " ")}
@@ -129,9 +129,9 @@ export function OrderInvoicePaymentCard({
               href={summary.downloadPdfUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-[6px] bg-[#F8FAFC] hover:bg-[#F1F5F9] text-[#0F172A] border border-[#E2E8F0] transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 transition-colors shadow-2xs"
             >
-              <Download className="w-3.5 h-3.5 text-[#64748B]" />
+              <Download className="w-3.5 h-3.5 text-slate-500" />
               PDF
             </a>
           )}
@@ -139,10 +139,10 @@ export function OrderInvoicePaymentCard({
           {summary.hasInvoice && summary.invoiceId && (
             <Link
               href={`/dashboard/invoices/${summary.invoiceId}`}
-              className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-[6px] bg-[#0284C7]/10 hover:bg-[#0284C7]/20 text-[#0284C7] transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#0052CC] border border-blue-100 transition-colors shadow-2xs"
             >
               View Full Invoice
-              <ExternalLink className="w-3 h-3" />
+              <ExternalLink className="w-3.5 h-3.5" />
             </Link>
           )}
         </div>
@@ -151,22 +151,22 @@ export function OrderInvoicePaymentCard({
       {/* Content */}
       {summary.hasInvoice ? (
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-[#FAFAFA] p-3.5 rounded-[6px] border border-[#F1F5F9]">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50/80 p-4 rounded-xl border border-slate-200/60">
             <div>
-              <div className="text-[10px] uppercase font-bold text-[#64748B] tracking-wider">Total Invoice</div>
-              <div className="text-sm font-bold text-[#0F172A] mt-0.5">{formatMoney(summary.totalAmount)}</div>
+              <div className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Total Invoice</div>
+              <div className="text-sm font-bold font-mono text-slate-900 mt-0.5">{formatMoney(summary.totalAmount)}</div>
             </div>
             <div>
-              <div className="text-[10px] uppercase font-bold text-[#64748B] tracking-wider">Tax (GST)</div>
-              <div className="text-sm font-semibold text-[#475569] mt-0.5">{formatMoney(summary.taxAmount)}</div>
+              <div className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Tax (GST)</div>
+              <div className="text-sm font-semibold font-mono text-slate-700 mt-0.5">{formatMoney(summary.taxAmount)}</div>
             </div>
             <div>
-              <div className="text-[10px] uppercase font-bold text-[#64748B] tracking-wider">Amount Settled</div>
-              <div className="text-sm font-bold text-[#059669] mt-0.5">{formatMoney(summary.paidAmount)}</div>
+              <div className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Amount Settled</div>
+              <div className="text-sm font-bold font-mono text-emerald-600 mt-0.5">{formatMoney(summary.paidAmount)}</div>
             </div>
             <div>
-              <div className="text-[10px] uppercase font-bold text-[#64748B] tracking-wider">Balance Due</div>
-              <div className={`text-sm font-bold mt-0.5 ${(summary.balanceDue || 0) > 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>
+              <div className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Balance Due</div>
+              <div className={`text-sm font-bold font-mono mt-0.5 ${(summary.balanceDue || 0) > 0 ? "text-rose-600" : "text-emerald-600"}`}>
                 {formatMoney(summary.balanceDue)}
               </div>
             </div>
@@ -174,27 +174,27 @@ export function OrderInvoicePaymentCard({
 
           {/* Payment Status & Proof Indicators */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div className="flex items-center gap-2 p-2.5 rounded-[6px] border border-[#E2E8F0] bg-white">
-              <CreditCard className="w-4 h-4 text-[#0284C7]" />
+            <div className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white shadow-2xs">
+              <CreditCard className="w-4 h-4 text-[#0052CC]" />
               <div>
-                <span className="font-semibold text-[#0F172A]">Payment Record: </span>
-                <span className={summary.paymentRecorded ? "text-[#059669] font-medium" : "text-[#64748B]"}>
+                <span className="font-semibold text-slate-900">Payment Record: </span>
+                <span className={summary.paymentRecorded ? "text-emerald-600 font-semibold" : "text-slate-500"}>
                   {summary.paymentRecorded ? "Settlement Recorded" : "Pending Payment Registration"}
                 </span>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 p-2.5 rounded-[6px] border border-[#E2E8F0] bg-white">
+            <div className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-white shadow-2xs">
               {summary.proofVerified ? (
-                <ShieldCheck className="w-4 h-4 text-[#059669]" />
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
               ) : summary.paymentProofUploaded ? (
-                <FileCheck2 className="w-4 h-4 text-[#0284C7]" />
+                <FileCheck2 className="w-4 h-4 text-[#0052CC]" />
               ) : (
-                <Clock className="w-4 h-4 text-[#94A3B8]" />
+                <Clock className="w-4 h-4 text-slate-400" />
               )}
               <div>
-                <span className="font-semibold text-[#0F172A]">Payment Proof: </span>
-                <span className={summary.proofVerified ? "text-[#059669] font-medium" : summary.paymentProofUploaded ? "text-[#0284C7]" : "text-[#64748B]"}>
+                <span className="font-semibold text-slate-900">Payment Proof: </span>
+                <span className={summary.proofVerified ? "text-emerald-600 font-semibold" : summary.paymentProofUploaded ? "text-[#0052CC]" : "text-slate-500"}>
                   {summary.proofVerified
                     ? "Verified & Confirmed"
                     : summary.paymentProofUploaded
@@ -207,19 +207,19 @@ export function OrderInvoicePaymentCard({
 
           {/* Due date if applicable */}
           {summary.dueDate && (
-            <div className="flex items-center justify-between text-[11px] text-[#64748B] pt-1">
-              <span>Payment Terms Due Date: <strong className="text-[#0F172A]">{summary.dueDate}</strong></span>
-              {summary.issueDate && <span>Issued on: {summary.issueDate}</span>}
+            <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
+              <span>Payment Terms Due Date: <strong className="text-slate-900 font-mono">{summary.dueDate}</strong></span>
+              {summary.issueDate && <span>Issued on: <span className="font-mono">{summary.issueDate}</span></span>}
             </div>
           )}
         </div>
       ) : (
-        <div className="flex items-center justify-between bg-[#FAFAFA] p-4 rounded-[6px] border border-[#F1F5F9]">
+        <div className="flex items-center justify-between bg-slate-50/80 p-4 rounded-xl border border-slate-200/60">
           <div className="flex items-center gap-3">
-            <Clock className="w-5 h-5 text-[#94A3B8]" />
+            <Clock className="w-5 h-5 text-slate-400" />
             <div>
-              <h4 className="text-xs font-semibold text-[#0F172A]">No Commercial Invoice Issued Yet</h4>
-              <p className="text-[11px] text-[#64748B]">
+              <h4 className="text-xs font-bold text-slate-900">No Commercial Invoice Issued Yet</h4>
+              <p className="text-xs text-slate-500">
                 {isBuyer
                   ? "The supplier has not generated an invoice for this order yet. You will be notified when it is issued."
                   : "You can generate a formal tax invoice for this purchase order from your supplier dashboard."}
@@ -229,7 +229,7 @@ export function OrderInvoicePaymentCard({
           {!isBuyer && (
             <Link
               href={`/dashboard/invoices/new?orderId=${orderId}`}
-              className="text-xs font-semibold px-3 py-1.5 rounded-[6px] bg-[#0284C7] hover:bg-[#0369A1] text-white transition-colors flex-shrink-0"
+              className="text-xs font-bold px-4 py-2 rounded-lg bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white transition-colors flex-shrink-0 shadow-2xs"
             >
               Generate Invoice
             </Link>
@@ -238,7 +238,7 @@ export function OrderInvoicePaymentCard({
       )}
 
       {/* Compliance Disclaimer */}
-      <p className="text-[10px] text-[#94A3B8] border-t border-[#F8FAFC] pt-2 italic">
+      <p className="text-[11px] text-slate-400 border-t border-slate-100 pt-2.5">
         Direct B2B Settlement: KemKendra provides commercial document tracking and status transparency without holding escrow custody.
       </p>
     </div>

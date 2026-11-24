@@ -134,7 +134,7 @@ export default function AdminSupplierDetailPage({
       </Link>
 
       {/* Header Supplier Card */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-tactile-card">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-start gap-4">
             <div className="w-16 h-16 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-2xl shrink-0">
@@ -153,7 +153,7 @@ export default function AdminSupplierDetailPage({
                   {supplier.verified ? "VERIFIED SUPPLIER" : supplier.verificationStatus || "PENDING VERIFICATION"}
                 </span>
                 {supplier.exportReady && (
-                  <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-950/70 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800 flex items-center gap-1">
+                  <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/70 text-[#0052CC] dark:text-blue-300 border border-blue-200 dark:border-blue-800 flex items-center gap-1">
                     <Truck className="w-3 h-3" /> Export Ready
                   </span>
                 )}
@@ -191,7 +191,7 @@ export default function AdminSupplierDetailPage({
       {/* Detail Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Company Identity & Seller Profile */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-tactile-card space-y-4">
           <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <Building2 className="w-4 h-4 text-emerald-500" />
             Enterprise Registration & Identity
@@ -230,7 +230,7 @@ export default function AdminSupplierDetailPage({
                   href={supplier.sellerProfile.website}
                   target="_blank"
                   rel="noreferrer"
-                  className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
+                  className="font-semibold text-[#0052CC] hover:underline flex items-center gap-1"
                 >
                   {supplier.sellerProfile.website} <ExternalLink className="w-3 h-3" />
                 </a>
@@ -240,25 +240,25 @@ export default function AdminSupplierDetailPage({
         </div>
 
         {/* Linked User Account */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-tactile-card space-y-4">
           <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-indigo-500" />
+            <ShieldCheck className="w-4 h-4 text-[#0052CC]" />
             Authorized Account Representative
           </h2>
 
           {supplier.userId ? (
             <div className="space-y-3">
-              <div className="p-4 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 space-y-2 text-xs">
+              <div className="p-4 rounded-2xl bg-blue-50/50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 space-y-2 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-indigo-950 dark:text-indigo-200">{supplier.userEmail}</span>
-                  <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300">
+                  <span className="font-bold text-slate-900 dark:text-blue-200">{supplier.userEmail}</span>
+                  <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900 text-[#0052CC] dark:text-blue-300">
                     {supplier.userStatus || "ACTIVE"}
                   </span>
                 </div>
                 <p className="text-slate-600 dark:text-slate-400">User Account ID: {supplier.userId}</p>
                 <Link
                   href={`/dashboard/admin/users/${supplier.userId}`}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline pt-1"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-[#0052CC] hover:underline pt-1"
                 >
                   Inspect User Account Profile &rarr;
                 </Link>
@@ -272,16 +272,16 @@ export default function AdminSupplierDetailPage({
         </div>
 
         {/* Catalog Offerings Summary */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-tactile-card space-y-4">
           <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <Package className="w-4 h-4 text-cyan-500" />
+            <Package className="w-4 h-4 text-[#0052CC]" />
             Catalog Offerings Portfolio
           </h2>
 
           <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="p-4 rounded-2xl bg-cyan-50/50 dark:bg-cyan-950/40 border border-cyan-200 dark:border-cyan-800">
+            <div className="p-4 rounded-2xl bg-blue-50/50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800">
               <span className="text-slate-500 dark:text-slate-400">Total Offerings</span>
-              <div className="text-xl font-bold text-cyan-900 dark:text-cyan-200 mt-1">{supplier.offeringCount}</div>
+              <div className="text-xl font-bold text-blue-900 dark:text-blue-200 mt-1">{supplier.offeringCount}</div>
             </div>
             <div className="p-4 rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800">
               <span className="text-slate-500 dark:text-slate-400">Active / Available</span>
@@ -291,33 +291,33 @@ export default function AdminSupplierDetailPage({
 
           <Link
             href="/dashboard/admin/catalog"
-            className="inline-flex items-center gap-1 text-xs font-bold text-cyan-600 dark:text-cyan-400 hover:underline"
+            className="inline-flex items-center gap-1 text-xs font-bold text-[#0052CC] hover:underline"
           >
             Manage Catalog & Offerings &rarr;
           </Link>
         </div>
 
         {/* Marketplace Fulfilment */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-tactile-card space-y-4">
           <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <ShoppingBag className="w-4 h-4 text-purple-500" />
+            <ShoppingBag className="w-4 h-4 text-[#0052CC]" />
             Marketplace Fulfillment
           </h2>
 
           <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="p-4 rounded-2xl bg-purple-50/50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800">
+            <div className="p-4 rounded-2xl bg-blue-50/50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800">
               <span className="text-slate-500 dark:text-slate-400">RFQs Received</span>
-              <div className="text-xl font-bold text-purple-900 dark:text-purple-200 mt-1">{supplier.rfqReceivedCount}</div>
+              <div className="text-xl font-bold text-blue-900 dark:text-blue-200 mt-1">{supplier.rfqReceivedCount}</div>
             </div>
-            <div className="p-4 rounded-2xl bg-purple-50/50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800">
+            <div className="p-4 rounded-2xl bg-blue-50/50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800">
               <span className="text-slate-500 dark:text-slate-400">Orders Fulfilled</span>
-              <div className="text-xl font-bold text-purple-900 dark:text-purple-200 mt-1">{supplier.poFulfilledCount}</div>
+              <div className="text-xl font-bold text-blue-900 dark:text-blue-200 mt-1">{supplier.poFulfilledCount}</div>
             </div>
           </div>
 
           <Link
             href="/dashboard/admin/marketplace"
-            className="inline-flex items-center gap-1 text-xs font-bold text-purple-600 dark:text-purple-400 hover:underline"
+            className="inline-flex items-center gap-1 text-xs font-bold text-[#0052CC] hover:underline"
           >
             View Marketplace Transactions &rarr;
           </Link>

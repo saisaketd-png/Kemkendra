@@ -246,7 +246,7 @@ export default function SupplierOfferingDetailGovernancePage() {
               <span className={`px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase ${
                 modStatus === "APPROVED" ? "bg-emerald-50 text-emerald-800 border border-emerald-200" :
                 modStatus === "UNDER_REVIEW" ? "bg-blue-50 text-blue-800 border border-blue-200" :
-                modStatus === "INFORMATION_REQUIRED" ? "bg-purple-50 text-purple-800 border border-purple-200" :
+                modStatus === "INFORMATION_REQUIRED" ? "bg-amber-50 text-amber-800 border border-amber-200" :
                 modStatus === "SUSPENDED" ? "bg-rose-50 text-rose-800 border border-rose-200" :
                 "bg-amber-50 text-amber-800 border border-amber-200"
               }`}>
@@ -269,7 +269,7 @@ export default function SupplierOfferingDetailGovernancePage() {
       </div>
 
       {/* Completeness Score Bar */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-3xl p-6 shadow-xl space-y-4">
+      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-2xl p-6 shadow-xl space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <span className="text-[10px] font-extrabold tracking-widest text-blue-400 uppercase block">Offering Completeness Score</span>
@@ -300,9 +300,9 @@ export default function SupplierOfferingDetailGovernancePage() {
         {/* Left 2 Cols: Master Identity, Commercial Specs, Verification Checklist */}
         <div className="lg:col-span-2 space-y-6">
           {/* SECTION A: MASTER PRODUCT IDENTITY (READ-ONLY) */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-2xs space-y-4">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card space-y-4">
             <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-3">
-              <FlaskConical className="w-4 h-4 text-blue-600" /> A / CANONICAL MASTER PRODUCT IDENTITY (READ-ONLY)
+              <FlaskConical className="w-4 h-4 text-[#0052CC]" /> A / CANONICAL MASTER PRODUCT IDENTITY (READ-ONLY)
             </h3>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs font-medium">
@@ -336,7 +336,7 @@ export default function SupplierOfferingDetailGovernancePage() {
           </div>
 
           {/* SECTION B: SUPPLIER TRUST & VERIFICATION PROFILE */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-2xs space-y-4">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card space-y-4">
             <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-3">
               <Building2 className="w-4 h-4 text-emerald-600" /> B / SUPPLIER IDENTITY & TRUST PROFILE
             </h3>
@@ -373,9 +373,9 @@ export default function SupplierOfferingDetailGovernancePage() {
           </div>
 
           {/* SECTION C: COMMERCIAL TERMS & SPECIFICATIONS */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-2xs space-y-4">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card space-y-4">
             <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-3">
-              <Award className="w-4 h-4 text-purple-600" /> C / OFFERING COMMERCIAL TERMS & TECHNICAL SPECS
+              <Award className="w-4 h-4 text-[#0052CC]" /> C / OFFERING COMMERCIAL TERMS & TECHNICAL SPECS
             </h3>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs font-medium">
@@ -423,7 +423,7 @@ export default function SupplierOfferingDetailGovernancePage() {
           </div>
 
           {/* SECTION D: OFFERING IMAGES */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-2xs space-y-4">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card space-y-4">
             <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-3">
               <FileCheck className="w-4 h-4 text-blue-600" /> D / SUPPLIER OFFERING PRODUCT SAMPLES & PACKAGING IMAGES
             </h3>
@@ -431,7 +431,7 @@ export default function SupplierOfferingDetailGovernancePage() {
             {workspace.images && workspace.images.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {workspace.images.map((img: any) => (
-                  <div key={img.id} className="p-3 border border-slate-100 rounded-2xl bg-slate-50 space-y-2">
+                  <div key={img.id} className="p-3 border border-slate-100 rounded-xl bg-slate-50 space-y-2">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={`/api/v1/supplier/offerings/${offeringId}/images/${img.id}/content`}
@@ -448,20 +448,20 @@ export default function SupplierOfferingDetailGovernancePage() {
                 ))}
               </div>
             ) : (
-              <div className="p-6 text-center text-xs text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+              <div className="p-6 text-center text-xs text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-200">
                 No supplier-provided commercial packaging or sample images uploaded yet.
               </div>
             )}
           </div>
 
           {/* SECTION E: OFFERING COMPLIANCE DOCUMENTS */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-2xs space-y-4">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card space-y-4">
             <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-3">
               <FileText className="w-4 h-4 text-emerald-600" /> E / TECHNICAL COMPLIANCE DOCUMENTS (COA / MSDS)
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between">
+              <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
                 <div>
                   <strong className="text-slate-900 font-bold text-xs block">Certificate of Analysis (COA)</strong>
                   <span className="text-[10px] text-slate-500">{workspace.coaAvailable ? "Declared Available by Supplier" : "Not Provided"}</span>
@@ -471,7 +471,7 @@ export default function SupplierOfferingDetailGovernancePage() {
                 </span>
               </div>
 
-              <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between">
+              <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
                 <div>
                   <strong className="text-slate-900 font-bold text-xs block">Material Safety Data Sheet (MSDS)</strong>
                   <span className="text-[10px] text-slate-500">{workspace.msdsAvailable ? "Declared Available by Supplier" : "Not Provided"}</span>
@@ -483,7 +483,7 @@ export default function SupplierOfferingDetailGovernancePage() {
             </div>
 
             {workspace.documents && workspace.documents.length > 0 && (
-              <div className="divide-y divide-slate-100 border border-slate-200 rounded-2xl overflow-hidden mt-3">
+              <div className="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden mt-3">
                 {workspace.documents.map((doc: any) => (
                   <div key={doc.id} className="p-3 bg-white flex items-center justify-between text-xs">
                     <div>
@@ -505,7 +505,7 @@ export default function SupplierOfferingDetailGovernancePage() {
           </div>
 
           {/* SECTION E: 15-DIMENSION FIELD LEVEL VERIFICATION CHECKLIST */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-2xs space-y-4">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card space-y-4">
             <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-3">
               <ShieldCheck className="w-4 h-4 text-blue-600" /> 15-DIMENSION OFFERING VERIFICATION CHECKLIST
             </h3>
@@ -599,7 +599,7 @@ export default function SupplierOfferingDetailGovernancePage() {
           </div>
 
           {/* SECTION F: AUDIT TRAIL */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-2xs space-y-4">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card space-y-4">
             <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-3">
               <Clock className="w-4 h-4 text-slate-600" /> IMMUTABLE AUDIT TRAIL
             </h3>
@@ -627,9 +627,9 @@ export default function SupplierOfferingDetailGovernancePage() {
 
         {/* Right 1 Col: Guarded Final Decision Actions */}
         <div className="space-y-6">
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-2xs space-y-4">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card space-y-4">
             <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-3">
-              <Lock className="w-4 h-4 text-blue-600" /> GUARDED DECISION ACTIONS
+              <Lock className="w-4 h-4 text-[#0052CC]" /> GUARDED DECISION ACTIONS
             </h3>
 
             <div className="space-y-3">
@@ -637,7 +637,7 @@ export default function SupplierOfferingDetailGovernancePage() {
                 type="button"
                 disabled={actionLoading}
                 onClick={handleStartReview}
-                className="w-full py-2 bg-blue-50 text-blue-800 hover:bg-blue-100 rounded-xl text-xs font-bold transition-colors"
+                className="w-full py-2 bg-blue-50 text-[#0052CC] hover:bg-blue-100 rounded-xl text-xs font-bold transition-colors"
               >
                 Start Review (UNDER_REVIEW)
               </button>
@@ -646,7 +646,7 @@ export default function SupplierOfferingDetailGovernancePage() {
                 type="button"
                 disabled={actionLoading}
                 onClick={() => setShowInfoModal(true)}
-                className="w-full py-2 bg-purple-50 text-purple-800 hover:bg-purple-100 rounded-xl text-xs font-bold transition-colors"
+                className="w-full py-2 bg-amber-50 text-amber-800 hover:bg-amber-100 rounded-xl text-xs font-bold transition-colors"
               >
                 Request Information (INFO_REQUIRED)
               </button>
@@ -738,7 +738,7 @@ export default function SupplierOfferingDetailGovernancePage() {
       {/* Information Request Modal */}
       {showInfoModal && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-4">
+          <div className="bg-white rounded-2xl p-6 max-w-lg w-full shadow-2xl space-y-4">
             <h3 className="text-lg font-black text-slate-900">Request Information from Supplier</h3>
             <p className="text-xs text-slate-600">
               Specify what commercial details, purity clarifications, or COA documents the supplier must update.
@@ -761,7 +761,7 @@ export default function SupplierOfferingDetailGovernancePage() {
               <button
                 type="button"
                 onClick={handleRequestInfo}
-                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl"
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl"
               >
                 Send Info Request
               </button>
@@ -773,7 +773,7 @@ export default function SupplierOfferingDetailGovernancePage() {
       {/* Action Dialog Modal (Flag / Reject / Suspend) */}
       {actionModal.open && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4">
             <h3 className="text-base font-black text-slate-900">{actionModal.title}</h3>
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">Reason / Justification</label>

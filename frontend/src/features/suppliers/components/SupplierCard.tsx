@@ -8,13 +8,13 @@ export function SupplierCard({ supplier }: { supplier: SupplierPublicProfile }) 
   const isVerified = Boolean(supplier.verified);
 
   return (
-    <article className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 hover:border-[#CBD5E1] hover:shadow-tactile-card transition-all flex flex-col justify-between space-y-4 h-full">
+    <article className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 hover:border-slate-300 hover:shadow-tactile-card transition-[border-color,box-shadow] duration-150 flex flex-col justify-between space-y-4 h-full">
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-5">
         
         {/* Left: Supplier Info */}
         <div className="flex-1 space-y-3">
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 min-w-[56px] min-h-[56px] bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl flex items-center justify-center shrink-0 overflow-hidden p-1.5 shadow-2xs">
+            <div className="w-14 h-14 min-w-[56px] min-h-[56px] bg-[#F8FAFC] border border-slate-200 rounded-xl flex items-center justify-center shrink-0 overflow-hidden p-1.5 shadow-2xs">
               <SupplierLogo
                 src={resolveClientImageUrl(supplier.logoUrl)}
                 alt={`${supplier.name} company logo`}
@@ -28,19 +28,19 @@ export function SupplierCard({ supplier }: { supplier: SupplierPublicProfile }) 
               <div className="flex items-center gap-2 flex-wrap">
                 <Link
                   href={`/suppliers/${supplier.id}`}
-                  className="text-base font-bold text-[#0F172A] hover:text-[#155EEF] transition-colors truncate"
+                  className="text-base font-bold text-[#0F172A] hover:text-[#0052CC] transition-colors truncate"
                   title={supplier.name}
                 >
                   {supplier.name}
                 </Link>
                 {isVerified && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#ECFDF5] text-[#059669] border border-[#A7F3D0]">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#059669]" />
-                    Verified Supplier
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    Verified Manufacturer
                   </span>
                 )}
                 {supplier.exportReady && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[#EFF4FF] text-[#155EEF] border border-[#D1E0FF]">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-blue-50 text-[#0052CC] border border-blue-200">
                     <Globe2 className="w-3 h-3" />
                     Export Ready
                   </span>
@@ -49,13 +49,13 @@ export function SupplierCard({ supplier }: { supplier: SupplierPublicProfile }) 
               
               <div className="flex items-center gap-3 text-xs text-[#64748B] flex-wrap font-medium">
                 <div className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-[#94A3B8]" />
+                  <MapPin className="w-3.5 h-3.5 text-slate-400" />
                   <span>{supplier.countryName || supplier.countryCode || "Global"}</span>
                 </div>
                 {supplier.yearsInBusiness && supplier.yearsInBusiness > 0 ? (
                   <div className="flex items-center gap-1">
-                    <span className="w-1 h-1 rounded-full bg-[#CBD5E1]" />
-                    <span>{supplier.yearsInBusiness} Yrs in Business</span>
+                    <span className="w-1 h-1 rounded-full bg-slate-300" />
+                    <span>{supplier.yearsInBusiness} Yrs in Operation</span>
                   </div>
                 ) : null}
               </div>
@@ -63,17 +63,17 @@ export function SupplierCard({ supplier }: { supplier: SupplierPublicProfile }) 
           </div>
           
           {supplier.aboutCompany && (
-            <p className="text-xs text-[#475569] line-clamp-2 leading-relaxed max-w-3xl">
+            <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed max-w-3xl">
               {supplier.aboutCompany}
             </p>
           )}
         </div>
         
         {/* Right: CTA & Verification Details */}
-        <div className="shrink-0 flex flex-col items-stretch sm:items-end gap-3 border-t sm:border-t-0 sm:border-l border-[#E2E8F0] pt-4 sm:pt-0 sm:pl-6 w-full sm:w-auto">
+        <div className="shrink-0 flex flex-col items-stretch sm:items-end gap-3 border-t sm:border-t-0 sm:border-l border-slate-200 pt-4 sm:pt-0 sm:pl-6 w-full sm:w-auto">
           <Link
             href={`/suppliers/${supplier.id}`}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-white bg-[#0B1F3A] hover:bg-[#07152A] rounded-xl transition-all shadow-2xs w-full sm:w-auto"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold text-white bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] rounded-lg transition-colors shadow-2xs press-tactile w-full sm:w-auto"
             aria-label={`View supplier profile for ${supplier.name}`}
           >
             <span>View Supplier Profile</span>
@@ -92,8 +92,8 @@ export function SupplierCard({ supplier }: { supplier: SupplierPublicProfile }) 
               )}
             </div>
           ) : (
-            <div className="text-[11px] text-[#94A3B8] text-center sm:text-right w-full font-medium">
-              No response history yet
+            <div className="text-[11px] text-slate-400 text-center sm:text-right w-full font-medium">
+              Direct Inquiries Available
             </div>
           )}
         </div>

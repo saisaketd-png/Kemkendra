@@ -28,7 +28,7 @@ export function SupplierOfferingComparisonTable({
   return (
     <div className="space-y-6">
       {/* DESKTOP COMPARISON TABLE (lg and above) */}
-      <div className="hidden lg:block bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+      <div className="hidden lg:block bg-white border border-slate-200/90 rounded-2xl shadow-tactile-card overflow-hidden">
         <table className="w-full text-left text-xs">
           <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
             <tr>
@@ -98,13 +98,13 @@ export function SupplierOfferingComparisonTable({
                 <td className="py-4 px-4">
                   <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase">
                     {offering.coaAvailable && (
-                      <span className="px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded" title="COA Available">COA</span>
+                      <span className="px-1.5 py-0.5 bg-blue-50 text-[#0052CC] border border-blue-200/80 rounded" title="COA Available">COA</span>
                     )}
                     {offering.msdsAvailable && (
-                      <span className="px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded" title="MSDS Available">MSDS</span>
+                      <span className="px-1.5 py-0.5 bg-slate-100 text-slate-700 border border-slate-200/80 rounded" title="MSDS Available">MSDS</span>
                     )}
                     {offering.exportReady && (
-                      <span className="px-1.5 py-0.5 bg-amber-50 text-amber-800 rounded" title="Export Ready">EXPORT</span>
+                      <span className="px-1.5 py-0.5 bg-amber-50 text-amber-800 border border-amber-200/80 rounded" title="Export Ready">EXPORT</span>
                     )}
                   </div>
                 </td>
@@ -113,7 +113,7 @@ export function SupplierOfferingComparisonTable({
                 <td className="py-4 px-4 text-right">
                   <Link
                     href={`/rfq?masterProductId=${masterProduct.id}&supplierOfferingId=${offering.id}&supplierId=${offering.supplierId}`}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-sm transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white font-bold rounded-xl text-xs shadow-sm transition-colors"
                   >
                     <Send className="w-3.5 h-3.5" />
                     Request Quote
@@ -173,13 +173,13 @@ export function SupplierOfferingComparisonTable({
 
             <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-3">
               <div className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase">
-                {offering.coaAvailable && <span className="px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded">COA</span>}
-                {offering.msdsAvailable && <span className="px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded">MSDS</span>}
+                {offering.coaAvailable && <span className="px-1.5 py-0.5 bg-blue-50 text-[#0052CC] border border-blue-200/80 rounded">COA</span>}
+                {offering.msdsAvailable && <span className="px-1.5 py-0.5 bg-slate-100 text-slate-700 border border-slate-200/80 rounded">MSDS</span>}
               </div>
 
               <Link
                 href={`/rfq?masterProductId=${masterProduct.id}&supplierOfferingId=${offering.id}&supplierId=${offering.supplierId}`}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-sm transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white font-bold rounded-xl text-xs shadow-sm transition-colors"
               >
                 <Send className="w-3.5 h-3.5" />
                 Request Quote

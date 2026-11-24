@@ -18,7 +18,7 @@ export default function OldCatalogVerificationDetailRedirect() {
 
   return (
     <div className="p-8 text-center text-xs font-bold text-slate-500 min-h-[50vh] flex flex-col items-center justify-center space-y-3">
-      <div className="w-6 h-6 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
+      <div className="w-6 h-6 border-4 border-[#0052CC] border-t-transparent rounded-full animate-spin" />
       <span>Redirecting to Supplier Due-Diligence Workspace...</span>
     </div>
   );

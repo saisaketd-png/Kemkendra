@@ -324,8 +324,8 @@ export default function SupplierOrderDetailPage() {
   if (loading) {
     return (
       <div className="max-w-[1560px] mx-auto p-8 min-h-[60vh] flex flex-col items-center justify-center space-y-3">
-        <div className="w-8 h-8 border-3 border-[#0052CC] border-t-transparent rounded-full animate-spin" />
-        <span className="text-xs font-mono font-bold text-[#5E6C84] uppercase tracking-wider">
+        <div className="w-8 h-8 border-2 border-[#0052CC] border-t-transparent rounded-full animate-spin" />
+        <span className="text-xs font-semibold text-slate-500">
           Loading Supplier Order Desk...
         </span>
       </div>
@@ -335,14 +335,14 @@ export default function SupplierOrderDetailPage() {
   if (error || !order) {
     return (
       <div className="max-w-[1560px] mx-auto p-8">
-        <div className="bg-white border border-rose-200 rounded-2xl p-6 text-center space-y-3 shadow-xs">
+        <div className="bg-white border border-rose-200/90 rounded-2xl p-6 text-center space-y-3 shadow-tactile-card">
           <AlertCircle className="w-8 h-8 text-rose-600 mx-auto" />
           <h2 className="text-base font-bold text-[#091E42]">Order Unavailable</h2>
-          <p className="text-xs text-[#5E6C84]">{error || "Order record could not be retrieved."}</p>
+          <p className="text-xs text-slate-500">{error || "Order record could not be retrieved."}</p>
           <div className="pt-2 flex justify-center gap-3">
             <Link
               href="/dashboard/supplier/orders"
-              className="px-4 py-2 border border-[#DFE1E6] text-xs font-bold rounded-xl"
+              className="px-4 py-2 border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50 rounded-xl transition-colors"
             >
               Back to Orders
             </Link>
@@ -382,7 +382,7 @@ export default function SupplierOrderDetailPage() {
               <button
                 type="button"
                 onClick={() => setShowInvoiceModal(true)}
-                className="h-8 px-3.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-[6px] transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+                className="h-9 px-4 bg-[#091E42] hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-[0.98]"
               >
                 <Receipt className="w-3.5 h-3.5 text-blue-400" />
                 <span>Issue Tax Invoice</span>
@@ -394,7 +394,7 @@ export default function SupplierOrderDetailPage() {
                   type="button"
                   onClick={() => setShowRejectModal(true)}
                   disabled={confirming || actionLoading}
-                  className="h-8 px-3 border border-[#E4E4E7] hover:border-rose-300 text-[#DC2626] hover:bg-[#FEF2F2] text-xs font-medium rounded-[6px] transition-colors cursor-pointer"
+                  className="h-9 px-3.5 border border-slate-300 hover:border-rose-300 text-rose-600 hover:bg-rose-50 text-xs font-semibold rounded-xl transition-colors cursor-pointer active:scale-[0.98]"
                 >
                   Decline
                 </button>
@@ -402,7 +402,7 @@ export default function SupplierOrderDetailPage() {
                   type="button"
                   onClick={handleConfirm}
                   disabled={confirming || actionLoading}
-                  className="h-8 px-3.5 bg-[#059669] hover:bg-[#047857] active:bg-[#065F46] text-white text-xs font-medium rounded-[6px] transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-[0.99]"
+                  className="h-9 px-4 bg-[#059669] hover:bg-[#047857] active:bg-[#065F46] text-white text-xs font-semibold rounded-xl transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   <span>{confirming ? "Confirming..." : "Confirm & Accept PO"}</span>
@@ -413,7 +413,7 @@ export default function SupplierOrderDetailPage() {
                 type="button"
                 onClick={handleStartProcessing}
                 disabled={actionLoading}
-                className="h-8 px-3.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-medium rounded-[6px] transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-[0.99]"
+                className="h-9 px-4 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-semibold rounded-xl transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
               >
                 <Play className="w-3.5 h-3.5" />
                 <span>{actionLoading ? "Updating..." : "Start Batch Processing"}</span>
@@ -424,7 +424,7 @@ export default function SupplierOrderDetailPage() {
                   type="button"
                   onClick={handleMarkReadyForDispatch}
                   disabled={actionLoading}
-                  className="h-8 px-3.5 bg-[#059669] hover:bg-[#047857] text-white text-xs font-medium rounded-[6px] transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer"
+                  className="h-9 px-4 bg-[#059669] hover:bg-[#047857] text-white text-xs font-semibold rounded-xl transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   <span>Mark Ready for Dispatch</span>
@@ -433,7 +433,7 @@ export default function SupplierOrderDetailPage() {
                   type="button"
                   onClick={() => setShowDispatchModal(true)}
                   disabled={actionLoading}
-                  className="h-8 px-3.5 bg-[#0052CC] hover:bg-[#0747A6] text-white text-xs font-medium rounded-[6px] transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer"
+                  className="h-9 px-4 bg-[#0052CC] hover:bg-[#0747A6] text-white text-xs font-semibold rounded-xl transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
                 >
                   <Truck className="w-3.5 h-3.5" />
                   <span>Dispatch Consignment &rarr;</span>
@@ -444,7 +444,7 @@ export default function SupplierOrderDetailPage() {
                 type="button"
                 onClick={() => setShowDispatchModal(true)}
                 disabled={actionLoading}
-                className="h-8 px-3.5 bg-[#0052CC] hover:bg-[#0747A6] text-white text-xs font-medium rounded-[6px] transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer"
+                className="h-9 px-4 bg-[#0052CC] hover:bg-[#0747A6] text-white text-xs font-semibold rounded-xl transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
               >
                 <Truck className="w-3.5 h-3.5" />
                 <span>Dispatch Consignment &rarr;</span>
@@ -455,7 +455,7 @@ export default function SupplierOrderDetailPage() {
                   type="button"
                   onClick={() => setShowUpdateShipmentModal(true)}
                   disabled={actionLoading}
-                  className="h-8 px-3.5 bg-[#0052CC] hover:bg-[#0747A6] text-white text-xs font-medium rounded-[6px] transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer"
+                  className="h-9 px-4 bg-[#0052CC] hover:bg-[#0747A6] text-white text-xs font-semibold rounded-xl transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
                 >
                   <Truck className="w-3.5 h-3.5" />
                   <span>Update Transit Status</span>
@@ -464,7 +464,7 @@ export default function SupplierOrderDetailPage() {
                   type="button"
                   onClick={handleMarkDelivered}
                   disabled={actionLoading}
-                  className="h-8 px-3.5 bg-[#059669] hover:bg-[#047857] text-white text-xs font-medium rounded-[6px] transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer"
+                  className="h-9 px-4 bg-[#059669] hover:bg-[#047857] text-white text-xs font-semibold rounded-xl transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   <span>Mark Delivered</span>
@@ -472,28 +472,28 @@ export default function SupplierOrderDetailPage() {
               </div>
             ) : order.status === "DELIVERED" ? (
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#ECFDF5] border border-[rgba(5,150,105,0.2)] text-[#059669] text-xs font-medium rounded-[4px] font-mono">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold rounded-lg">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Delivered</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setShowCompleteModal(true)}
                   disabled={actionLoading}
-                  className="h-8 px-3.5 bg-[#059669] hover:bg-[#047857] text-white text-xs font-medium rounded-[6px] transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  className="h-9 px-4 bg-[#059669] hover:bg-[#047857] text-white text-xs font-semibold rounded-xl transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer disabled:opacity-50 active:scale-[0.98]"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   <span>Complete Order</span>
                 </button>
               </div>
             ) : order.status === "COMPLETED" ? (
-              <div className="flex items-center gap-1.5 px-3 py-1 bg-[#ECFDF5] border border-[rgba(5,150,105,0.2)] text-[#059669] text-xs font-medium rounded-[4px] font-mono">
-                <CheckCircle2 className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold rounded-lg">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                 <span>Order Completed & Settled</span>
               </div>
             ) : order.status === "DISPUTED" ? (
-              <div className="flex items-center gap-1.5 px-3 py-1 bg-[#FFF7ED] border border-[#FED7AA] text-[#C2410C] text-xs font-medium rounded-[4px] font-mono">
-                <ShieldAlert className="w-3.5 h-3.5 text-[#EA580C]" />
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold rounded-lg">
+                <ShieldAlert className="w-3.5 h-3.5 text-amber-600" />
                 <span>Dispute Under Review</span>
               </div>
             ) : null}
@@ -549,11 +549,11 @@ export default function SupplierOrderDetailPage() {
         <div className="lg:col-span-8 space-y-5">
           {/* Status Alert Banners */}
           {order.status === "DISPUTED" && (
-            <div className="p-4 bg-[#FFF7ED] border border-[#FED7AA] rounded-[8px] flex items-start gap-3">
-              <ShieldAlert className="w-5 h-5 text-[#EA580C] shrink-0 mt-0.5" />
+            <div className="p-4 bg-amber-50/80 border border-amber-200/90 rounded-2xl flex items-start gap-3 shadow-xs">
+              <ShieldAlert className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
               <div className="space-y-1 text-xs">
-                <h4 className="font-bold text-[#C2410C]">Order Under Formal Commercial Dispute</h4>
-                <p className="text-[#9A3412] leading-relaxed">
+                <h4 className="font-bold text-amber-900">Order Under Formal Commercial Dispute</h4>
+                <p className="text-amber-800 leading-relaxed">
                   {order.disputedBy ? `A formal dispute was opened by ${order.disputedBy}.` : "A formal dispute has been initiated for this order."}
                   {" "}Please review the claim details and submit corresponding dispatch documentation or evidence.
                 </p>
@@ -561,7 +561,7 @@ export default function SupplierOrderDetailPage() {
                   <div className="pt-1">
                     <Link
                       href={`/dashboard/disputes/${order.disputeId}`}
-                      className="font-bold text-[#EA580C] hover:underline inline-flex items-center gap-1"
+                      className="font-semibold text-amber-700 hover:text-amber-900 hover:underline inline-flex items-center gap-1"
                     >
                       <span>Open Dispute Resolution Center</span>
                       <ArrowRight className="w-3 h-3" />
@@ -573,11 +573,11 @@ export default function SupplierOrderDetailPage() {
           )}
 
           {order.status === "CANCELLED" && (
-            <div className="p-4 bg-[#FEF2F2] border border-[#FCA5A5] rounded-[8px] flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-[#DC2626] shrink-0 mt-0.5" />
+            <div className="p-4 bg-rose-50/80 border border-rose-200/90 rounded-2xl flex items-start gap-3 shadow-xs">
+              <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
               <div className="space-y-1 text-xs">
-                <h4 className="font-bold text-[#991B1B]">Order Cancelled by Buyer</h4>
-                <p className="text-[#B91C1C] leading-relaxed">
+                <h4 className="font-bold text-rose-900">Order Cancelled by Buyer</h4>
+                <p className="text-rose-700 leading-relaxed">
                   {order.cancellationReason ? `Reason: "${order.cancellationReason}"` : "This purchase order was cancelled by the buyer prior to dispatch."}
                 </p>
               </div>
@@ -585,11 +585,11 @@ export default function SupplierOrderDetailPage() {
           )}
 
           {order.status === "REJECTED" && (
-            <div className="p-4 bg-[#FEF2F2] border border-[#FCA5A5] rounded-[8px] flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-[#DC2626] shrink-0 mt-0.5" />
+            <div className="p-4 bg-rose-50/80 border border-rose-200/90 rounded-2xl flex items-start gap-3 shadow-xs">
+              <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
               <div className="space-y-1 text-xs">
-                <h4 className="font-bold text-[#991B1B]">Purchase Order Declined</h4>
-                <p className="text-[#B91C1C] leading-relaxed">
+                <h4 className="font-bold text-rose-900">Purchase Order Declined</h4>
+                <p className="text-rose-700 leading-relaxed">
                   {order.rejectionReason ? `Reason: "${order.rejectionReason}"` : "This purchase order was declined."}
                 </p>
               </div>
@@ -615,57 +615,57 @@ export default function SupplierOrderDetailPage() {
           />
 
           {/* Order Financial & Consignment Summary Card */}
-          <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-5 shadow-tactile-card space-y-3">
-            <div className="flex items-center justify-between border-b border-[#E4E4E7] pb-2.5">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
                 <Package className="w-4 h-4 text-[#0052CC]" />
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-[#0F172A] font-mono">
+                <h3 className="text-sm font-semibold text-[#091E42]">
                   Consignment & Financial Summary
                 </h3>
               </div>
-              <span className="text-[10px] font-mono font-semibold text-[#0052CC] bg-[#EFF6FF] border border-[#BFDBFE] px-2 py-0.5 rounded-[4px] uppercase">
+              <span className="text-xs font-semibold text-[#0052CC] bg-blue-50 border border-blue-200/80 px-2.5 py-0.5 rounded-lg">
                 PO #{order.poNumber}
               </span>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-              <div className="p-3 bg-[#FAFAFA] rounded-[6px] border border-[#E4E4E7] space-y-1">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] font-mono block">
+              <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/70 space-y-1">
+                <span className="text-[11px] font-semibold text-slate-500 block">
                   Product
                 </span>
-                <strong className="text-xs font-bold text-[#0F172A] block truncate">
+                <strong className="text-xs font-bold text-slate-900 block truncate">
                   {order.productName || "Specialty Chemical"}
                 </strong>
                 {order.masterProductCode && (
-                  <span className="text-[10px] font-mono text-[#64748B] block">
+                  <span className="text-[11px] font-mono text-slate-500 block">
                     Code: {order.masterProductCode}
                   </span>
                 )}
               </div>
 
-              <div className="p-3 bg-[#FAFAFA] rounded-[6px] border border-[#E4E4E7] space-y-1">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] font-mono block">
+              <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/70 space-y-1">
+                <span className="text-[11px] font-semibold text-slate-500 block">
                   Batch Volume
                 </span>
-                <span className="font-mono text-xs font-bold text-[#0F172A] block">
+                <span className="font-semibold tabular-nums text-xs text-slate-900 block">
                   {order.quantity.toLocaleString()} {order.unit.toUpperCase()}
                 </span>
               </div>
 
-              <div className="p-3 bg-[#FAFAFA] rounded-[6px] border border-[#E4E4E7] space-y-1">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] font-mono block">
+              <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/70 space-y-1">
+                <span className="text-[11px] font-semibold text-slate-500 block">
                   Unit Price
                 </span>
-                <span className="font-mono text-xs font-bold text-[#0F172A] block">
+                <span className="font-semibold tabular-nums text-xs text-slate-900 block">
                   {order.currency} {order.unitPrice.toFixed(2)} / {order.unit.toUpperCase()}
                 </span>
               </div>
 
-              <div className="p-3 bg-[#FAFAFA] rounded-[6px] border border-[#E4E4E7] space-y-1">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] font-mono block">
+              <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/70 space-y-1">
+                <span className="text-[11px] font-semibold text-slate-500 block">
                   Subtotal
                 </span>
-                <span className="font-mono text-xs font-semibold text-[#475569] block">
+                <span className="tabular-nums text-xs font-semibold text-slate-700 block">
                   {order.currency} {(order.subtotal ?? (order.quantity * order.unitPrice)).toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
@@ -673,11 +673,11 @@ export default function SupplierOrderDetailPage() {
                 </span>
               </div>
 
-              <div className="p-3 bg-[#FAFAFA] rounded-[6px] border border-[#E4E4E7] space-y-1">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] font-mono block">
+              <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/70 space-y-1">
+                <span className="text-[11px] font-semibold text-slate-500 block">
                   Tax / GST
                 </span>
-                <span className="font-mono text-xs font-semibold text-[#475569] block">
+                <span className="tabular-nums text-xs font-semibold text-slate-700 block">
                   {order.currency} {(order.taxAmount ?? 0).toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
@@ -685,11 +685,11 @@ export default function SupplierOrderDetailPage() {
                 </span>
               </div>
 
-              <div className="p-3 bg-[#FAFAFA] rounded-[6px] border border-[#E4E4E7] space-y-1">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] font-mono block">
+              <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/70 space-y-1">
+                <span className="text-[11px] font-semibold text-slate-500 block">
                   Expected Delivery Date
                 </span>
-                <span className="font-mono text-xs font-bold text-[#0F172A] block">
+                <span className="text-xs font-semibold text-slate-900 block">
                   {order.expectedDeliveryDate || (order.agreedLeadTimeDays ? `${order.agreedLeadTimeDays} Days SLA` : "Standard SLA")}
                 </span>
               </div>
@@ -697,45 +697,45 @@ export default function SupplierOrderDetailPage() {
           </div>
 
           {/* Immutable Contract Snapshot */}
-          <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-5 shadow-tactile-card space-y-3">
-            <div className="flex items-center justify-between border-b border-[#E4E4E7] pb-2.5">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
                 <FileCheck2 className="w-4 h-4 text-[#0052CC]" />
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-[#0F172A] font-mono">
+                <h3 className="text-sm font-semibold text-[#091E42]">
                   Buyer Shipping Address & Logistics Instructions
                 </h3>
               </div>
-              <span className="text-[10px] font-mono font-semibold text-[#059669] bg-[#ECFDF5] border border-[rgba(5,150,105,0.2)] px-2 py-0.5 rounded-[4px] uppercase">
+              <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-lg">
                 Binding Order
               </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div className="p-3 bg-[#FAFAFA] rounded-[6px] border border-[#E4E4E7] space-y-1">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] font-mono block">
+              <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/70 space-y-1">
+                <span className="text-[11px] font-semibold text-slate-500 block">
                   Delivery Destination
                 </span>
-                <p className="text-xs text-[#0F172A] leading-relaxed whitespace-pre-wrap">
+                <p className="text-xs text-slate-900 leading-relaxed whitespace-pre-wrap">
                   {order.shippingAddress}
                 </p>
               </div>
 
-              <div className="p-3 bg-[#FAFAFA] rounded-[6px] border border-[#E4E4E7] space-y-1">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] font-mono block">
+              <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/70 space-y-1">
+                <span className="text-[11px] font-semibold text-slate-500 block">
                   Billing & Accounts Contact
                 </span>
-                <p className="text-xs text-[#0F172A] leading-relaxed whitespace-pre-wrap">
+                <p className="text-xs text-slate-900 leading-relaxed whitespace-pre-wrap">
                   {order.billingContact}
                 </p>
               </div>
             </div>
 
             {order.notes && (
-              <div className="p-3 bg-[#FAFAFA] rounded-[6px] border border-[#E4E4E7] text-xs">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] font-mono block mb-0.5">
+              <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/70 text-xs">
+                <span className="text-[11px] font-semibold text-slate-500 block mb-1">
                   Buyer Instructions & Receiving Remarks
                 </span>
-                <p className="text-xs text-[#475569] italic">{order.notes}</p>
+                <p className="text-xs text-slate-700 italic">{order.notes}</p>
               </div>
             )}
           </div>
@@ -744,7 +744,7 @@ export default function SupplierOrderDetailPage() {
           <OrderTimelineSection orderId={order.id} />
 
           {/* Document Vault */}
-          <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-5 shadow-tactile-card">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card">
             <GenericDocumentManager
               title="Official Order & Compliance Documents"
               description="Upload commercial invoices, certificates of analysis (COA), test certificates, and dispatch waybills for the buyer."
@@ -765,27 +765,27 @@ export default function SupplierOrderDetailPage() {
 
         {/* Right Sidebar (4 Cols): Operational Actions & Milestones */}
         <div className="lg:col-span-4 space-y-5">
-          <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-4 shadow-tactile-card space-y-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-[#0F172A] font-mono border-b border-[#E4E4E7] pb-2">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-tactile-card space-y-4">
+            <h3 className="text-sm font-semibold text-[#091E42] border-b border-slate-100 pb-2.5">
               Fulfillment Milestones
             </h3>
 
             <div className="space-y-2.5 text-xs">
               <div className="flex justify-between items-center">
-                <span className="text-[#64748B]">Placed Date</span>
-                <span className="font-mono font-medium text-[#0F172A]">
+                <span className="text-slate-500 font-medium">Placed Date</span>
+                <span className="tabular-nums font-semibold text-slate-900">
                   {new Date(order.placedAt).toLocaleDateString("en-GB")}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[#64748B]">Confirmed Date</span>
-                <span className="font-mono font-medium text-[#0F172A]">
+                <span className="text-slate-500 font-medium">Confirmed Date</span>
+                <span className="tabular-nums font-semibold text-slate-900">
                   {order.confirmedAt ? new Date(order.confirmedAt).toLocaleDateString("en-GB") : "Pending"}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[#64748B]">Dispatched Date</span>
-                <span className="font-mono font-medium text-[#0F172A]">
+                <span className="text-slate-500 font-medium">Dispatched Date</span>
+                <span className="tabular-nums font-semibold text-slate-900">
                   {order.shippedAt ? new Date(order.shippedAt).toLocaleDateString("en-GB") : "Pending"}
                 </span>
               </div>
@@ -797,7 +797,7 @@ export default function SupplierOrderDetailPage() {
                 type="button"
                 onClick={handleConfirm}
                 disabled={confirming}
-                className="w-full h-8 bg-[#059669] hover:bg-[#047857] text-white font-medium text-xs rounded-[6px] transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.99]"
+                className="w-full h-9 bg-[#059669] hover:bg-[#047857] text-white font-semibold text-xs rounded-xl transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 <span>{confirming ? "Confirming..." : "Confirm & Accept PO"}</span>
@@ -809,7 +809,7 @@ export default function SupplierOrderDetailPage() {
                 type="button"
                 onClick={handleStartProcessing}
                 disabled={actionLoading}
-                className="w-full h-8 bg-[#0052CC] hover:bg-[#0747A6] text-white font-medium text-xs rounded-[6px] transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.99]"
+                className="w-full h-9 bg-[#0052CC] hover:bg-[#0747A6] text-white font-semibold text-xs rounded-xl transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
               >
                 <Play className="w-3.5 h-3.5" />
                 <span>{actionLoading ? "Updating..." : "Start Batch Processing"}</span>
@@ -822,7 +822,7 @@ export default function SupplierOrderDetailPage() {
                   type="button"
                   onClick={handleMarkReadyForDispatch}
                   disabled={actionLoading}
-                  className="w-full h-8 bg-[#059669] hover:bg-[#047857] text-white font-medium text-xs rounded-[6px] transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="w-full h-9 bg-[#059669] hover:bg-[#047857] text-white font-semibold text-xs rounded-xl transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   <span>Mark Ready for Dispatch</span>
@@ -831,7 +831,7 @@ export default function SupplierOrderDetailPage() {
                   type="button"
                   onClick={() => setShowDispatchModal(true)}
                   disabled={actionLoading}
-                  className="w-full h-8 bg-[#0052CC] hover:bg-[#0747A6] text-white font-medium text-xs rounded-[6px] transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="w-full h-9 bg-[#0052CC] hover:bg-[#0747A6] text-white font-semibold text-xs rounded-xl transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
                 >
                   <Truck className="w-3.5 h-3.5" />
                   <span>Dispatch Consignment</span>
@@ -844,7 +844,7 @@ export default function SupplierOrderDetailPage() {
                 type="button"
                 onClick={() => setShowDispatchModal(true)}
                 disabled={actionLoading}
-                className="w-full h-8 bg-[#0052CC] hover:bg-[#0747A6] text-white font-medium text-xs rounded-[6px] transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full h-9 bg-[#0052CC] hover:bg-[#0747A6] text-white font-semibold text-xs rounded-xl transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
               >
                 <Truck className="w-3.5 h-3.5" />
                 <span>Dispatch Consignment</span>
@@ -857,7 +857,7 @@ export default function SupplierOrderDetailPage() {
                   type="button"
                   onClick={() => setShowUpdateShipmentModal(true)}
                   disabled={actionLoading}
-                  className="w-full h-8 bg-[#0052CC] hover:bg-[#0747A6] text-white font-medium text-xs rounded-[6px] transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="w-full h-9 bg-[#0052CC] hover:bg-[#0747A6] text-white font-semibold text-xs rounded-xl transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
                 >
                   <Truck className="w-3.5 h-3.5" />
                   <span>Update Transit Status</span>
@@ -866,7 +866,7 @@ export default function SupplierOrderDetailPage() {
                   type="button"
                   onClick={handleMarkDelivered}
                   disabled={actionLoading}
-                  className="w-full h-8 bg-[#059669] hover:bg-[#047857] text-white font-medium text-xs rounded-[6px] transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="w-full h-9 bg-[#059669] hover:bg-[#047857] text-white font-semibold text-xs rounded-xl transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   <span>Mark Delivered</span>
@@ -879,7 +879,7 @@ export default function SupplierOrderDetailPage() {
                 type="button"
                 onClick={() => setShowCompleteModal(true)}
                 disabled={actionLoading}
-                className="w-full h-8 bg-[#059669] hover:bg-[#047857] text-white font-medium text-xs rounded-[6px] transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                className="w-full h-9 bg-[#059669] hover:bg-[#047857] text-white font-semibold text-xs rounded-xl transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 active:scale-[0.98]"
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 <span>Complete Order</span>
@@ -888,22 +888,22 @@ export default function SupplierOrderDetailPage() {
           </div>
 
           {/* Sourcing Reference */}
-          <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-4 shadow-tactile-card space-y-2.5 text-xs">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-[#0F172A] font-mono border-b border-[#E4E4E7] pb-2">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-tactile-card space-y-3 text-xs">
+            <h3 className="text-sm font-semibold text-[#091E42] border-b border-slate-100 pb-2.5">
               Sourcing Reference
             </h3>
             <div className="flex justify-between items-center">
-              <span className="text-[#64748B]">RFQ Reference</span>
+              <span className="text-slate-500 font-medium">RFQ Reference</span>
               <Link
                 href={`/dashboard/supplier/rfqs/${order.rfqId}`}
-                className="font-mono font-medium text-[#0052CC] hover:underline"
+                className="font-semibold text-[#0052CC] hover:underline"
               >
                 RFQ-{order.rfqId.substring(0, 8).toUpperCase()} →
               </Link>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-[#64748B]">Chemical Spec</span>
-              <span className="font-medium text-[#0F172A] uppercase">{order.unit} Consignment</span>
+              <span className="text-slate-500 font-medium">Chemical Spec</span>
+              <span className="font-semibold text-slate-800 uppercase">{order.unit} Consignment</span>
             </div>
           </div>
         </div>

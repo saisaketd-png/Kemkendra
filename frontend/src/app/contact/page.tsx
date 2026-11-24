@@ -15,7 +15,7 @@ import {
   Building,
   CheckCircle2,
   AlertCircle,
-  Loader2
+  Loader2,
 } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -68,7 +68,7 @@ export default function ContactPage() {
           casNumber: casNumber.trim() || null,
           quantity: quantity.trim() || null,
           message: message.trim(),
-          botTrap: botTrap || null, // Honeypot
+          botTrap: botTrap || null,
         };
 
         const res = await fetch(resolveApiUrl("/api/v1/public/contact"), {
@@ -95,28 +95,28 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F7F9FC] font-sans text-[#0F172A] antialiased">
+    <div className="min-h-screen flex flex-col bg-[#F8F9FA] font-sans text-slate-900 antialiased">
       <Navbar />
 
       <main className="flex-1 py-8 sm:py-12">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
           {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-xs font-semibold text-[#64748B]">
-            <Link href="/" className="hover:text-[#155EEF]">Home</Link>
-            <ChevronRight className="w-3.5 h-3.5 text-[#94A3B8]" />
-            <span className="text-[#0F172A] font-extrabold">Contact Us</span>
+          <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+            <Link href="/" className="hover:text-[#0052CC] transition-colors">Home</Link>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-slate-900 font-bold">Contact Us</span>
           </nav>
 
           {/* Header */}
-          <div className="bg-white border border-[#DCE3EC] rounded-3xl p-8 sm:p-12 shadow-2xs space-y-4">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#EFF4FF] text-[#155EEF] border border-[#BFDBFE]">
-              <MessageSquare className="w-4 h-4" /> Direct Procurement Assistance
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-8 sm:p-12 shadow-tactile-card space-y-4">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-[#0052CC] border border-blue-200/80 shadow-2xs">
+              <MessageSquare className="w-4 h-4 text-[#0052CC]" /> Direct Procurement Assistance
             </span>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0B1F3A] tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#091E42] tracking-tight">
               Get in Touch with KemKendra
             </h1>
-            <p className="text-sm sm:text-base text-[#475467] max-w-2xl leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-600 max-w-2xl leading-relaxed">
               Whether you are sourcing hard-to-find APIs, requesting customized packaging for bulk solvents, or onboarding as a verified manufacturer, our support desk is here to assist.
             </p>
           </div>
@@ -125,60 +125,60 @@ export default function ContactPage() {
             {/* Contact Details Cards */}
             <div className="lg:col-span-5 space-y-6">
 
-              <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6 shadow-2xs space-y-4">
-                <h2 className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
-                  <Building className="w-5 h-5 text-[#155EEF]" /> Registered Office
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-tactile-card space-y-4">
+                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                  <Building className="w-5 h-5 text-[#0052CC]" /> Registered Office
                 </h2>
-                <div className="space-y-4 text-xs sm:text-sm text-[#475467]">
+                <div className="space-y-4 text-xs sm:text-sm text-slate-600">
                   <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-[#155EEF] shrink-0 mt-0.5" />
+                    <MapPin className="w-5 h-5 text-[#0052CC] shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-[#0F172A]">Headquarters</p>
-                      <p>Bengaluru, Karnataka, India</p>
+                      <p className="font-bold text-slate-900">Headquarters</p>
+                      <p className="text-slate-500">Bengaluru, Karnataka, India</p>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <Phone className="w-5 h-5 text-[#16A34A] shrink-0 mt-0.5" />
+                    <Phone className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-[#0F172A]">Direct Desk & WhatsApp</p>
-                      <a href="tel:+917676447077" className="text-[#155EEF] font-bold hover:underline">
+                      <p className="font-bold text-slate-900">Direct Desk & WhatsApp</p>
+                      <a href="tel:+917676447077" className="text-[#0052CC] font-bold hover:underline">
                         +91 7676447077
                       </a>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <Mail className="w-5 h-5 text-[#9333EA] shrink-0 mt-0.5" />
+                    <Mail className="w-5 h-5 text-[#0052CC] shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-[#0F172A]">Email Inquiries</p>
-                      <a href="mailto:kemkendra1@gmail.com" className="text-[#155EEF] font-bold hover:underline">
+                      <p className="font-bold text-slate-900">Email Inquiries</p>
+                      <a href="mailto:kemkendra1@gmail.com" className="text-[#0052CC] font-bold hover:underline">
                         kemkendra1@gmail.com
                       </a>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <Clock className="w-5 h-5 text-[#D97706] shrink-0 mt-0.5" />
+                    <Clock className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-[#0F172A]">Business Hours</p>
-                      <p>Monday – Saturday: 9:00 AM – 6:00 PM IST</p>
+                      <p className="font-bold text-slate-900">Business Hours</p>
+                      <p className="text-slate-500">Monday – Saturday: 9:00 AM – 6:00 PM IST</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-[#EFF4FF] border border-[#BFDBFE] rounded-2xl p-6 space-y-2">
-                <h3 className="text-sm font-bold text-[#1E40AF] flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[#155EEF]" /> Are you a chemical manufacturer?
+              <div className="bg-blue-50/70 border border-blue-200/80 rounded-2xl p-6 space-y-2 shadow-2xs">
+                <h3 className="text-sm font-bold text-blue-900 flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#0052CC]" /> Are you a chemical manufacturer?
                 </h3>
-                <p className="text-xs text-[#1E3A8A] leading-relaxed">
+                <p className="text-xs text-blue-950/80 leading-relaxed">
                   Join our audited supplier directory to connect directly with industrial and institutional chemical buyers across India and global markets.
                 </p>
                 <div className="pt-2">
                   <Link
                     href="/register/supplier"
-                    className="inline-flex items-center gap-1 text-xs font-bold text-[#155EEF] hover:underline"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-[#0052CC] hover:underline"
                   >
                     Apply for Manufacturer Onboarding &rarr;
                   </Link>
@@ -189,25 +189,26 @@ export default function ContactPage() {
 
             {/* Interactive Contact & Chemical Sourcing Form */}
             <div className="lg:col-span-7">
-              <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6 sm:p-8 shadow-2xs space-y-6">
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-tactile-card space-y-6">
                 <div>
-                  <h2 className="text-xl font-bold text-[#0F172A]">Direct Inquiry & Compound Sourcing</h2>
-                  <p className="text-xs sm:text-sm text-[#64748B] mt-1">
+                  <h2 className="text-xl font-bold text-slate-900">Direct Inquiry & Compound Sourcing</h2>
+                  <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                     Send your inquiry or chemical procurement requirement directly to our verified trade desk.
                   </p>
                 </div>
 
                 {status === "success" ? (
-                  <div className="p-6 rounded-2xl bg-[#F0FDF4] border border-[#BBF7D0] space-y-3">
-                    <div className="flex items-center gap-2 text-[#166534] font-bold text-base">
-                      <CheckCircle2 className="w-5 h-5" /> Inquiry Received Successfully
+                  <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200/80 space-y-3">
+                    <div className="flex items-center gap-2 text-emerald-800 font-bold text-base">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-600" /> Inquiry Received Successfully
                     </div>
-                    <p className="text-xs sm:text-sm text-[#14532D] leading-relaxed">
+                    <p className="text-xs sm:text-sm text-emerald-900 leading-relaxed">
                       Thank you for contacting KemKendra. Your inquiry has been forwarded to our procurement operations desk. A technical representative will review your request and get back to you within 1 business day.
                     </p>
                     <button
+                      type="button"
                       onClick={() => setStatus("idle")}
-                      className="mt-2 text-xs font-bold text-[#166534] underline hover:no-underline"
+                      className="mt-2 text-xs font-bold text-emerald-700 underline hover:no-underline cursor-pointer"
                     >
                       Submit another inquiry
                     </button>
@@ -227,16 +228,16 @@ export default function ContactPage() {
                     </div>
 
                     {status === "error" && (
-                      <div className="p-4 rounded-xl bg-[#FEF2F2] border border-[#FCA5A5] flex items-center gap-2 text-xs text-[#991B1B]">
-                        <AlertCircle className="w-4 h-4 shrink-0" />
+                      <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 flex items-center gap-2 text-xs text-rose-700">
+                        <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
                         <span>{errorMessage}</span>
                       </div>
                     )}
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-bold text-[#344054] mb-1">
-                          Full Name <span className="text-red-500">*</span>
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-semibold text-slate-700">
+                          Full Name <span className="text-rose-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -244,12 +245,12 @@ export default function ContactPage() {
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
                           placeholder="Dr. Rajesh Kumar"
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-[#D0D5DD] text-xs text-[#0F172A] focus:outline-none focus:border-[#155EEF]"
+                          className="w-full h-10 px-3 rounded-lg border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 bg-white shadow-2xs"
                         />
                       </div>
-                      <div>
-                        <label className="block text-xs font-bold text-[#344054] mb-1">
-                          Business Email <span className="text-red-500">*</span>
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-semibold text-slate-700">
+                          Business Email <span className="text-rose-500">*</span>
                         </label>
                         <input
                           type="email"
@@ -257,14 +258,14 @@ export default function ContactPage() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="procurement@company.com"
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-[#D0D5DD] text-xs text-[#0F172A] focus:outline-none focus:border-[#155EEF]"
+                          className="w-full h-10 px-3 rounded-lg border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 bg-white shadow-2xs"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-bold text-[#344054] mb-1">
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-semibold text-slate-700">
                           Phone / WhatsApp Number
                         </label>
                         <input
@@ -272,11 +273,11 @@ export default function ContactPage() {
                           value={phoneNumber}
                           onChange={(e) => setPhoneNumber(e.target.value)}
                           placeholder="+91 9876543210"
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-[#D0D5DD] text-xs text-[#0F172A] focus:outline-none focus:border-[#155EEF]"
+                          className="w-full h-10 px-3 rounded-lg border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 bg-white shadow-2xs"
                         />
                       </div>
-                      <div>
-                        <label className="block text-xs font-bold text-[#344054] mb-1">
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-semibold text-slate-700">
                           Company / Organization
                         </label>
                         <input
@@ -284,20 +285,20 @@ export default function ContactPage() {
                           value={companyName}
                           onChange={(e) => setCompanyName(e.target.value)}
                           placeholder="Apex Pharma Ltd"
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-[#D0D5DD] text-xs text-[#0F172A] focus:outline-none focus:border-[#155EEF]"
+                          className="w-full h-10 px-3 rounded-lg border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 bg-white shadow-2xs"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-bold text-[#344054] mb-1">
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-semibold text-slate-700">
                           Inquiry Type
                         </label>
                         <select
                           value={inquiryType}
                           onChange={(e) => setInquiryType(e.target.value)}
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-[#D0D5DD] text-xs text-[#0F172A] focus:outline-none focus:border-[#155EEF] bg-white"
+                          className="w-full h-10 px-3 rounded-lg border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 bg-white shadow-2xs"
                         >
                           <option value="GENERAL">General Procurement Support</option>
                           <option value="PRODUCT_INQUIRY">Chemical Compound Sourcing</option>
@@ -306,8 +307,8 @@ export default function ContactPage() {
                           <option value="ENTERPRISE">Enterprise Contract Supply</option>
                         </select>
                       </div>
-                      <div>
-                        <label className="block text-xs font-bold text-[#344054] mb-1">
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-semibold text-slate-700">
                           Estimated Volume / Quantity
                         </label>
                         <input
@@ -315,15 +316,15 @@ export default function ContactPage() {
                           value={quantity}
                           onChange={(e) => setQuantity(e.target.value)}
                           placeholder="e.g. 500 kg, 2 drums, 10 MT"
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-[#D0D5DD] text-xs text-[#0F172A] focus:outline-none focus:border-[#155EEF]"
+                          className="w-full h-10 px-3 rounded-lg border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 bg-white shadow-2xs"
                         />
                       </div>
                     </div>
 
                     {inquiryType === "PRODUCT_INQUIRY" && (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]">
-                        <div>
-                          <label className="block text-xs font-bold text-[#344054] mb-1">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div className="space-y-1.5">
+                          <label className="block text-xs font-semibold text-slate-700">
                             Chemical Name / Compound
                           </label>
                           <input
@@ -331,11 +332,11 @@ export default function ContactPage() {
                             value={chemicalName}
                             onChange={(e) => setChemicalName(e.target.value)}
                             placeholder="e.g. Paracetamol, Ethyl Acetate"
-                            className="w-full px-3.5 py-2 rounded-lg border border-[#D0D5DD] text-xs text-[#0F172A] focus:outline-none focus:border-[#155EEF] bg-white"
+                            className="w-full h-9 px-3 rounded-lg border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 bg-white shadow-2xs"
                           />
                         </div>
-                        <div>
-                          <label className="block text-xs font-bold text-[#344054] mb-1">
+                        <div className="space-y-1.5">
+                          <label className="block text-xs font-semibold text-slate-700">
                             CAS Registry Number
                           </label>
                           <input
@@ -343,15 +344,15 @@ export default function ContactPage() {
                             value={casNumber}
                             onChange={(e) => setCasNumber(e.target.value)}
                             placeholder="e.g. 103-90-2"
-                            className="w-full px-3.5 py-2 rounded-lg border border-[#D0D5DD] text-xs text-[#0F172A] focus:outline-none focus:border-[#155EEF] bg-white font-mono"
+                            className="w-full h-9 px-3 rounded-lg border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 bg-white font-mono shadow-2xs"
                           />
                         </div>
                       </div>
                     )}
 
-                    <div>
-                      <label className="block text-xs font-bold text-[#344054] mb-1">
-                        Inquiry Details / Message <span className="text-red-500">*</span>
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-semibold text-slate-700">
+                        Inquiry Details / Message <span className="text-rose-500">*</span>
                       </label>
                       <textarea
                         required
@@ -359,24 +360,24 @@ export default function ContactPage() {
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Please specify target specifications, delivery destination, packaging preference, or testing certifications required..."
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#D0D5DD] text-xs text-[#0F172A] focus:outline-none focus:border-[#155EEF]"
+                        className="w-full p-3 rounded-lg border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC]/20 bg-white shadow-2xs leading-relaxed"
                       />
                     </div>
 
                     <button
                       type="submit"
                       disabled={isPending}
-                      className="w-full py-3 px-6 bg-[#155EEF] hover:bg-[#104EC6] text-white text-xs font-bold rounded-xl shadow-2xs transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
+                      className="w-full h-11 px-6 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-bold rounded-lg shadow-2xs transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                     >
                       {isPending ? (
                         <>
                           <Loader2 className="w-4 h-4 animate-spin" />
-                          Sending Inquiry...
+                          <span>Sending Inquiry...</span>
                         </>
                       ) : (
                         <>
                           <Send className="w-4 h-4" />
-                          Submit Procurement Inquiry
+                          <span>Submit Procurement Inquiry</span>
                         </>
                       )}
                     </button>

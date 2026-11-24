@@ -23,6 +23,7 @@ interface GlobalSearchBarProps {
   inputClassName?: string;
   size?: "sm" | "md" | "lg";
   autoFocus?: boolean;
+  showShortcut?: boolean;
   onSearchSubmitted?: (query: string) => void;
 }
 
@@ -33,6 +34,7 @@ export function GlobalSearchBar({
   inputClassName = "",
   size = "md",
   autoFocus = false,
+  showShortcut = false,
   onSearchSubmitted,
 }: GlobalSearchBarProps) {
   const router = useRouter();
@@ -42,10 +44,17 @@ export function GlobalSearchBar({
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [isPending, startTransition] = useTransition();
+  const [isMac, setIsMac] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && typeof navigator !== "undefined") {
+      setIsMac(/(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent || navigator.platform));
+    }
+  }, []);
 
   useEffect(() => {
     setQuery(initialQuery);
@@ -172,9 +181,9 @@ export function GlobalSearchBar({
   };
 
   const sizeClasses = {
-    sm: "h-8 text-xs pl-8 pr-7",
-    md: "h-9 text-xs sm:text-sm pl-9 pr-8",
-    lg: "h-11 sm:h-12 text-sm sm:text-base pl-11 pr-10",
+    sm: `h-8 text-xs pl-8 ${showShortcut ? "pr-14" : "pr-7"}`,
+    md: `h-9 text-xs sm:text-sm pl-9 ${showShortcut ? "pr-16" : "pr-8"}`,
+    lg: `h-11 sm:h-12 text-sm sm:text-base pl-11 ${showShortcut ? "pr-20" : "pr-10"}`,
   };
 
   const iconSizes = {
@@ -206,7 +215,7 @@ export function GlobalSearchBar({
           className={`w-full bg-[#FAFAFA] hover:bg-white focus:bg-white border border-[#E4E4E7] rounded-[8px] focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC] transition-colors text-[#0F172A] placeholder:text-[#94A3B8] font-normal shadow-xs ${sizeClasses[size]} ${inputClassName}`}
         />
 
-        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
           {isLoading && (
             <Loader2 className="w-4 h-4 text-[#0052CC] animate-spin shrink-0" />
           )}
@@ -219,10 +228,27 @@ export function GlobalSearchBar({
                 setIsOpen(false);
                 inputRef.current?.focus();
               }}
-              className="p-1 text-[#94A3B8] hover:text-[#0F172A] rounded-full hover:bg-slate-100 transition-colors"
+              className="p-1 text-[#94A3B8] hover:text-[#0F172A] rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
               title="Clear search"
             >
               <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+          {!query && !isLoading && showShortcut && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.dispatchEvent(new CustomEvent("open-command-palette"));
+              }}
+              className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-500 bg-slate-100 hover:bg-slate-200 hover:text-slate-900 border border-slate-200/90 rounded transition-all cursor-pointer select-none group"
+              title={isMac ? "Command Console (⌘K)" : "Command Console (Ctrl+K)"}
+            >
+              <span className="text-[10px] text-slate-400 group-hover:text-slate-600 font-sans">
+                {isMac ? "⌘" : "Ctrl"}
+              </span>
+              <span className="text-[10px] font-bold">K</span>
             </button>
           )}
         </div>

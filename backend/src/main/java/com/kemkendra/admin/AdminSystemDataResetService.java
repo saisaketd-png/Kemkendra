@@ -21,7 +21,7 @@ public class AdminSystemDataResetService {
 
     public AdminSystemDataResetService(
             JdbcTemplate jdbcTemplate,
-            @Value("${kemkendra.test-data-reset.enabled:true}") boolean resetEnabled) {
+            @Value("${kemkendra.test-data-reset.enabled:false}") boolean resetEnabled) {
         this.jdbcTemplate = jdbcTemplate;
         this.resetEnabled = resetEnabled;
     }

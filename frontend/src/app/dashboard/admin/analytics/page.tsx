@@ -266,7 +266,7 @@ export default function AdminAnalyticsPage() {
             value={kpis.totalSuppliers}
             subtitle={`${kpis.verifiedSuppliers} verified`}
             icon={Building2}
-            tone="purple"
+            tone="blue"
           />
           <KpiStatCard
             title="Verified Suppliers"
@@ -540,7 +540,7 @@ export default function AdminAnalyticsPage() {
                   title="Avg Completion Time"
                   value={`${orderData.averageOrderCompletionTimeDays} days`}
                   subtitle="From placement to delivery"
-                  tone="purple"
+                  tone="blue"
                 />
               </div>
 
@@ -605,7 +605,7 @@ export default function AdminAnalyticsPage() {
                 <KpiStatCard
                   title="Avg Response Time"
                   value={`${supplierData.averageResponseTimeHours} hrs`}
-                  tone="purple"
+                  tone="blue"
                 />
               </div>
 

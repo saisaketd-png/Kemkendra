@@ -402,14 +402,14 @@ export default function BuyerRfqDetailPage() {
             <button
               type="button"
               onClick={() => setIsCounterModalOpen(true)}
-              className="h-8 px-3 text-xs font-medium text-[#0052CC] bg-white border border-[#BFDBFE] hover:bg-[#EFF6FF] rounded-[6px] transition-colors cursor-pointer"
+              className="h-9 px-3.5 text-xs font-semibold text-[#0052CC] bg-white border border-[#0052CC] hover:bg-blue-50 rounded-lg transition-colors shadow-2xs press-tactile cursor-pointer"
             >
               Counter Offer
             </button>
             <button
               type="button"
               onClick={() => setDecisionModalMode("accept")}
-              className="h-8 px-3.5 text-xs font-medium text-white bg-[#059669] hover:bg-[#047857] rounded-[6px] transition-colors cursor-pointer"
+              className="h-9 px-4 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 rounded-lg transition-colors shadow-xs press-tactile cursor-pointer"
             >
               Accept Terms
             </button>
@@ -418,7 +418,7 @@ export default function BuyerRfqDetailPage() {
           <button
             type="button"
             onClick={() => setIsPoModalOpen(true)}
-            className="h-8 px-3.5 text-xs font-medium text-white bg-[#059669] hover:bg-[#047857] rounded-[6px] transition-colors cursor-pointer shrink-0"
+            className="h-9 px-4 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 rounded-lg transition-colors shadow-xs press-tactile cursor-pointer shrink-0"
           >
             Issue Purchase Order →
           </button>
@@ -426,18 +426,18 @@ export default function BuyerRfqDetailPage() {
       </div>
 
       {/* 2. Main RFQ Cockpit Card */}
-      <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-5 shadow-tactile-card">
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-tactile-card">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
           <div className="space-y-1">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <span className="text-[10px] font-mono font-medium uppercase tracking-wider text-[#64748B]">
-                PROCUREMENT / RFQ DOSSIER
+              <span className="text-xs font-semibold text-slate-500">
+                Procurement Dossier
               </span>
-              <span className="text-[#E4E4E7]">•</span>
-              <span className="font-mono text-xs font-semibold text-[#0052CC]">
+              <span className="text-slate-300">•</span>
+              <span className="text-xs font-bold text-[#0052CC]">
                 {rfqShortId}
               </span>
-              <span className="text-[#E4E4E7]">•</span>
+              <span className="text-slate-300">•</span>
               <StatusBadge status={rfq.status} />
             </div>
 
@@ -446,7 +446,7 @@ export default function BuyerRfqDetailPage() {
                 {resolvedProductName}
               </h1>
               {resolvedCasNumber && (
-                <span className="font-mono text-xs text-[#64748B] bg-[#FAFAFA] px-2 py-0.5 rounded-[4px] border border-[#E4E4E7]">
+                <span className="text-xs font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
                   CAS {resolvedCasNumber}
                 </span>
               )}
@@ -460,7 +460,7 @@ export default function BuyerRfqDetailPage() {
                   `Verified Supplier #${rfq.supplierId}`}
               </strong>{" "}
               • Category:{" "}
-              <span className="font-medium text-[#0F172A]">
+              <span className="font-semibold text-[#0F172A]">
                 {product?.category || "Chemical Consignment"}
               </span>
             </p>
@@ -472,9 +472,9 @@ export default function BuyerRfqDetailPage() {
               <button
                 type="button"
                 onClick={scrollToHistory}
-                className="h-8 px-3 border border-[#E4E4E7] hover:bg-[#FAFAFA] text-[#0F172A] text-xs font-medium rounded-[6px] transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+                className="h-9 px-3.5 border border-slate-300 hover:bg-slate-50 text-[#0F172A] text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs press-tactile"
               >
-                <History className="w-3.5 h-3.5 text-[#64748B]" />
+                <History className="w-3.5 h-3.5 text-slate-500" />
                 <span>Revision History ({quotations.length})</span>
               </button>
             )}
@@ -482,21 +482,21 @@ export default function BuyerRfqDetailPage() {
         </div>
 
         {/* Structured Context Metadata Bar */}
-        <div className="mt-4 pt-3.5 border-t border-[#E4E4E7] grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+        <div className="mt-4 pt-3.5 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] block font-mono">
+            <span className="text-xs font-medium text-[#64748B] block">
               Requested Volume
             </span>
-            <span className="text-sm font-bold text-[#0F172A] block mt-0.5 font-mono">
+            <span className="text-sm font-bold text-[#0F172A] block mt-0.5">
               {formatQty(rfq.quantity, rfq.unit)}
             </span>
           </div>
 
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] block font-mono">
+            <span className="text-xs font-medium text-[#64748B] block">
               Current Terms
             </span>
-            <span className="text-sm font-bold text-[#0052CC] block mt-0.5 font-mono">
+            <span className="text-sm font-bold text-[#0052CC] block mt-0.5">
               {latestQuotation
                 ? `${formatMoney(latestQuotation.unitPrice, latestQuotation.currency)} / ${rfq.unit.toUpperCase()}`
                 : "Awaiting Quote"}
@@ -504,19 +504,19 @@ export default function BuyerRfqDetailPage() {
           </div>
 
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] block font-mono">
+            <span className="text-xs font-medium text-[#64748B] block">
               Inquiry Date
             </span>
-            <span className="text-xs text-[#0F172A] block mt-0.5 font-mono">
+            <span className="text-xs text-[#0F172A] block mt-0.5 font-medium">
               {formatDate(rfq.createdAt)}
             </span>
           </div>
 
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] block font-mono">
+            <span className="text-xs font-medium text-[#64748B] block">
               Response Target SLA
             </span>
-            <span className="text-xs font-medium text-[#059669] block mt-0.5">
+            <span className="text-xs font-semibold text-emerald-700 block mt-0.5">
               Within 24 Hours
             </span>
           </div>

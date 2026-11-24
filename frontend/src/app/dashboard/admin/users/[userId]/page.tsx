@@ -130,7 +130,7 @@ export default function AdminUserDetailPage({ params }: { params: Promise<{ user
       </Link>
 
       {/* Header Profile Card */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-tactile-card">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-start gap-4">
             <div className="w-14 h-14 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xl shrink-0">
@@ -197,7 +197,7 @@ export default function AdminUserDetailPage({ params }: { params: Promise<{ user
       {/* Grid of Sections */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Compliance & Legal Verification */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-tactile-card space-y-4">
           <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <FileCheck className="w-4 h-4 text-emerald-500" />
             Legal & Compliance Verification
@@ -249,9 +249,9 @@ export default function AdminUserDetailPage({ params }: { params: Promise<{ user
         </div>
 
         {/* Supplier Association */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-tactile-card space-y-4">
           <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <Building2 className="w-4 h-4 text-indigo-500" />
+            <Building2 className="w-4 h-4 text-[#0052CC]" />
             Supplier Entity Association
           </h2>
 
@@ -285,7 +285,7 @@ export default function AdminUserDetailPage({ params }: { params: Promise<{ user
         </div>
 
         {/* Account Governance & Suspensions */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-tactile-card space-y-4">
           <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <ShieldAlert className="w-4 h-4 text-rose-500" />
             Account Governance & Appeals
@@ -293,7 +293,7 @@ export default function AdminUserDetailPage({ params }: { params: Promise<{ user
 
           {user.suspended ? (
             <div className="space-y-3">
-              <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 space-y-2 text-xs">
+              <div className="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 space-y-2 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-rose-900 dark:text-rose-200">Account Suspended</span>
                   <span className="text-[10px] text-rose-600 dark:text-rose-400 font-medium">
@@ -317,7 +317,7 @@ export default function AdminUserDetailPage({ params }: { params: Promise<{ user
               </div>
             </div>
           ) : (
-            <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
+            <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
               <span>Good standing. No active suspensions or pending disciplinary violations.</span>
             </div>
@@ -325,26 +325,26 @@ export default function AdminUserDetailPage({ params }: { params: Promise<{ user
         </div>
 
         {/* Marketplace Transactions Summary */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-tactile-card space-y-4">
           <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <ShoppingBag className="w-4 h-4 text-purple-500" />
+            <ShoppingBag className="w-4 h-4 text-[#0052CC]" />
             Marketplace Activity
           </h2>
 
           <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="p-4 rounded-2xl bg-purple-50/50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800">
+            <div className="p-4 rounded-xl bg-blue-50/50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800">
               <span className="text-slate-500 dark:text-slate-400">Total RFQs</span>
-              <div className="text-xl font-bold text-purple-900 dark:text-purple-200 mt-1">{user.rfqCount}</div>
+              <div className="text-xl font-bold text-[#0052CC] dark:text-blue-200 mt-1">{user.rfqCount}</div>
             </div>
-            <div className="p-4 rounded-2xl bg-purple-50/50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800">
+            <div className="p-4 rounded-xl bg-blue-50/50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800">
               <span className="text-slate-500 dark:text-slate-400">Total Orders</span>
-              <div className="text-xl font-bold text-purple-900 dark:text-purple-200 mt-1">{user.orderCount}</div>
+              <div className="text-xl font-bold text-[#0052CC] dark:text-blue-200 mt-1">{user.orderCount}</div>
             </div>
           </div>
 
           <Link
             href="/dashboard/admin/marketplace"
-            className="inline-flex items-center gap-1 text-xs font-bold text-purple-600 dark:text-purple-400 hover:underline"
+            className="inline-flex items-center gap-1 text-xs font-bold text-[#0052CC] dark:text-blue-400 hover:underline"
           >
             Inspect Marketplace Transactions Hub &rarr;
           </Link>

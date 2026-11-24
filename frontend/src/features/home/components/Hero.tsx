@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { Search, ChevronDown, FileCheck, ArrowRight, ShieldCheck, CheckCircle2, FlaskConical } from "lucide-react";
+import { Search, ChevronDown, FileCheck, ArrowRight, ShieldCheck, CheckCircle2, FlaskConical, Command } from "lucide-react";
 
 export function Hero() {
   const featuredProductsPanel = [
@@ -90,20 +92,37 @@ export function Hero() {
               </button>
             </form>
 
+            {/* Quick Command Console hint (Ctrl+K) */}
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <span className="text-[11px] font-semibold text-slate-400">Quick Console:</span>
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent("open-command-palette"))}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white hover:bg-blue-50/60 border border-slate-200 hover:border-blue-200 rounded-lg text-slate-700 hover:text-[#0052CC] text-xs font-medium transition-all shadow-2xs hover:shadow-xs group cursor-pointer"
+                title="Launch Instant Command & Chemical Search"
+              >
+                <Command className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#0052CC] transition-colors" />
+                <span>Search catalog or jump anywhere</span>
+                <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-bold text-slate-600 bg-slate-100 group-hover:bg-blue-100/70 group-hover:text-[#0052CC] border border-slate-200 rounded transition-colors">
+                  Ctrl + K
+                </kbd>
+              </button>
+            </div>
+
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <Link
                 href="/rfq"
-                className="h-11 px-5 bg-[#0052CC] hover:bg-[#0747A6] text-white font-bold text-sm rounded-xl transition-all shadow-sm flex items-center gap-2"
+                className="hover-tactile h-11 px-5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white font-bold text-sm rounded-xl transition-all shadow-sm flex items-center gap-2 group"
               >
                 <FileCheck className="w-4 h-4" />
                 <span>Submit Sourcing RFQ</span>
               </Link>
               <Link
                 href="/products"
-                className="h-11 px-5 bg-white hover:bg-[#F8FAFC] border border-[#CBD5E1] text-[#091E42] font-semibold text-sm rounded-xl transition-all flex items-center gap-2 shadow-2xs"
+                className="hover-tactile h-11 px-5 bg-white hover:bg-slate-50 border border-slate-300 hover:border-slate-400 text-[#091E42] font-semibold text-sm rounded-xl transition-all flex items-center gap-2 shadow-2xs group"
               >
                 <span>Browse Chemical Catalog</span>
-                <ArrowRight className="w-4 h-4 text-[#64748B]" />
+                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#0052CC] group-hover:translate-x-0.5 transition-all" />
               </Link>
             </div>
           </div>

@@ -174,14 +174,14 @@ export default function SupplierOrdersPage() {
         description="Review confirmed purchase orders, process manufacturing consignments, record shipments, and track deliveries."
         actions={
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-medium px-2.5 py-1 bg-white text-[#0F172A] border border-[#E4E4E7] rounded-[4px]">
+            <span className="text-xs font-semibold px-2.5 py-1 bg-white text-[#0F172A] border border-slate-200 rounded-lg shadow-2xs">
               {placedCount > 0 ? `${placedCount} Action Required` : "All Contracts Confirmed"}
             </span>
             <button
               type="button"
               onClick={loadOrders}
               disabled={loading}
-              className="h-8 px-3 text-xs font-medium text-[#0F172A] bg-white border border-[#E4E4E7] hover:bg-[#FAFAFA] rounded-[6px] transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              className="h-9 px-3.5 text-xs font-semibold text-[#0F172A] bg-white border border-slate-200 hover:bg-[#F8F9FA] rounded-lg transition-colors shadow-2xs flex items-center gap-1.5 cursor-pointer disabled:opacity-50 press-tactile"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
               <span>Refresh</span>
@@ -192,7 +192,7 @@ export default function SupplierOrdersPage() {
 
       {/* 2. Compact Operational Metrics Strip */}
       {loading ? (
-        <div className="bg-white p-4 border border-[#E4E4E7] rounded-[8px] shadow-tactile-card">
+        <div className="bg-white p-4 border border-slate-200/90 rounded-xl shadow-tactile-card">
           <SkeletonLoader lines={2} />
         </div>
       ) : (
@@ -202,16 +202,16 @@ export default function SupplierOrdersPage() {
               key={idx}
               type="button"
               onClick={m.onClick}
-              className={`p-3.5 rounded-[8px] border text-left transition-colors cursor-pointer block min-w-0 shadow-tactile-card ${
+              className={`p-3.5 rounded-xl border text-left transition-colors cursor-pointer block min-w-0 shadow-tactile-card group ${
                 m.active
-                  ? "bg-[#EFF6FF] border-[#BFDBFE]"
-                  : "bg-white border-[#E4E4E7] hover:border-[#0052CC]"
+                  ? "bg-blue-50/50 border-[#0052CC] ring-1 ring-[#0052CC]"
+                  : "bg-white border-slate-200/90 hover:border-[#0052CC]"
               }`}
             >
-              <div className="text-[10px] font-semibold uppercase tracking-wider font-mono text-[#64748B] truncate mb-1">
+              <div className="text-[11px] font-semibold text-[#64748B] truncate mb-1">
                 {m.label}
               </div>
-              <div className="text-xl font-bold font-mono text-[#0F172A] tracking-tight">
+              <div className="text-xl font-bold text-[#0F172A] tracking-tight group-hover:text-[#0052CC] transition-colors">
                 {m.value}
               </div>
               <div className="text-[11px] text-[#64748B] truncate mt-0.5">
@@ -223,25 +223,25 @@ export default function SupplierOrdersPage() {
       )}
 
       {/* 3. PO Workspace Table Container */}
-      <div className="bg-white border border-[#E4E4E7] rounded-[8px] shadow-tactile-card overflow-hidden">
+      <div className="bg-white border border-slate-200/90 rounded-xl shadow-tactile-card overflow-hidden">
         {/* Workspace Toolbar */}
-        <div className="p-3.5 border-b border-[#E4E4E7] flex flex-col md:flex-row md:items-center justify-between gap-3 bg-[#FAFAFA]">
+        <div className="p-3.5 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3 bg-[#F8F9FA]">
           {/* Search */}
           <div className="relative w-full md:max-w-xs">
-            <Search className="w-3.5 h-3.5 text-[#64748B] absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search PO, RFQ, chemical, buyer..."
-              className="w-full h-8.5 pl-8.5 pr-3 text-xs bg-white border border-[#E4E4E7] rounded-[6px] focus:outline-none focus:border-[#0052CC] text-[#0F172A] placeholder:text-[#94A3B8]"
+              className="w-full h-9 pl-9 pr-3 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-blue-500/20 text-[#0F172A] placeholder:text-slate-400 shadow-2xs transition-colors"
             />
           </div>
 
           {/* Filters & Sorting */}
           <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-between md:justify-end">
             {/* Desktop Status Filters */}
-            <div className="hidden sm:flex items-center gap-1 bg-[#F4F4F5] p-0.5 rounded-[6px] border border-[#E4E4E7] overflow-x-auto max-w-[580px]">
+            <div className="hidden sm:flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200 overflow-x-auto max-w-[580px]">
               {(
                 [
                   "ALL",
@@ -260,10 +260,10 @@ export default function SupplierOrdersPage() {
                 <button
                   key={f}
                   onClick={() => setStatusFilter(f)}
-                  className={`px-2 py-1 text-xs font-medium rounded-[4px] transition-colors whitespace-nowrap cursor-pointer ${
+                  className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-colors whitespace-nowrap cursor-pointer ${
                     statusFilter === f
-                      ? "bg-white text-[#0052CC] font-semibold shadow-xs"
-                      : "text-[#64748B] hover:text-[#0F172A]"
+                      ? "bg-white text-[#0052CC] shadow-xs"
+                      : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
                   {f === "ALL"
@@ -319,11 +319,12 @@ export default function SupplierOrdersPage() {
 
         {/* Data Table or Compact Empty State */}
         {filteredOrders.length === 0 ? (
-          <div className="py-12 px-4 text-center space-y-2 max-w-md mx-auto">
-            <span className="text-sm font-semibold text-[#0F172A] block">
+          <div className="py-12 px-4 text-center space-y-2.5 max-w-md mx-auto">
+            <Package className="w-8 h-8 text-slate-400 mx-auto" />
+            <h3 className="text-xs font-semibold text-[#0F172A]">
               No Purchase Orders Found
-            </span>
-            <p className="text-xs text-[#64748B]">
+            </h3>
+            <p className="text-xs text-[#64748B] leading-relaxed">
               {searchQuery || statusFilter !== "ALL"
                 ? "No purchase orders match your current search or status filter."
                 : "Confirmed buyer orders will appear here once a quotation is accepted and converted into an order."}
@@ -331,7 +332,7 @@ export default function SupplierOrdersPage() {
             <div className="pt-2">
               <Link
                 href="/dashboard/supplier/rfqs"
-                className="inline-flex items-center gap-1.5 text-xs font-medium text-[#0052CC] hover:underline"
+                className="inline-flex items-center gap-1.5 h-9 px-4 bg-[#0052CC] text-white text-xs font-semibold rounded-lg hover:bg-[#0747A6] transition-colors shadow-xs press-tactile"
               >
                 <span>View RFQ Inquiries</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -342,67 +343,67 @@ export default function SupplierOrdersPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-[#FAFAFA] border-b border-[#E4E4E7] text-[10px] font-semibold uppercase tracking-wider text-[#64748B] font-mono">
-                  <th className="py-2.5 px-4">PO Reference</th>
-                  <th className="py-2.5 px-4">Chemical / Monograph</th>
-                  <th className="py-2.5 px-4">Buyer Organization</th>
-                  <th className="py-2.5 px-4">Contract Value</th>
-                  <th className="py-2.5 px-4">Status</th>
-                  <th className="py-2.5 px-4">Placed Date</th>
-                  <th className="py-2.5 px-4 text-right">Action</th>
+                <tr className="bg-[#F8F9FA] border-b border-slate-200 text-xs font-semibold text-[#64748B]">
+                  <th className="py-3 px-4">PO Reference</th>
+                  <th className="py-3 px-4">Chemical / Monograph</th>
+                  <th className="py-3 px-4">Buyer Organization</th>
+                  <th className="py-3 px-4">Contract Value</th>
+                  <th className="py-3 px-4">Status</th>
+                  <th className="py-3 px-4">Placed Date</th>
+                  <th className="py-3 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E4E4E7] text-xs">
+              <tbody className="divide-y divide-slate-100 text-xs">
                 {filteredOrders.map((order) => {
                   const isPlaced = order.status === "PLACED";
                   return (
                     <tr
                       key={order.id}
                       onClick={() => router.push(`/dashboard/supplier/orders/${order.id}`)}
-                      className="hover:bg-[#FAFAFA] transition-colors cursor-pointer group"
+                      className="hover:bg-[#F8F9FA] transition-colors cursor-pointer group"
                     >
-                      <td className="py-3 px-4 font-mono font-semibold text-[#0052CC]">
+                      <td className="py-3.5 px-4 font-bold text-[#0052CC] group-hover:underline">
                         {order.poNumber}
                       </td>
-                      <td className="py-3 px-4">
+                      <td className="py-3.5 px-4">
                         <span className="font-semibold text-[#0F172A] group-hover:text-[#0052CC] block truncate">
                           {order.productName || "Chemical Product"}
                         </span>
-                        <span className="text-[10px] font-mono text-[#64748B]">
+                        <span className="text-[11px] text-[#64748B]">
                           {order.productId ? `ID: ${order.productId.slice(0, 8)}` : order.poNumber}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-[#475569]">
+                      <td className="py-3.5 px-4 text-[#475569]">
                         Buyer #{order.buyerId ? order.buyerId.slice(0, 8) : "N/A"}
                       </td>
-                      <td className="py-3 px-4 font-mono font-bold text-[#0F172A]">
+                      <td className="py-3.5 px-4 font-bold text-[#0F172A]">
                         {order.currency} {order.totalAmount.toLocaleString()}
                       </td>
-                      <td className="py-3 px-4">
+                      <td className="py-3.5 px-4">
                         <StatusBadge status={order.status} size="sm" />
                       </td>
-                      <td className="py-3 px-4 font-mono text-[11px] text-[#64748B]">
+                      <td className="py-3.5 px-4 text-[11px] text-[#64748B]">
                         {new Date(order.placedAt).toLocaleDateString("en-US", {
                           month: "short",
                           day: "numeric",
                           year: "numeric",
                         })}
                       </td>
-                      <td className="py-3 px-4 text-right">
+                      <td className="py-3.5 px-4 text-right">
                         {isPlaced ? (
                           <button
                             type="button"
                             onClick={(e) => handleQuickConfirm(e, order.id)}
                             disabled={confirmingId === order.id}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[6px] bg-[#059669] hover:bg-[#047857] text-white font-medium text-xs transition-colors disabled:opacity-50 cursor-pointer shadow-xs"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#059669] hover:bg-[#047857] text-white font-semibold text-xs transition-colors disabled:opacity-50 cursor-pointer shadow-xs press-tactile"
                           >
-                            <CheckCircle2 className="w-3 h-3" />
+                            <CheckCircle2 className="w-3.5 h-3.5" />
                             <span>{confirmingId === order.id ? "Confirming..." : "Confirm PO"}</span>
                           </button>
                         ) : (
-                          <span className="text-xs font-medium text-[#64748B] group-hover:text-[#0052CC] inline-flex items-center gap-1">
+                          <span className="text-xs font-semibold text-[#0052CC] group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-1">
                             <span>Manage</span>
-                            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                            <ArrowRight className="w-3.5 h-3.5" />
                           </span>
                         )}
                       </td>

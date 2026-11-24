@@ -273,7 +273,7 @@ export default function NotificationInboxPage() {
               type="button"
               onClick={() => loadNotifications(false)}
               disabled={loading}
-              className="h-9 px-3 bg-white border border-[#E4E4E7] hover:bg-[#FAFAFA] text-[#0F172A] rounded-[6px] transition-colors shadow-xs disabled:opacity-50 cursor-pointer flex items-center gap-1.5 text-xs font-medium"
+              className="h-9 px-3.5 bg-white border border-slate-200 hover:bg-[#F8F9FA] text-[#0F172A] rounded-lg transition-colors shadow-2xs disabled:opacity-50 cursor-pointer flex items-center gap-1.5 text-xs font-semibold press-tactile"
               title="Refresh"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
@@ -283,7 +283,7 @@ export default function NotificationInboxPage() {
               type="button"
               onClick={handleMarkAll}
               disabled={markingAll || unreadCountOnPage === 0}
-              className="h-9 px-3.5 bg-white border border-[#E4E4E7] hover:bg-[#FAFAFA] text-[#0F172A] rounded-[6px] transition-colors shadow-xs disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5 text-xs font-medium"
+              className="h-9 px-3.5 bg-white border border-slate-200 hover:bg-[#F8F9FA] text-[#0F172A] rounded-lg transition-colors shadow-2xs disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5 text-xs font-semibold press-tactile"
             >
               <CheckCheck className="w-3.5 h-3.5 text-[#0052CC]" />
               <span>Mark all as read</span>
@@ -293,7 +293,7 @@ export default function NotificationInboxPage() {
       />
 
       {/* 2. CATEGORY FILTER TABS */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-[#E4E4E7] text-xs">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-slate-200 text-xs">
         {CATEGORY_TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = selectedCategory === tab.value;
@@ -305,10 +305,10 @@ export default function NotificationInboxPage() {
                 setSelectedCategory(tab.value);
                 setPage(0);
               }}
-              className={`h-8 px-3 rounded-[6px] text-xs font-medium transition-colors flex items-center gap-1.5 shrink-0 ${
+              className={`h-9 px-3.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 shrink-0 press-tactile cursor-pointer ${
                 isActive
-                  ? "bg-[#EFF6FF] text-[#0052CC] font-semibold"
-                  : "text-[#475569] hover:bg-[#FAFAFA] hover:text-[#0F172A]"
+                  ? "bg-blue-50 text-[#0052CC] border border-blue-200 shadow-2xs"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-transparent"
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -319,22 +319,22 @@ export default function NotificationInboxPage() {
       </div>
 
       {/* 3. FILTER BAR & SEARCH */}
-      <div className="bg-white border border-[#E4E4E7] rounded-[8px] p-3 shadow-tactile-card flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="bg-white border border-slate-200/90 rounded-xl p-3 shadow-tactile-card flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         {/* Left: Search input */}
         <div className="relative flex-1 max-w-sm">
-          <Search className="w-3.5 h-3.5 text-[#64748B] absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Filter notifications by keyword..."
-            className="w-full h-9 pl-8.5 pr-3 text-xs bg-[#FAFAFA] border border-[#E4E4E7] rounded-[6px] text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#0052CC] focus:bg-white"
+            className="w-full h-9 pl-9 pr-3 text-xs bg-white border border-slate-300 rounded-lg text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-blue-500/20 shadow-2xs transition-colors"
           />
         </div>
 
         {/* Right: Unread Filter, Archive Toggle & Count */}
         <div className="flex items-center gap-2">
-          <div className="inline-flex items-center p-0.5 bg-[#F4F4F5] rounded-[6px] text-xs border border-[#E4E4E7]">
+          <div className="inline-flex items-center p-0.5 bg-slate-100 rounded-lg text-xs border border-slate-200">
             <button
               type="button"
               onClick={() => {
@@ -342,10 +342,10 @@ export default function NotificationInboxPage() {
                 setFilterArchivedOnly(false);
                 setPage(0);
               }}
-              className={`px-2.5 py-1 rounded-[4px] text-xs transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-md text-xs transition-colors cursor-pointer ${
                 !filterUnreadOnly && !filterArchivedOnly
                   ? "bg-white text-[#0052CC] font-semibold shadow-xs"
-                  : "text-[#64748B] hover:text-[#0F172A]"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
             >
               All
@@ -357,16 +357,16 @@ export default function NotificationInboxPage() {
                 setFilterArchivedOnly(false);
                 setPage(0);
               }}
-              className={`px-2.5 py-1 rounded-[4px] text-xs transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3 py-1.5 rounded-md text-xs transition-colors flex items-center gap-1.5 cursor-pointer ${
                 filterUnreadOnly && !filterArchivedOnly
                   ? "bg-white text-[#0052CC] font-semibold shadow-xs"
-                  : "text-[#64748B] hover:text-[#0F172A]"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
             >
               <Filter className="w-3 h-3" />
               <span>Unread</span>
               {unreadCountOnPage > 0 && (
-                <span className="font-mono text-[10px] font-medium bg-[#EFF6FF] text-[#0052CC] px-1.5 py-0.2 rounded-[4px] border border-[#BFDBFE]">
+                <span className="text-[10px] font-semibold bg-blue-100 text-[#0052CC] px-1.5 py-0.5 rounded-md">
                   {unreadCountOnPage}
                 </span>
               )}
@@ -378,10 +378,10 @@ export default function NotificationInboxPage() {
                 setFilterUnreadOnly(false);
                 setPage(0);
               }}
-              className={`px-2.5 py-1 rounded-[4px] text-xs transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3 py-1.5 rounded-md text-xs transition-colors flex items-center gap-1.5 cursor-pointer ${
                 filterArchivedOnly
                   ? "bg-white text-[#0052CC] font-semibold shadow-xs"
-                  : "text-[#64748B] hover:text-[#0F172A]"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
             >
               <Archive className="w-3 h-3" />
@@ -389,7 +389,7 @@ export default function NotificationInboxPage() {
             </button>
           </div>
 
-          <span className="text-xs text-[#64748B] font-mono hidden md:inline">
+          <span className="text-xs text-[#64748B] hidden md:inline">
             Total: <strong className="text-[#0F172A]">{totalElements}</strong>
           </span>
         </div>

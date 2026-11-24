@@ -44,7 +44,7 @@ export function KpiStatCard({
     emerald: "text-[#00875A] bg-[#E3FCEF] border-[#ABF5D1]",
     amber: "text-[#FF991F] bg-[#FFF0B3] border-[#FFE380]",
     rose: "text-[#DE350B] bg-[#FFEBE6] border-[#FFBDAD]",
-    purple: "text-[#6554C0] bg-[#EAE6FF] border-[#C0B6F2]",
+    purple: "text-[#0052CC] bg-[#EFF6FF] border-[#BFDBFE]",
     neutral: "text-[#172B4D] bg-[#F4F5F7] border-[#E4E4E7]",
   };
 

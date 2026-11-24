@@ -2,61 +2,53 @@ import { Search, ListFilter, FileEdit, FileText, Package } from "lucide-react";
 
 export function ProcurementWorkflow() {
   const steps = [
-    { step: "01", title: "Search", desc: "Find verified ingredients", icon: Search },
-    { step: "02", title: "Compare", desc: "Specs, price & lead time", icon: ListFilter },
-    { step: "03", title: "RFQ", desc: "Request quotes instantly", icon: FileEdit },
-    { step: "04", title: "Documentation", desc: "COA, MSDS & compliance", icon: FileText },
-    { step: "05", title: "Procurement", desc: "Order & track shipping", icon: Package },
+    { title: "Search", desc: "Find verified ingredients by CAS or formula", icon: Search },
+    { title: "Compare", desc: "Evaluate purity specs, pricing & lead time", icon: ListFilter },
+    { title: "RFQ", desc: "Request binding quotes from certified plants", icon: FileEdit },
+    { title: "Documentation", desc: "Inspect lot COA, MSDS & regulatory filings", icon: FileText },
+    { title: "Procurement", desc: "Escrow-backed ordering & custody tracking", icon: Package },
   ];
 
   return (
-    <div className="bg-[#0F172A] border border-[#1E293B] rounded-[8px] p-6 sm:p-8 flex flex-col h-full shadow-tactile-card">
-      
+    <div className="bg-[#091E42] border border-[#1E293B] rounded-2xl p-6 sm:p-8 flex flex-col h-full shadow-tactile-card text-white">
       {/* Header */}
-      <div className="mb-6 pb-4 border-b border-[#1E293B]">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#0052CC]" />
-          <span className="text-[10px] font-mono font-medium text-[#60A5FA] uppercase tracking-wider">
-            Operational Protocol
-          </span>
-        </div>
-        <h2 className="text-xl sm:text-2xl font-semibold text-white tracking-tight leading-snug">
-          Structured Procurement from Inquiry to Consignment
+      <div className="mb-6 pb-4 border-b border-white/10 space-y-1.5">
+        <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
+          Structured Procurement Lifecycle
         </h2>
-        <p className="text-xs text-slate-300 leading-relaxed mt-1">
-          Complete commercial lifecycle with binding quotation commitments, verified technical specifications, and end-to-end shipment custody.
+        <p className="text-xs text-slate-300 leading-relaxed">
+          Binding quotation commitments, verified technical specifications, and end-to-end consignment custody.
         </p>
       </div>
 
       {/* Vertical Steps */}
       <div className="relative flex-1">
         {/* Vertical Line */}
-        <div className="absolute left-[17px] top-4 bottom-4 w-px bg-slate-800" />
+        <div className="absolute left-[17px] top-4 bottom-4 w-px bg-white/10" />
         
-        <div className="space-y-6 relative">
-          {steps.map((s) => {
+        <div className="space-y-5 relative">
+          {steps.map((s, idx) => {
             const Icon = s.icon;
             return (
-              <div key={s.step} className="flex items-center gap-4 group">
-                <div className="relative z-10 w-9 h-9 rounded-[6px] border border-slate-700 bg-[#1E293B] flex items-center justify-center group-hover:border-[#0052CC] transition-colors">
-                  <Icon className="w-4 h-4 text-[#60A5FA]" />
+              <div key={s.title} className="flex items-center gap-4 group">
+                <div className="relative z-10 w-9 h-9 rounded-lg border border-white/15 bg-white/10 flex items-center justify-center group-hover:border-blue-400 group-hover:bg-blue-600 transition-colors duration-200">
+                  <Icon className="w-4 h-4 text-blue-200 group-hover:text-white transition-colors" />
                 </div>
                 
                 <div className="flex-1 flex justify-between items-center">
                   <div>
                     <h3 className="font-semibold text-white text-xs mb-0.5">{s.title}</h3>
-                    <p className="text-[11px] text-slate-400">{s.desc}</p>
+                    <p className="text-[11px] text-slate-300">{s.desc}</p>
                   </div>
-                  <div className="text-[10px] font-mono text-slate-500 font-semibold">
-                    {s.step}
-                  </div>
+                  <span className="text-xs text-slate-400 font-medium">
+                    Step {idx + 1}
+                  </span>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
-      
     </div>
   );
 }

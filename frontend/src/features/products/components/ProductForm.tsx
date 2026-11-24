@@ -89,7 +89,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
   return (
     <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl">
       {/* 01 / PRODUCT IDENTITY */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+      <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-tactile-card space-y-6">
         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 pb-2 border-b border-slate-100">01 / Product Identity</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-1 md:col-span-2">
@@ -101,7 +101,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               value={formData.name}
               onChange={handleChange}
               disabled={isLoading}
-              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.name ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-purple-500 focus:ring-purple-200'}`}
+              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.name ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-[#0052CC] focus:ring-blue-100'}`}
               placeholder="e.g. Ibuprofen API"
             />
             {errors.name && <p className="text-xs text-rose-600 mt-1">{errors.name}</p>}
@@ -116,7 +116,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               onChange={handleChange}
               disabled={isLoading}
               rows={4}
-              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.description ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-purple-500 focus:ring-purple-200'}`}
+              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.description ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-[#0052CC] focus:ring-blue-100'}`}
               placeholder="Detailed description of the product"
             />
             {errors.description && <p className="text-xs text-rose-600 mt-1">{errors.description}</p>}
@@ -130,7 +130,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               value={formData.category}
               onChange={handleChange}
               disabled={isLoading}
-              className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:border-purple-500 focus:ring-purple-200 focus:outline-none transition-shadow bg-white"
+              className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:border-[#0052CC] focus:ring-blue-100 focus:outline-none transition-shadow bg-white"
             >
               <option value="API">API</option>
               <option value="INTERMEDIATE">Intermediate</option>
@@ -150,7 +150,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               value={formData.casNumber}
               onChange={handleChange}
               disabled={isLoading}
-              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.casNumber ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-purple-500 focus:ring-purple-200'}`}
+              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.casNumber ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-[#0052CC] focus:ring-blue-100'}`}
               placeholder="e.g. 15687-27-1"
             />
             {errors.casNumber && <p className="text-xs text-rose-600 mt-1">{errors.casNumber}</p>}
@@ -165,7 +165,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               value={formData.molecularFormula}
               onChange={handleChange}
               disabled={isLoading}
-              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.molecularFormula ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-purple-500 focus:ring-purple-200'}`}
+              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.molecularFormula ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-[#0052CC] focus:ring-blue-100'}`}
               placeholder="e.g. C13H18O2"
             />
             {errors.molecularFormula && <p className="text-xs text-rose-600 mt-1">{errors.molecularFormula}</p>}
@@ -174,7 +174,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
       </div>
 
       {/* 02 / TECHNICAL SPECIFICATION */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+      <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-tactile-card space-y-6">
         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 pb-2 border-b border-slate-100">02 / Technical Specification</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-1">
@@ -187,7 +187,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               value={formData.purity === undefined ? "" : formData.purity}
               onChange={handleChange}
               disabled={isLoading}
-              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.purity ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-purple-500 focus:ring-purple-200'}`}
+              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.purity ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-[#0052CC] focus:ring-blue-100'}`}
               placeholder="e.g. 99.5"
             />
             {errors.purity && <p className="text-xs text-rose-600 mt-1">{errors.purity}</p>}
@@ -202,7 +202,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               value={formData.grade}
               onChange={handleChange}
               disabled={isLoading}
-              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.grade ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-purple-500 focus:ring-purple-200'}`}
+              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.grade ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-[#0052CC] focus:ring-blue-100'}`}
               placeholder="e.g. USP, EP, Technical"
             />
             {errors.grade && <p className="text-xs text-rose-600 mt-1">{errors.grade}</p>}
@@ -217,7 +217,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               value={formData.packaging}
               onChange={handleChange}
               disabled={isLoading}
-              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.packaging ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-purple-500 focus:ring-purple-200'}`}
+              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.packaging ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-[#0052CC] focus:ring-blue-100'}`}
               placeholder="e.g. 25kg Fiber Drum"
             />
             {errors.packaging && <p className="text-xs text-rose-600 mt-1">{errors.packaging}</p>}
@@ -226,7 +226,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
       </div>
 
       {/* 03 / COMMERCIAL TERMS */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+      <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-tactile-card space-y-6">
         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 pb-2 border-b border-slate-100">03 / Commercial Terms</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-1">
@@ -239,7 +239,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               value={formData.price === undefined ? "" : formData.price}
               onChange={handleChange}
               disabled={isLoading}
-              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.price ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-purple-500 focus:ring-purple-200'}`}
+              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.price ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-[#0052CC] focus:ring-blue-100'}`}
               placeholder="0.00"
             />
             {errors.price && <p className="text-xs text-rose-600 mt-1">{errors.price}</p>}
@@ -254,7 +254,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               value={formData.stock === undefined ? "" : formData.stock}
               onChange={handleChange}
               disabled={isLoading}
-              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.stock ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-purple-500 focus:ring-purple-200'}`}
+              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.stock ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-[#0052CC] focus:ring-blue-100'}`}
               placeholder="0"
             />
             {errors.stock && <p className="text-xs text-rose-600 mt-1">{errors.stock}</p>}
@@ -270,7 +270,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               value={formData.moqKg === undefined ? "" : formData.moqKg}
               onChange={handleChange}
               disabled={isLoading}
-              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.moqKg ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-purple-500 focus:ring-purple-200'}`}
+              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.moqKg ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-[#0052CC] focus:ring-blue-100'}`}
               placeholder="Minimum Order Quantity"
             />
             {errors.moqKg && <p className="text-xs text-rose-600 mt-1">{errors.moqKg}</p>}
@@ -285,7 +285,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               value={formData.leadTimeDays === undefined ? "" : formData.leadTimeDays}
               onChange={handleChange}
               disabled={isLoading}
-              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.leadTimeDays ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-purple-500 focus:ring-purple-200'}`}
+              className={`w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.leadTimeDays ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-[#0052CC] focus:ring-blue-100'}`}
               placeholder="Average delivery lead time"
             />
             {errors.leadTimeDays && <p className="text-xs text-rose-600 mt-1">{errors.leadTimeDays}</p>}
@@ -294,7 +294,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
       </div>
 
       {/* 04 / AVAILABILITY & COMPLIANCE */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+      <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-tactile-card space-y-6">
         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 pb-2 border-b border-slate-100">04 / Availability & Compliance</h3>
         
         <div className="space-y-1">
@@ -305,7 +305,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
             value={formData.availabilityStatus}
             onChange={handleChange}
             disabled={isLoading}
-            className={`w-full md:w-1/2 px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.availabilityStatus ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-purple-500 focus:ring-purple-200'} bg-white`}
+            className={`w-full md:w-1/2 px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:outline-none transition-shadow ${errors.availabilityStatus ? 'border-rose-500 focus:ring-rose-200' : 'border-slate-300 focus:border-[#0052CC] focus:ring-blue-100'} bg-white`}
           >
             <option value="IN_STOCK">In Stock</option>
             <option value="OUT_OF_STOCK">Out of Stock</option>
@@ -323,7 +323,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               checked={formData.coaAvailable}
               onChange={handleChange}
               disabled={isLoading}
-              className="w-4 h-4 text-purple-600 border-slate-300 rounded focus:ring-purple-500"
+              className="w-4 h-4 text-[#0052CC] border-slate-300 rounded focus:ring-blue-500"
             />
             <span className="text-sm font-medium text-slate-700 group-hover:text-slate-900">Certificate of Analysis (CoA) Available</span>
           </label>
@@ -336,7 +336,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               checked={formData.msdsAvailable}
               onChange={handleChange}
               disabled={isLoading}
-              className="w-4 h-4 text-purple-600 border-slate-300 rounded focus:ring-purple-500"
+              className="w-4 h-4 text-[#0052CC] border-slate-300 rounded focus:ring-blue-500"
             />
             <span className="text-sm font-medium text-slate-700 group-hover:text-slate-900">Material Safety Data Sheet (MSDS) Available</span>
           </label>
@@ -349,7 +349,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
               checked={formData.exportReady}
               onChange={handleChange}
               disabled={isLoading}
-              className="w-4 h-4 text-purple-600 border-slate-300 rounded focus:ring-purple-500"
+              className="w-4 h-4 text-[#0052CC] border-slate-300 rounded focus:ring-blue-500"
             />
             <span className="text-sm font-medium text-slate-700 group-hover:text-slate-900">Export Ready / Compliant</span>
           </label>
@@ -360,7 +360,7 @@ export function ProductForm({ initialData, onSubmit, isLoading, submitLabel }: P
         <button
           type="submit"
           disabled={isLoading}
-          className="px-6 py-2.5 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm shadow-sm transition-colors disabled:opacity-50 flex items-center justify-center min-w-[140px]"
+          className="px-6 py-2.5 rounded-xl bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white font-bold text-sm shadow-sm transition-colors disabled:opacity-50 flex items-center justify-center min-w-[140px]"
         >
           {isLoading ? (
             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

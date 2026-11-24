@@ -63,7 +63,7 @@ export default function MasterCatalogQualityPage() {
           Calculating catalog quality scores...
         </div>
       ) : (
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-tactile-card overflow-hidden">
           <div className="p-6 border-b border-slate-100 flex items-center justify-between">
             <h2 className="text-sm font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-2">
               <FileText className="w-4 h-4 text-blue-600" />

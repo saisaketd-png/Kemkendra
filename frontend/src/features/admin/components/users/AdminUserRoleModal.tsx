@@ -84,12 +84,12 @@ export function AdminUserRoleModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="role-modal-title"
-        className="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden"
+        className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden"
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 bg-slate-50/50">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-purple-50 text-purple-700 border border-purple-200">
+            <div className="p-2 rounded-xl bg-blue-50 text-[#0052CC] border border-blue-200/80">
               <Shield className="w-5 h-5" />
             </div>
             <div>
@@ -126,9 +126,9 @@ export function AdminUserRoleModal({
                 return (
                   <label
                     key={r.role}
-                    className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
+                    className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all ${
                       isSelected
-                        ? "bg-purple-50/60 border-purple-300 ring-2 ring-purple-500/20"
+                        ? "bg-blue-50/60 border-blue-300 ring-2 ring-blue-500/20"
                         : "bg-white border-slate-200 hover:bg-slate-50"
                     }`}
                   >
@@ -138,7 +138,7 @@ export function AdminUserRoleModal({
                       value={r.role}
                       checked={isSelected}
                       onChange={() => setSelectedRole(r.role)}
-                      className="mt-1 text-purple-600 focus:ring-purple-500"
+                      className="mt-1 text-[#0052CC] focus:ring-blue-500"
                     />
                     <div className="space-y-1">
                       <p className="text-xs font-bold text-slate-900">{r.label}</p>
@@ -163,7 +163,7 @@ export function AdminUserRoleModal({
             <button
               type="submit"
               disabled={isLoading || selectedRole === user.role}
-              className="flex items-center gap-2 px-5 py-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 active:bg-purple-800 rounded-xl shadow-xs transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2 text-xs font-bold text-white bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] rounded-xl shadow-xs transition-colors disabled:opacity-50"
             >
               {isLoading && (
                 <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />

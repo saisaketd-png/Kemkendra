@@ -118,31 +118,31 @@ export default async function CategoryDetailPage({
   // If Contract Manufacturing (Coming Soon)
   if (categoryMeta.isComingSoon) {
     return (
-      <div className="min-h-screen flex flex-col bg-[#F7F9FC] font-sans text-[#0F172A] antialiased">
+      <div className="min-h-screen flex flex-col bg-[#F8F9FA] font-sans text-slate-900 antialiased">
         <Navbar />
         <main className="flex-1 py-12">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-center">
-            <nav className="flex items-center justify-center gap-2 text-xs font-semibold text-[#64748B] mb-8">
-              <Link href="/" className="hover:text-[#155EEF]">Home</Link>
-              <ChevronRight className="w-3.5 h-3.5" />
-              <Link href="/categories" className="hover:text-[#155EEF]">Categories</Link>
-              <ChevronRight className="w-3.5 h-3.5" />
-              <span className="text-[#0F172A] font-bold">{categoryMeta.name}</span>
+            <nav className="flex items-center justify-center gap-2 text-xs font-semibold text-slate-500 mb-8">
+              <Link href="/" className="hover:text-[#0052CC] transition-colors">Home</Link>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+              <Link href="/categories" className="hover:text-[#0052CC] transition-colors">Categories</Link>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+              <span className="text-slate-900 font-bold">{categoryMeta.name}</span>
             </nav>
 
-            <div className="bg-white border border-[#DCE3EC] rounded-3xl p-10 sm:p-14 shadow-2xs space-y-6">
-              <div className="w-16 h-16 rounded-2xl bg-[#EFF4FF] border border-[#BFDBFE] text-[#155EEF] flex items-center justify-center mx-auto">
+            <div className="bg-white border border-slate-200/90 rounded-2xl p-10 sm:p-14 shadow-tactile-card space-y-6">
+              <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-200/80 text-[#0052CC] flex items-center justify-center mx-auto shadow-2xs">
                 <Factory className="w-8 h-8" />
               </div>
 
               <div className="space-y-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-extrabold uppercase bg-amber-50 text-amber-800 border border-amber-200">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200">
                   <Clock className="w-3.5 h-3.5" /> Coming Soon
                 </span>
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0B1F3A]">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-[#091E42] tracking-tight">
                   {categoryMeta.name}
                 </h1>
-                <p className="text-xs sm:text-sm text-[#64748B] max-w-xl mx-auto leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
                   Custom synthesis, formulation scaling, and verified CMO/CDMO manufacturing services will be introduced to KemKendra in a future phase.
                 </p>
               </div>
@@ -150,13 +150,13 @@ export default async function CategoryDetailPage({
               <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link
                   href="/products"
-                  className="px-6 py-2.5 bg-[#155EEF] hover:bg-[#104EC6] text-white text-xs font-bold rounded-xl shadow-2xs transition-colors"
+                  className="px-6 py-2.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-bold rounded-lg shadow-2xs transition-colors cursor-pointer"
                 >
                   Explore Active Chemical Catalog
                 </Link>
                 <Link
                   href="/categories"
-                  className="px-6 py-2.5 bg-white border border-[#DCE3EC] hover:bg-[#F8FAFC] text-[#0F172A] text-xs font-bold rounded-xl transition-colors"
+                  className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-900 text-xs font-bold rounded-lg transition-colors cursor-pointer"
                 >
                   View All Categories
                 </Link>
@@ -252,7 +252,7 @@ export default async function CategoryDetailPage({
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F7F9FC] font-sans text-[#0F172A] antialiased">
+    <div className="min-h-screen flex flex-col bg-[#F8F9FA] font-sans text-slate-900 antialiased">
       {/* Schema.org Structured Data */}
       <script
         type="application/ld+json"
@@ -269,28 +269,28 @@ export default async function CategoryDetailPage({
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           
           {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-xs font-semibold text-[#64748B]">
-            <Link href="/" className="hover:text-[#155EEF]">Home</Link>
-            <ChevronRight className="w-3.5 h-3.5 text-[#94A3B8]" />
-            <Link href="/categories" className="hover:text-[#155EEF]">Categories</Link>
-            <ChevronRight className="w-3.5 h-3.5 text-[#94A3B8]" />
-            <span className="text-[#0F172A] font-extrabold">{categoryMeta.name}</span>
+          <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+            <Link href="/" className="hover:text-[#0052CC] transition-colors">Home</Link>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <Link href="/categories" className="hover:text-[#0052CC] transition-colors">Categories</Link>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-slate-900 font-bold">{categoryMeta.name}</span>
           </nav>
 
           {/* Category Header */}
-          <div className="bg-white border border-[#DCE3EC] rounded-3xl p-6 sm:p-8 shadow-2xs space-y-3">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-tactile-card space-y-3">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#155EEF] bg-[#EFF4FF] px-2.5 py-0.5 rounded-md">
+              <span className="text-[11px] font-semibold text-[#0052CC] bg-blue-50 border border-blue-200/80 px-2.5 py-0.5 rounded-full">
                 Canonical Category
               </span>
-              <span className="text-xs font-mono font-bold text-[#64748B]">
+              <span className="text-xs font-mono font-bold text-slate-500">
                 {totalElements} {totalElements === 1 ? "Product" : "Products"} Registered
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0B1F3A] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#091E42] tracking-tight">
               {categoryMeta.name}
             </h1>
-            <p className="text-xs sm:text-sm text-[#64748B] max-w-3xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
               {categoryMeta.description} Compare commercial availability, batch purity, and lead times from verified manufacturers.
             </p>
           </div>
@@ -307,20 +307,20 @@ export default async function CategoryDetailPage({
               <ProductToolbar totalResults={totalElements} />
 
               {products.length === 0 ? (
-                <div className="bg-white border border-[#DCE3EC] p-10 rounded-2xl text-center shadow-2xs space-y-3">
-                  <div className="w-12 h-12 rounded-xl bg-[#F8FAFC] border border-[#DCE3EC] flex items-center justify-center text-[#64748B] mx-auto">
+                <div className="bg-white border border-slate-200/90 p-10 rounded-2xl text-center shadow-tactile-card space-y-3">
+                  <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 mx-auto">
                     <Layers className="w-6 h-6" />
                   </div>
-                  <h3 className="text-sm font-extrabold uppercase tracking-wider text-[#0F172A]">
+                  <h3 className="text-sm font-bold text-slate-900">
                     No Products Found in this Category
                   </h3>
-                  <p className="text-xs text-[#64748B] max-w-md mx-auto leading-relaxed">
+                  <p className="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
                     No active master chemicals currently match your filter criteria in {categoryMeta.name}. Sourcing requests can be submitted through our custom RFQ desk.
                   </p>
                   <div className="pt-2">
                     <Link
                       href="/rfqs/new"
-                      className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#155EEF] hover:bg-[#104EC6] text-white text-xs font-bold rounded-xl shadow-2xs transition-colors"
+                      className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-bold rounded-lg shadow-2xs transition-colors cursor-pointer"
                     >
                       Request Sourcing Quote
                     </Link>

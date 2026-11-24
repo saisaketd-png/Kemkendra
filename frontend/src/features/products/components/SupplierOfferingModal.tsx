@@ -586,10 +586,10 @@ export default function SupplierOfferingModal({
                   return (
                     <div
                       key={doc.id}
-                      className="bg-white border border-[#E2E8F0] hover:border-[#0052CC] p-3 rounded-xl transition-all shadow-2xs flex flex-col justify-between space-y-2"
+                      className="bg-white border border-slate-200 hover:border-[#0052CC] p-3 rounded-xl transition-all shadow-2xs flex flex-col justify-between space-y-2"
                     >
                       <div className="flex items-start gap-2.5">
-                        <div className="w-8 h-8 rounded-lg bg-[#EFF4FF] text-[#0052CC] flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200/80 text-[#0052CC] flex items-center justify-center shrink-0">
                           <FileText className="w-4 h-4" />
                         </div>
                         <div className="min-w-0 flex-1">

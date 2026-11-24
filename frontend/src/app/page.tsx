@@ -4,6 +4,7 @@ import { Product } from "@/features/products/types/product";
 import { Navbar } from "@/features/home/components/Navbar";
 import { SearchHeader } from "@/features/home/components/SearchHeader";
 import { FeaturedCatalogPreview } from "@/features/home/components/FeaturedCatalogPreview";
+import { HomeSourcingSection } from "@/features/home/components/HomeSourcingSection";
 import { CategoryShortcuts } from "@/features/home/components/CategoryShortcuts";
 import { BrandStatement } from "@/features/home/components/BrandStatement";
 import { BuyerSupplierSplit } from "@/features/home/components/BuyerSupplierSplit";
@@ -91,7 +92,7 @@ export default async function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white font-sans text-[#0F172A] antialiased">
+    <div className="min-h-screen flex flex-col bg-[#F8F9FA] font-sans text-[#0F172A] antialiased">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationJsonLd) }}
@@ -110,6 +111,9 @@ export default async function HomePage() {
 
         {/* 3. MARKETPLACE CATALOG DISCOVERY: Products in Demand */}
         <FeaturedCatalogPreview products={products} />
+
+        {/* 3.5. CUSTOM CHEMICAL SOURCING DESK: Fast Intake & Reference Tracking */}
+        <HomeSourcingSection />
 
         {/* 4. PROCUREMENT PIPELINE: 6-Stage Engineering Process Diagram + Large Editorial Statement */}
         <BrandStatement />

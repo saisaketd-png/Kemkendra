@@ -3,38 +3,34 @@ import { ArrowRight, ShieldCheck } from "lucide-react";
 
 export function CTASection() {
   return (
-    <section className="py-16 md:py-24 bg-[#F8FAFC]">
+    <section className="py-16 md:py-20 bg-[#F8F9FA]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-r from-blue-600 via-blue-600 to-teal-500 rounded-3xl p-8 sm:p-12 md:p-16 text-white text-center shadow-xl relative overflow-hidden">
-          {/* Background Decorative Graphic */}
-          <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 -mb-12 -ml-12 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none" />
-
+        <div className="bg-[#091E42] rounded-2xl p-8 sm:p-12 md:p-14 text-white text-center shadow-tactile-card border border-slate-800 relative overflow-hidden">
           <div className="relative z-10 max-w-3xl mx-auto space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-white/20">
-              <ShieldCheck className="w-4 h-4 text-teal-500" />
-              <span>Join 1,200+ Audited Manufacturers</span>
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span>Verified Chemical Manufacturers</span>
             </div>
 
-            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight">
               Start Sourcing with Verified Global Chemical Suppliers
             </h2>
 
-            <p className="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            <p className="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
               Accelerate your chemical procurement timeline. Get instant quotes, sample shipments, and compliant regulatory documentation today.
             </p>
 
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href="#products"
-                className="w-full sm:w-auto px-8 py-3.5 bg-white text-blue-600 hover:bg-slate-100 font-bold text-sm rounded-full transition-all shadow-md flex items-center justify-center gap-2 min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                href="/products"
+                className="w-full sm:w-auto px-6 py-3 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white font-bold text-xs rounded-lg transition-colors shadow-2xs flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Explore Products</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/suppliers"
-                className="w-full sm:w-auto px-8 py-3.5 bg-transparent hover:bg-white/10 text-white font-bold text-sm rounded-full border border-white/30 transition-all flex items-center justify-center min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                className="w-full sm:w-auto px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-lg border border-white/20 transition-colors flex items-center justify-center cursor-pointer"
               >
                 Verified Suppliers
               </Link>

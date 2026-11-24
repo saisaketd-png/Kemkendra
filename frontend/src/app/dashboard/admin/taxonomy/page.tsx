@@ -201,7 +201,7 @@ export default function AdminTaxonomyPage() {
       case "GRADE":
         return <ShieldCheck className="w-4 h-4 text-emerald-600" />;
       case "PACKAGING":
-        return <Package className="w-4 h-4 text-purple-600" />;
+        return <Package className="w-4 h-4 text-slate-700" />;
       case "UNIT":
         return <Scale className="w-4 h-4 text-amber-600" />;
       default:

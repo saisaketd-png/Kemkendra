@@ -424,7 +424,7 @@ export default function AdminAnnouncementsPage() {
           <div className="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-gray-200 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-4 border-b border-gray-100">
               <div className="flex items-center gap-2">
-                <Megaphone className="w-5 h-5 text-purple-600" />
+                <Megaphone className="w-5 h-5 text-[#0052CC]" />
                 <h3 className="text-lg font-bold text-gray-900">Create Platform Announcement</h3>
               </div>
               <button onClick={() => setShowCreateModal(false)} className="text-gray-400 hover:text-gray-600 font-bold">
@@ -440,7 +440,7 @@ export default function AdminAnnouncementsPage() {
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
                   placeholder="e.g. Scheduled Platform Maintenance"
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
                 />
               </div>
 
@@ -451,7 +451,7 @@ export default function AdminAnnouncementsPage() {
                   value={formMessage}
                   onChange={(e) => setFormMessage(e.target.value)}
                   placeholder="Detailed communication broadcast to users..."
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
                 />
               </div>
 
@@ -461,7 +461,7 @@ export default function AdminAnnouncementsPage() {
                   <select
                     value={formSeverity}
                     onChange={(e: any) => setFormSeverity(e.target.value)}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
                   >
                     <option value="INFO">INFO (Standard Notice)</option>
                     <option value="WARNING">WARNING (Operational Impact)</option>
@@ -474,7 +474,7 @@ export default function AdminAnnouncementsPage() {
                   <select
                     value={formAudience}
                     onChange={(e: any) => setFormAudience(e.target.value)}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
                   >
                     <option value="ALL">All Marketplace Users</option>
                     <option value="BUYERS">Enterprise Buyers</option>
@@ -491,7 +491,7 @@ export default function AdminAnnouncementsPage() {
                     type="checkbox"
                     checked={formSendInApp}
                     onChange={(e) => setFormSendInApp(e.target.checked)}
-                    className="rounded text-purple-600 focus:ring-purple-500"
+                    className="rounded text-[#0052CC] focus:ring-blue-500"
                   />
                   <span>Dispatch In-App Notification</span>
                 </label>
@@ -501,7 +501,7 @@ export default function AdminAnnouncementsPage() {
                     type="checkbox"
                     checked={formSendEmail}
                     onChange={(e) => setFormSendEmail(e.target.checked)}
-                    className="rounded text-purple-600 focus:ring-purple-500"
+                    className="rounded text-[#0052CC] focus:ring-blue-500"
                   />
                   <span>Send Email Broadcast</span>
                 </label>
@@ -509,12 +509,12 @@ export default function AdminAnnouncementsPage() {
 
               {/* Preview Box if requested */}
               {previewData && (
-                <div className="mt-4 p-4 bg-purple-50/70 border border-purple-200 rounded-xl space-y-2 text-xs">
-                  <div className="flex items-center justify-between text-purple-900 font-bold">
+                <div className="mt-4 p-4 bg-blue-50/70 border border-blue-200 rounded-xl space-y-2 text-xs">
+                  <div className="flex items-center justify-between text-blue-900 font-bold">
                     <span>Audience Preview</span>
                     <span>~{previewData.estimatedRecipientCount} Estimated Recipients</span>
                   </div>
-                  <div className="p-3 bg-white rounded-lg border border-purple-100 text-gray-800">
+                  <div className="p-3 bg-white rounded-lg border border-blue-100 text-gray-800">
                     <strong className="block text-sm">{previewData.title}</strong>
                     <p className="mt-1 text-gray-600">{previewData.formattedMessage}</p>
                   </div>
@@ -554,7 +554,7 @@ export default function AdminAnnouncementsPage() {
                   type="button"
                   onClick={() => handleCreateAnnouncement(true)}
                   disabled={actionLoading}
-                  className="inline-flex items-center gap-1.5 px-5 py-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors shadow-sm"
+                  className="inline-flex items-center gap-1.5 px-5 py-2 text-xs font-bold text-white bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] rounded-lg transition-colors shadow-sm"
                 >
                   <Send className="w-4 h-4" />
                   Publish & Broadcast

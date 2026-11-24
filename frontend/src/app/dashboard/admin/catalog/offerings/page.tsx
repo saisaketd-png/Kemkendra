@@ -114,9 +114,9 @@ export default function AdminOfferingGovernanceDashboardPage() {
           <span className="text-[10px] font-bold uppercase text-blue-800 block">Under Review</span>
           <strong className="text-xl font-black text-blue-900">{countUnderReview}</strong>
         </div>
-        <div className="p-3 bg-purple-50/80 border border-purple-200 rounded-2xl">
-          <span className="text-[10px] font-bold uppercase text-purple-800 block">Info Required</span>
-          <strong className="text-xl font-black text-purple-900">{countInfoReq}</strong>
+        <div className="p-3 bg-amber-50/80 border border-amber-200 rounded-2xl">
+          <span className="text-[10px] font-bold uppercase text-amber-800 block">Info Required</span>
+          <strong className="text-xl font-black text-amber-900">{countInfoReq}</strong>
         </div>
         <div className="p-3 bg-emerald-50/80 border border-emerald-200 rounded-2xl">
           <span className="text-[10px] font-bold uppercase text-emerald-800 block">Approved</span>
@@ -141,7 +141,7 @@ export default function AdminOfferingGovernanceDashboardPage() {
       </div>
 
       {/* Filter & Search Ribbon */}
-      <div className="p-5 bg-white border border-slate-200 rounded-3xl shadow-2xs space-y-4">
+      <div className="p-5 bg-white border border-slate-200/90 rounded-2xl shadow-tactile-card space-y-4">
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
@@ -175,7 +175,7 @@ export default function AdminOfferingGovernanceDashboardPage() {
       </div>
 
       {/* Offerings Governance Queue Table */}
-      <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-2xs">
+      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-tactile-card">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50/80 border-b border-slate-100 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
@@ -252,8 +252,8 @@ export default function AdminOfferingGovernanceDashboardPage() {
                       </td>
                       <td className="px-4 py-3.5">
                         {off.createdByRole === "ADMIN" ? (
-                          <span className="px-2 py-0.5 bg-purple-100 text-purple-800 text-[10px] font-extrabold rounded-md inline-flex items-center gap-1">
-                            <ShieldCheck className="w-3 h-3 text-purple-600" /> Admin ({off.createdByAdminName || "Admin"})
+                          <span className="px-2 py-0.5 bg-blue-50 text-[#0052CC] border border-blue-200/80 text-[10px] font-extrabold rounded-md inline-flex items-center gap-1">
+                            <ShieldCheck className="w-3 h-3 text-[#0052CC]" /> Admin ({off.createdByAdminName || "Admin"})
                           </span>
                         ) : (
                           <span className="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] font-bold rounded-md inline-block">
@@ -265,7 +265,7 @@ export default function AdminOfferingGovernanceDashboardPage() {
                         <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-extrabold uppercase inline-block ${
                           modStatus === "APPROVED" ? "bg-emerald-50 text-emerald-800 border border-emerald-200" :
                           modStatus === "UNDER_REVIEW" ? "bg-blue-50 text-blue-800 border border-blue-200" :
-                          modStatus === "INFORMATION_REQUIRED" ? "bg-purple-50 text-purple-800 border border-purple-200" :
+                          modStatus === "INFORMATION_REQUIRED" ? "bg-amber-50 text-amber-800 border border-amber-200" :
                           modStatus === "PENDING_REVIEW" ? "bg-amber-50 text-amber-800 border border-amber-200" :
                           modStatus === "FLAGGED" ? "bg-amber-100 text-amber-900 border border-amber-300" :
                           "bg-rose-50 text-rose-800 border border-rose-200"

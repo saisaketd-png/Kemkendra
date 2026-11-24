@@ -12,7 +12,7 @@ import { ProductPagination } from "@/features/products/components/ProductPaginat
 import { ProductCatalogHero } from "@/features/products/components/ProductCatalogHero";
 import { getUniqueCategories, getUniqueCountries } from "@/features/products/utils/extractFilters";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ArrowRight, FlaskConical, ShieldCheck, FileCheck, Layers } from "lucide-react";
 import { serializeJsonLd } from "@/shared/utils/security";
 
 export const dynamic = "force-dynamic";
@@ -157,7 +157,7 @@ export default async function ProductsPage(props: {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC] font-sans text-[#1E293B] antialiased">
+    <div className="min-h-screen flex flex-col bg-[#F8F9FA] font-sans text-[#0F172A] antialiased">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd) }}
@@ -187,10 +187,10 @@ export default async function ProductsPage(props: {
           {/* Operational Top Catalog Area */}
           <ProductCatalogHero categories={categories} />
 
-          {/* Two-Column Discovery Layout with Sticky Filter Rail */}
-          <div className="flex flex-col lg:flex-row gap-8 items-start">
-            {/* Left Filter Rail (320px Sticky on Desktop) */}
-            <aside className="w-full lg:w-[320px] shrink-0 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto pr-0 lg:pr-1">
+          {/* Two-Column Discovery Layout with Stick-Fixed Filter Rail */}
+          <div className="flex flex-col lg:flex-row gap-8 items-start relative">
+            {/* Left Filter Rail (320px Stick-Fixed on Desktop - does not move when scrolling right) */}
+            <aside className="w-full lg:w-[320px] shrink-0 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto pr-0 lg:pr-1.5 custom-scrollbar">
               <ProductFilters categories={categories} countries={countries} />
             </aside>
 
@@ -213,6 +213,81 @@ export default async function ProductsPage(props: {
               )}
             </div>
           </div>
+
+          {/* Dedicated Sourcing & Custom Synthesis Section */}
+          <section className="bg-white rounded-2xl border border-slate-200/90 p-8 sm:p-10 shadow-tactile-card overflow-hidden relative">
+            <div className="relative z-10 max-w-4xl space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#0F172A]">
+                  Can&apos;t find your chemical, purity grade, or required volume?
+                </h2>
+                <p className="text-sm sm:text-base text-[#64748B] leading-relaxed">
+                  Our specialized Sourcing desk connects procurement and R&amp;D teams with certified synthesis plants, custom CMOs, and compendial standard repositories worldwide.
+                </p>
+              </div>
+
+              {/* 4 Core Pillars */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+                <div className="p-4 rounded-xl bg-[#F8F9FA] border border-slate-200/80 space-y-2 hover:border-slate-300 transition-colors duration-150">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0052CC] flex items-center justify-center">
+                    <FlaskConical className="w-4 h-4" />
+                  </div>
+                  <h3 className="text-xs font-bold text-[#0F172A]">Custom Synthesis</h3>
+                  <p className="text-xs text-[#64748B] leading-relaxed">
+                    Multi-step synthesis routes from pilot milligram scales up to multi-ton commercial batch runs.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-[#F8F9FA] border border-slate-200/80 space-y-2 hover:border-slate-300 transition-colors duration-150">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                    <Layers className="w-4 h-4" />
+                  </div>
+                  <h3 className="text-xs font-bold text-[#0F172A]">Rare CAS &amp; Impurities</h3>
+                  <p className="text-xs text-[#64748B] leading-relaxed">
+                    Hard-to-source reference standards, impurity profiles, degradation products, and deuterated compounds.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-[#F8F9FA] border border-slate-200/80 space-y-2 hover:border-slate-300 transition-colors duration-150">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0052CC] flex items-center justify-center">
+                    <FileCheck className="w-4 h-4" />
+                  </div>
+                  <h3 className="text-xs font-bold text-[#0F172A]">Dossier &amp; Monograph Match</h3>
+                  <p className="text-xs text-[#64748B] leading-relaxed">
+                    USP, EP, BP, JP, or internal monograph release specs accompanied by full CoA, NMR, and HPLC spectra.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-[#F8F9FA] border border-slate-200/80 space-y-2 hover:border-slate-300 transition-colors duration-150">
+                  <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                    <ShieldCheck className="w-4 h-4" />
+                  </div>
+                  <h3 className="text-xs font-bold text-[#0F172A]">Escrow &amp; Audit Backing</h3>
+                  <p className="text-xs text-[#64748B] leading-relaxed">
+                    Payment held securely until analytical confirmation at your receiving lab or partner testing site.
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-3">
+                <Link
+                  href="/sourcing/request"
+                  className="h-10 px-5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-2 shadow-xs transition-colors duration-150 press-tactile"
+                >
+                  <span>Submit Sourcing Request</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+
+                <Link
+                  href="/sourcing"
+                  className="h-10 px-5 bg-white hover:bg-slate-50 text-[#0F172A] border border-slate-300 text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-2 shadow-2xs transition-colors duration-150 press-tactile"
+                >
+                  <span>Learn About Sourcing</span>
+                </Link>
+              </div>
+            </div>
+          </section>
         </div>
       </main>
 

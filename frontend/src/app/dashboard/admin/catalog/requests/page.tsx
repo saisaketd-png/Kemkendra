@@ -158,7 +158,7 @@ export default function ProductRequestsQueuePage() {
       </div>
 
       {/* Requests List */}
-      <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-2xs">
+      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-tactile-card">
         {loading ? (
           <div className="p-8 text-center text-xs font-bold text-slate-500">Loading Product Requests...</div>
         ) : requests.length > 0 ? (
@@ -168,12 +168,12 @@ export default function ProductRequestsQueuePage() {
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
                     <span className="font-extrabold text-slate-900 text-base">{req.proposedName}</span>
-                    <span className="px-2.5 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-extrabold rounded-lg uppercase">
+                    <span className="px-2.5 py-0.5 bg-blue-50 text-[#0052CC] text-[10px] font-extrabold rounded-lg uppercase">
                       {req.category.replace("_", " ")}
                     </span>
                     <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-extrabold uppercase ${
                       req.status === "PENDING_REVIEW" ? "bg-amber-50 text-amber-800 border border-amber-200" :
-                      req.status === "INFORMATION_REQUIRED" ? "bg-purple-50 text-purple-800 border border-purple-200" :
+                      req.status === "INFORMATION_REQUIRED" ? "bg-amber-50 text-amber-800 border border-amber-200" :
                       req.status === "APPROVED" ? "bg-emerald-50 text-emerald-800 border border-emerald-200" :
                       "bg-rose-50 text-rose-800 border border-rose-200"
                     }`}>

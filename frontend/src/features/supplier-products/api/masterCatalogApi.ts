@@ -147,9 +147,19 @@ export async function createSupplierOffering(payload: CreateSupplierOfferingPayl
 }
 
 export async function getMySupplierOfferings(): Promise<SupplierOffering[]> {
-  const res = await authenticatedFetch("/api/v1/supplier/offerings");
-  if (!res.ok) throw new Error("Failed to load supplier offerings");
-  return res.json();
+  try {
+    const res = await authenticatedFetch("/api/v1/supplier/offerings");
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        return data;
+      }
+    }
+  } catch {
+    // Network or server error
+  }
+
+  return [];
 }
 
 export async function getSupplierOffering(id: string): Promise<SupplierOffering> {

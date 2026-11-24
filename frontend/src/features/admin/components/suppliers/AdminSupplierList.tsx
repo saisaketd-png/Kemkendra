@@ -179,7 +179,7 @@ export function AdminSupplierList({
       header: "Supplier Entity",
       cell: (supplier) => (
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-2xl bg-purple-50 text-purple-700 font-bold flex items-center justify-center text-xs border border-purple-200">
+          <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#0052CC] font-bold flex items-center justify-center text-xs border border-blue-200/80">
             {supplier.name ? supplier.name.charAt(0).toUpperCase() : "S"}
           </div>
           <div>

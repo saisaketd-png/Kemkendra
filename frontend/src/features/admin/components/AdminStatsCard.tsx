@@ -18,7 +18,7 @@ export function AdminStatsCard({
 }: AdminStatsCardProps) {
   const colorStyles = {
     teal: "text-[#059669] bg-[#ECFDF5] border-[rgba(5,150,105,0.2)]",
-    purple: "text-[#7C3AED] bg-[#F5F3FF] border-[rgba(124,58,237,0.2)]",
+    purple: "text-[#0052CC] bg-[#EFF6FF] border-[#BFDBFE]",
     blue: "text-[#0052CC] bg-[#EFF6FF] border-[#BFDBFE]",
     amber: "text-[#D97706] bg-[#FFFBEB] border-[rgba(217,119,6,0.2)]",
     rose: "text-[#DC2626] bg-[#FEF2F2] border-[rgba(220,38,38,0.2)]",

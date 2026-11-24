@@ -537,8 +537,8 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
             <SlidersHorizontal className="w-4 h-4 text-[#0052CC]" />
             <span>Filter Catalog</span>
             {hasActiveFilters && (
-              <span className="px-2 py-0.5 text-xs bg-[#DEEBFF] text-[#0747A6] rounded-full font-bold">
-                {activeFilterCount} Active
+              <span className="px-2 py-0.5 text-xs bg-[#0052CC] text-white rounded-[4px] font-bold font-mono">
+                {activeFilterCount}
               </span>
             )}
           </div>
@@ -547,7 +547,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
       </div>
 
       {/* Desktop Sticky Rail (280–320px) */}
-      <div className="hidden lg:block bg-white border border-[#E2E8F0] rounded-2xl p-5 shadow-sm">
+      <div className="hidden lg:block bg-white border border-[#E4E4E7] rounded-[14px] p-5 shadow-tactile-card">
         {FilterContent}
       </div>
 
@@ -561,8 +561,8 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
                 <SlidersHorizontal className="w-4 h-4 text-[#0052CC]" />
                 <span className="font-bold text-base text-[#091E42]">Filter Catalog</span>
                 {hasActiveFilters && (
-                  <span className="px-2 py-0.5 text-xs bg-[#DEEBFF] text-[#0747A6] rounded-md font-bold font-mono">
-                    {activeFilterCount} Active
+                  <span className="px-2 py-0.5 text-xs bg-[#0052CC] text-white rounded-[4px] font-bold font-mono">
+                    {activeFilterCount}
                   </span>
                 )}
               </div>

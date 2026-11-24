@@ -182,17 +182,17 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
   const getStatusBadge = (status: InvoiceStatus) => {
     switch (status) {
       case "PAID":
-        return "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20";
+        return "bg-emerald-50 text-emerald-700 border-emerald-200/80";
       case "PARTIALLY_PAID":
-        return "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20";
+        return "bg-blue-50 text-blue-700 border-blue-200/80";
       case "ISSUED":
-        return "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20";
+        return "bg-amber-50 text-amber-800 border-amber-200/80";
       case "CANCELLED":
-        return "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20";
+        return "bg-rose-50 text-rose-700 border-rose-200/80";
       case "DISPUTED":
-        return "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20";
+        return "bg-orange-50 text-orange-800 border-orange-200/80";
       default:
-        return "bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20";
+        return "bg-slate-100 text-slate-700 border-slate-200";
     }
   };
 
@@ -200,28 +200,28 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
     <div className="space-y-6 max-w-5xl mx-auto pb-12">
       {message && (
         <div
-          className={`p-4 rounded-xl border text-sm font-medium flex items-center justify-between ${
+          className={`p-4 rounded-xl border text-xs font-semibold flex items-center justify-between shadow-xs ${
             message.type === "success"
-              ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
-              : "bg-rose-500/10 border-rose-500/20 text-rose-600 dark:text-rose-400"
+              ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+              : "bg-rose-50 border-rose-200 text-rose-800"
           }`}
         >
           <span>{message.text}</span>
-          <button onClick={() => setMessage(null)} className="text-xs underline ml-4 cursor-pointer">
+          <button onClick={() => setMessage(null)} className="text-xs underline ml-4 cursor-pointer font-bold">
             Dismiss
           </button>
         </div>
       )}
 
       {/* Main Action Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm print:hidden">
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-white border border-slate-200/90 p-6 rounded-2xl shadow-tactile-card print:hidden">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white font-mono">
+            <h1 className="text-2xl font-bold text-[#091E42] font-mono">
               {invoice.invoiceNumber}
             </h1>
             <span
-              className={`px-3 py-1 rounded-full text-xs font-bold border uppercase tracking-wider ${getStatusBadge(
+              className={`px-3 py-1 rounded-lg text-xs font-semibold border ${getStatusBadge(
                 invoice.status
               )}`}
             >
@@ -238,7 +238,7 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
           <button
             onClick={handleDownloadPdf}
             disabled={downloadingPdf}
-            className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm font-medium transition flex items-center gap-2 cursor-pointer disabled:opacity-50"
+            className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors flex items-center gap-2 cursor-pointer disabled:opacity-50 active:scale-[0.98]"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
@@ -253,7 +253,7 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
 
           <button
             onClick={handlePrint}
-            className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center gap-2 cursor-pointer"
+            className="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-50 transition-colors flex items-center gap-2 cursor-pointer active:scale-[0.98]"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
@@ -270,7 +270,7 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
           {userRole === "BUYER" && invoice.status !== "CANCELLED" && invoice.status !== "PAID" && (
             <button
               onClick={() => setIsPaymentModalOpen(true)}
-              className="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover active:scale-[0.98] text-white text-sm font-semibold transition shadow-sm flex items-center gap-2 cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-[#0052CC] hover:bg-[#0747A6] active:scale-[0.98] text-white text-xs font-semibold transition-colors shadow-2xs flex items-center gap-2 cursor-pointer"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -282,7 +282,7 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
           {userRole === "BUYER" && invoice.status !== "CANCELLED" && invoice.status !== "DISPUTED" && (
             <button
               onClick={() => setShowDisputeModal(true)}
-              className="px-3.5 py-2 rounded-xl border border-amber-300 dark:border-amber-700/60 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/20 text-xs font-semibold transition cursor-pointer"
+              className="px-3.5 py-2 rounded-xl border border-amber-300 text-amber-800 hover:bg-amber-50 text-xs font-semibold transition-colors cursor-pointer active:scale-[0.98]"
             >
               Dispute Invoice
             </button>
@@ -291,7 +291,7 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
           {invoice.status !== "CANCELLED" && (
             <button
               onClick={() => setIsDisputeModalOpen(true)}
-              className="px-3.5 py-2 rounded-xl border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20 text-xs font-semibold transition cursor-pointer"
+              className="px-3.5 py-2 rounded-xl border border-rose-300 text-rose-700 hover:bg-rose-50 text-xs font-semibold transition-colors cursor-pointer active:scale-[0.98]"
             >
               Raise Dispute
             </button>
@@ -300,7 +300,7 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
           {userRole === "SUPPLIER" && invoice.status !== "CANCELLED" && (
             <button
               onClick={() => setShowCancelModal(true)}
-              className="px-3.5 py-2 rounded-xl border border-rose-200 dark:border-rose-900/60 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20 text-xs font-semibold transition cursor-pointer"
+              className="px-3.5 py-2 rounded-xl border border-rose-300 text-rose-700 hover:bg-rose-50 text-xs font-semibold transition-colors cursor-pointer active:scale-[0.98]"
             >
               Cancel Invoice
             </button>
@@ -309,20 +309,20 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
       </div>
 
       {/* Invoice Document Paper Container */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-sm space-y-8 print:border-none print:shadow-none print:p-0">
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-8 shadow-tactile-card space-y-8 print:border-none print:shadow-none print:p-0">
         {/* Document Header */}
-        <div className="flex flex-wrap justify-between items-start border-b border-slate-200 dark:border-slate-800 pb-6 gap-4">
+        <div className="flex flex-wrap justify-between items-start border-b border-slate-100 pb-6 gap-4">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-primary">KemKendra B2B Commerce</span>
-            <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#0052CC]">KemKendra B2B Commerce</span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#091E42] tracking-tight mt-1">
               TAX INVOICE
             </h2>
             <div className="flex items-center gap-2 mt-2">
               <span
-                className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
+                className={`px-2.5 py-0.5 rounded-lg text-xs font-semibold border ${
                   invoice.isInterstate
-                    ? "bg-purple-500/10 text-purple-600 border-purple-500/20"
-                    : "bg-teal-500/10 text-teal-600 border-teal-500/20"
+                    ? "bg-blue-50 text-[#0052CC] border-blue-200/80"
+                    : "bg-slate-100 text-slate-700 border-slate-200/80"
                 }`}
               >
                 {invoice.isInterstate ? "INTER-STATE (IGST)" : "INTRA-STATE (CGST + SGST)"}
@@ -334,16 +334,16 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
           </div>
 
           <div className="text-right space-y-1">
-            <p className="text-sm font-bold text-slate-900 dark:text-white font-mono">{invoice.invoiceNumber}</p>
+            <p className="text-sm font-bold text-slate-900 font-mono">{invoice.invoiceNumber}</p>
             <p className="text-xs text-slate-500">
-              Date: <span className="font-medium text-slate-700 dark:text-slate-300">{invoice.invoiceDate}</span>
+              Date: <span className="font-medium text-slate-700">{invoice.invoiceDate}</span>
             </p>
             <p className="text-xs text-slate-500">
-              Due: <span className="font-medium text-slate-700 dark:text-slate-300">{invoice.dueDate}</span>
+              Due: <span className="font-medium text-slate-700">{invoice.dueDate}</span>
             </p>
             {invoice.poNumber && (
               <p className="text-xs text-slate-500">
-                PO: <span className="font-mono font-medium text-slate-700 dark:text-slate-300">{invoice.poNumber}</span>
+                PO: <span className="font-mono font-medium text-slate-700">{invoice.poNumber}</span>
               </p>
             )}
           </div>
@@ -599,16 +599,16 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
                     )}
 
                     {rec.reviewNotes && (
-                      <p className="text-emerald-700 dark:text-emerald-400 italic">Confirmed Notes: {rec.reviewNotes}</p>
+                      <p className="text-emerald-700 italic">Confirmed Notes: {rec.reviewNotes}</p>
                     )}
                     {rec.rejectionReason && (
-                      <p className="text-rose-600 dark:text-rose-400 font-medium">Rejection Reason: {rec.rejectionReason}</p>
+                      <p className="text-rose-600 font-medium">Rejection Reason: {rec.rejectionReason}</p>
                     )}
                     {rec.infoRequestedNotes && (
-                      <p className="text-purple-600 dark:text-purple-400 font-medium">Clarification Requested: {rec.infoRequestedNotes}</p>
+                      <p className="text-[#0052CC] font-medium">Clarification Requested: {rec.infoRequestedNotes}</p>
                     )}
                     {rec.disputeReason && (
-                      <p className="text-rose-600 dark:text-rose-400 font-medium">Dispute: {rec.disputeReason}</p>
+                      <p className="text-rose-600 font-medium">Dispute: {rec.disputeReason}</p>
                     )}
                   </div>
 
@@ -617,28 +617,28 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
                       <button
                         onClick={() => handleConfirmPayment(rec.id)}
                         disabled={actionLoading}
-                        className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs transition cursor-pointer"
+                        className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-semibold text-xs transition-colors cursor-pointer"
                       >
                         Confirm Receipt
                       </button>
                       <button
                         onClick={() => setPaymentToRequestInfo(rec.id)}
                         disabled={actionLoading}
-                        className="px-3 py-1.5 rounded-lg border border-purple-300 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-950/20 font-semibold text-xs transition cursor-pointer"
+                        className="px-3.5 py-1.5 rounded-xl border border-blue-200 text-[#0052CC] hover:bg-blue-50 active:scale-[0.98] font-semibold text-xs transition-colors cursor-pointer"
                       >
                         Request Info
                       </button>
                       <button
                         onClick={() => setPaymentToReject(rec.id)}
                         disabled={actionLoading}
-                        className="px-3 py-1.5 rounded-lg border border-rose-300 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/20 font-semibold text-xs transition cursor-pointer"
+                        className="px-3.5 py-1.5 rounded-xl border border-rose-300 text-rose-600 hover:bg-rose-50 active:scale-[0.98] font-semibold text-xs transition-colors cursor-pointer"
                       >
                         Reject
                       </button>
                       <button
                         onClick={() => setPaymentToDispute(rec.id)}
                         disabled={actionLoading}
-                        className="px-3 py-1.5 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 font-semibold text-xs transition cursor-pointer"
+                        className="px-3.5 py-1.5 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 active:scale-[0.98] font-semibold text-xs transition-colors cursor-pointer"
                       >
                         Dispute
                       </button>
@@ -839,9 +839,9 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
 
       {/* Request Payment Information Modal */}
       {paymentToRequestInfo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4">
-            <h3 className="text-base font-bold text-slate-900 dark:text-white">Request Information from Buyer</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
+          <div className="bg-white border border-slate-200/90 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <h3 className="text-base font-bold text-[#091E42]">Request Information from Buyer</h3>
             <p className="text-xs text-slate-500">
               Send a clarification request to the buyer (e.g. asking for clearer bank advice copy, or verifying originating account number).
             </p>
@@ -852,20 +852,20 @@ export function InvoiceDetailView({ initialInvoice, userRole }: InvoiceDetailVie
                 value={infoRequestNotes}
                 onChange={(e) => setInfoRequestNotes(e.target.value)}
                 placeholder="What clarification do you require from buyer?..."
-                className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-xs outline-none focus:border-primary"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs outline-none focus:border-[#0052CC] shadow-2xs"
               />
-              <div className="flex justify-end gap-2">
+              <div className="flex justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setPaymentToRequestInfo(null)}
-                  className="px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400"
+                  className="px-3.5 py-2 text-xs font-semibold rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors"
                 >
                   Close
                 </button>
                 <button
                   type="submit"
                   disabled={actionLoading}
-                  className="px-4 py-1.5 text-xs rounded-lg bg-purple-600 text-white font-semibold hover:bg-purple-700"
+                  className="px-4 py-2 text-xs rounded-xl bg-[#0052CC] hover:bg-[#0747A6] active:scale-[0.98] text-white font-semibold transition-colors shadow-2xs"
                 >
                   {actionLoading ? "Sending..." : "Send Request"}
                 </button>

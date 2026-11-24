@@ -7,18 +7,13 @@ import {
   Menu,
   X,
   ChevronDown,
-  Hexagon,
   LogOut,
   FileText,
   Package,
-  Shield,
   Building2,
   Search,
-  PlusCircle,
-  Users,
   LayoutDashboard,
   Layers,
-  HelpCircle,
   FlaskConical,
   Bell,
   ArrowRight,
@@ -26,6 +21,9 @@ import {
   CheckCircle2,
   Bookmark,
   ShoppingBag,
+  Command,
+  SlidersHorizontal,
+  Lock,
 } from "lucide-react";
 import { getAuthUser, logout, AuthUser } from "@/features/auth/api/auth";
 import { NotificationBell } from "@/features/notifications/components/NotificationBell";
@@ -37,28 +35,64 @@ export function Navbar() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   const pathname = usePathname();
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const lastScrollYRef = useRef(0);
 
   useEffect(() => {
     setMounted(true);
-    const currentUser = getAuthUser();
-    setUser(currentUser);
+    setUser(getAuthUser());
 
     const handleAuthChange = () => {
       setUser(getAuthUser());
     };
 
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 10);
+
+      // Always keep navbar visible near top
+      if (currentScrollY <= 40) {
+        setIsVisible(true);
+        lastScrollYRef.current = currentScrollY;
+        return;
+      }
+
+      // Do not toggle while user or mobile menu is active
+      if (isUserMenuOpen || isMobileOpen) {
+        setIsVisible(true);
+        return;
+      }
+
+      const delta = currentScrollY - lastScrollYRef.current;
+      // Filter out tiny scrolls to prevent jitter
+      if (Math.abs(delta) < 8) return;
+
+      if (delta > 0 && currentScrollY > 80) {
+        // Scrolled down -> disappear
+        setIsVisible(false);
+      } else if (delta < 0) {
+        // Scrolled up -> appear back slowly with a fade motion
+        setIsVisible(true);
+      }
+
+      lastScrollYRef.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("auth-changed", handleAuthChange);
     window.addEventListener("storage", handleAuthChange);
 
     return () => {
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("auth-changed", handleAuthChange);
       window.removeEventListener("storage", handleAuthChange);
     };
-  }, []);
+  }, [isUserMenuOpen, isMobileOpen]);
 
   // Close dropdown on click outside or Escape
   useEffect(() => {
@@ -87,7 +121,6 @@ export function Navbar() {
     setIsUserMenuOpen(false);
   }, [pathname]);
 
-
   const handleSignOut = () => {
     logout();
     setUser(null);
@@ -99,370 +132,328 @@ export function Navbar() {
   const isSupplier = !isAdmin && user?.role === "SUPPLIER";
   const isBuyer = !isAdmin && !isSupplier && user !== null;
 
-  // Role subtitle
-  const roleSubtitle = isAdmin
-    ? "ADMIN OPERATIONS"
-    : isSupplier
-    ? "SUPPLIER OPERATIONS"
-    : isBuyer
-    ? "BUYER PROCUREMENT"
-    : "B2B CHEMICALS";
-
   const publicNavLinks = [
     { name: "Chemical Catalog", href: "/products" },
+    { name: "Sourcing Desk", href: "/sourcing" },
     { name: "Categories", href: "/categories" },
-    { name: "Suppliers", href: "/suppliers" },
+    { name: "Verified Suppliers", href: "/suppliers" },
     { name: "Resources", href: "/resources" },
   ];
 
+  const handleOpenCommandPalette = () => {
+    window.dispatchEvent(new CustomEvent("open-command-palette"));
+  };
+
   const userDisplayName = user?.email ? user.email.split("@")[0] : "Account";
   const avatarLetter = userDisplayName.charAt(0).toUpperCase();
-  const rfqHref = user?.role === "BUYER" ? "/dashboard/rfqs" : "/products";
+  const rfqHref = user?.role === "BUYER" ? "/dashboard/rfqs" : "/sourcing";
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-[#E4E4E7] h-16 shadow-tactile-card flex items-center">
-      <div className="max-w-[1560px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-3 lg:gap-5">
+    <header
+      className={`sticky top-0 z-50 h-16 will-change-transform flex items-center transition-all ${
+        isVisible
+          ? "translate-y-0 opacity-100 duration-500 ease-out"
+          : "-translate-y-full opacity-0 pointer-events-none duration-300 ease-in"
+      } ${
+        scrolled
+          ? "bg-white/95 backdrop-blur-xl border-b border-slate-200/90 shadow-[0_2px_12px_rgba(15,23,42,0.06)]"
+          : "bg-white/85 backdrop-blur-md border-b border-slate-200/70"
+      }`}
+    >
+      <div className="max-w-[1560px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-4 lg:gap-6">
         
-        {/* 1. LEFT: KEMKENDRA BRAND & PRIMARY NAV */}
-        <div className="flex items-center gap-4 lg:gap-6 shrink-0">
-          <div className="flex items-center gap-2">
-            <KemKendraLogo
-              href="/"
-              size="md"
-              layout="horizontal"
-            />
+        {/* 1. LEFT: BRAND & PRIMARY DIRECTORY */}
+        <div className="flex items-center gap-5 lg:gap-7 shrink-0">
+          <div className="flex items-center gap-2.5">
+            <KemKendraLogo href="/" size="md" layout="horizontal" />
             {user && (
-              <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-mono font-semibold uppercase tracking-wider bg-[#F4F4F5] text-[#0F172A] border border-[#E4E4E7]">
+              <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-200">
                 {isAdmin ? "Admin" : isSupplier ? "Supplier" : "Buyer"}
               </span>
             )}
           </div>
 
-          {/* Primary Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-1" aria-label="Global Navigation">
+          {/* Primary Nav Links with elegant hover animation */}
+          <nav className="hidden lg:flex items-center space-x-0.5" aria-label="Global Navigation">
             {publicNavLinks.map((link) => {
               const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
               return (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`px-3 py-1.5 rounded-[6px] text-xs font-medium transition-colors ${
+                  className={`nav-link-hover px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 ${
                     isActive
-                      ? "bg-[#EFF6FF] text-[#0052CC] font-semibold"
-                      : "text-[#475569] hover:bg-[#FAFAFA] hover:text-[#0F172A]"
+                      ? "bg-blue-50/80 text-[#0052CC] font-bold border border-blue-200/60 shadow-2xs"
+                      : "text-slate-600 hover:text-[#0052CC] hover:bg-slate-100/70"
                   }`}
                 >
-                  {link.name}
+                  <span>{link.name}</span>
                 </Link>
               );
             })}
           </nav>
         </div>
 
-        {/* 2. CENTER: GLOBAL SEARCH (MAX 500px) */}
-        <div className="flex-1 max-w-[500px] mx-auto hidden md:block">
-          <GlobalSearchBar
-            size="sm"
-            placeholder="Search chemical name, CAS, formula or supplier..."
-          />
+        {/* 2. CENTER: GLOBAL SEARCH WITH INTEGRATED COMMAND PALETTE (CTRL+K) */}
+        <div className="flex-1 max-w-[280px] lg:max-w-[340px] xl:max-w-[440px] mx-auto hidden md:flex items-center min-w-[200px]">
+          <div className="w-full">
+            <GlobalSearchBar
+              size="sm"
+              showShortcut={true}
+              placeholder="Search chemicals, CAS, supplier..."
+            />
+          </div>
         </div>
 
-        {/* 3. RIGHT: ACTIONS, NOTIFICATIONS & USER WORKSPACE TRIGGER */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+        {/* 3. RIGHT: WORKSPACE CONTROLS & USER CONSOLE */}
+        <div className="flex items-center gap-2.5 shrink-0">
           {/* Request Quote Button */}
           <Link
             href={rfqHref}
-            className="hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-medium rounded-[6px] transition-colors shadow-xs active:scale-[0.99]"
+            className="hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all duration-200 shadow-2xs hover:shadow-tactile-card hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] group"
           >
             <span>Request Quote</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
           </Link>
 
-          {/* Compact Notifications Bell */}
+          {/* Notifications Bell */}
           {mounted && user && (
             <div className="flex items-center">
               <NotificationBell isSupplier={isSupplier} />
             </div>
           )}
 
-          {/* Compact User Workspace Trigger */}
+          {/* User Workspace Trigger */}
           {mounted && user ? (
             <div className="relative" ref={dropdownRef}>
               <button
                 type="button"
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className={`h-9 px-2.5 rounded-[6px] border transition-colors flex items-center gap-2 bg-white hover:bg-[#FAFAFA] shadow-xs focus:outline-none w-[150px] sm:w-[165px] ${
-                  isUserMenuOpen ? "border-[#0052CC] ring-1 ring-[#0052CC]" : "border-[#E4E4E7]"
+                className={`h-9 px-2.5 rounded-xl border transition-colors flex items-center gap-2 bg-white hover:bg-slate-50 shadow-2xs focus:outline-none w-[150px] sm:w-[170px] ${
+                  isUserMenuOpen ? "border-[#0052CC] ring-1 ring-[#0052CC]/20" : "border-slate-200"
                 }`}
                 aria-expanded={isUserMenuOpen}
               >
-                {/* Avatar Initial */}
-                <div className="w-6 h-6 rounded-[4px] bg-[#EFF6FF] text-[#0052CC] font-semibold text-xs flex items-center justify-center font-mono shrink-0">
+                {/* Monogram Avatar */}
+                <div className="w-6 h-6 rounded-lg bg-[#091E42] text-white font-bold text-xs flex items-center justify-center font-mono shrink-0">
                   {avatarLetter}
                 </div>
 
                 <div className="flex flex-col items-start text-left min-w-0 flex-1">
-                  <span className="text-xs font-semibold text-[#0F172A] leading-tight truncate w-full">
+                  <span className="text-xs font-bold text-slate-900 leading-tight truncate w-full">
                     {userDisplayName}
                   </span>
-                  <span className="text-[9px] font-mono text-[#64748B] uppercase">
+                  <span className="text-[9px] font-mono font-semibold text-slate-500 uppercase">
                     {user.role}
                   </span>
                 </div>
 
-                <ChevronDown className={`w-3.5 h-3.5 text-[#64748B] shrink-0 transition-transform duration-150 ${isUserMenuOpen ? "rotate-180 text-[#0052CC]" : ""}`} />
+                <ChevronDown
+                  className={`w-3.5 h-3.5 text-slate-400 shrink-0 transition-transform duration-150 ${
+                    isUserMenuOpen ? "rotate-180 text-[#0052CC]" : ""
+                  }`}
+                />
               </button>
 
-              {/* Compact Professional User Dropdown */}
+              {/* User Dropdown Console */}
               {isUserMenuOpen && (
-                <div className="absolute right-0 mt-1.5 w-[260px] bg-white rounded-[8px] border border-[#E4E4E7] shadow-tactile-modal p-1.5 z-50 text-xs font-normal divide-y divide-[#E4E4E7] animate-in fade-in zoom-in-95 duration-100">
-                  
-                  {/* Compact Header (Height ~70px) */}
-                  <div className="p-2.5 bg-[#FAFAFA] rounded-[6px] mb-1 space-y-1.5 border border-[#E4E4E7]">
+                <div className="absolute right-0 mt-2 w-[280px] bg-white rounded-2xl border border-slate-200/90 shadow-tactile-modal p-2 z-50 text-xs divide-y divide-slate-100 animate-enter-fade-down">
+                  {/* Account Summary */}
+                  <div className="p-3 bg-slate-50 rounded-xl mb-1.5 space-y-2 border border-slate-200/70">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-[4px] bg-[#EFF6FF] text-[#0052CC] font-bold text-xs flex items-center justify-center font-mono shrink-0">
+                      <div className="w-8 h-8 rounded-lg bg-[#091E42] text-white font-bold text-xs flex items-center justify-center font-mono shrink-0">
                         {avatarLetter}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <span className="text-xs font-semibold text-[#0F172A] block truncate">
+                        <span className="text-xs font-extrabold text-slate-900 block truncate">
                           {userDisplayName}
                         </span>
-                        <span className="text-[11px] text-[#64748B] block truncate">
+                        <span className="text-[11px] text-slate-500 block truncate font-mono">
                           {user.email}
                         </span>
                       </div>
                     </div>
 
-                    <div className="pt-0.5 flex items-center justify-between">
-                      <span className="text-[9px] font-mono font-semibold text-[#0052CC] bg-[#EFF6FF] border border-[#BFDBFE] px-1.5 py-0.2 rounded-[4px] uppercase">
-                        {user.role}
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#059669] bg-[#ECFDF5] border border-[rgba(5,150,105,0.2)] px-1.5 py-0.2 rounded-[4px]">
-                        <ShieldCheck className="w-3 h-3 text-[#059669]" /> Verified
+                    <div className="pt-1 flex items-center justify-between text-[10px] font-mono border-t border-slate-200/60">
+                      <span className="text-[#0052CC] font-bold uppercase">Role: {user.role}</span>
+                      <span className="text-emerald-700 font-semibold flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3" /> Active Session
                       </span>
                     </div>
                   </div>
 
-                  {/* Workspace Actions (Role-Tailored, 38px Items) */}
-                  <div className="py-1 space-y-0.5">
-                    <span className="text-[9px] font-mono font-semibold uppercase tracking-wider text-[#64748B] px-2.5 py-0.5 block">
-                      Workspace
+                  {/* Role-Specific Navigation Links */}
+                  <div className="py-1.5 space-y-0.5">
+                    <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-slate-400 px-2 py-0.5 block">
+                      Operations Workspace
                     </span>
 
-                    {/* Buyer Navigation Items */}
+                    {/* Buyer Links */}
                     {isBuyer && (
                       <>
                         <Link
                           href="/dashboard/buyer"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
+                          className="flex items-center gap-2.5 px-2.5 py-2 text-slate-700 hover:text-[#091E42] hover:bg-slate-50 rounded-lg transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <LayoutDashboard className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
                           <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Procurement Desk</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">Manage sourcing activity</span>
+                            <span className="font-bold text-xs block">Procurement Desk</span>
+                            <span className="text-[10px] text-slate-400 block truncate">Manage sourcing activity</span>
                           </div>
                         </Link>
 
                         <Link
                           href="/dashboard/rfqs"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
+                          className="flex items-center gap-2.5 px-2.5 py-2 text-slate-700 hover:text-[#091E42] hover:bg-slate-50 rounded-lg transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <FileText className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
                           <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">My Sourcing RFQs</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">Track quotation requests</span>
+                            <span className="font-bold text-xs block">Sourcing RFQs</span>
+                            <span className="text-[10px] text-slate-400 block truncate">Track quotation inquiries</span>
                           </div>
                         </Link>
 
                         <Link
                           href="/dashboard/orders"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
+                          className="flex items-center gap-2.5 px-2.5 py-2 text-slate-700 hover:text-[#091E42] hover:bg-slate-50 rounded-lg transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <ShoppingBag className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
                           <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Purchase Orders</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">Track active orders</span>
+                            <span className="font-bold text-xs block">Purchase Orders</span>
+                            <span className="text-[10px] text-slate-400 block truncate">Fulfillment & shipments</span>
                           </div>
                         </Link>
 
                         <Link
                           href="/dashboard/buyer/shortlist"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
+                          className="flex items-center gap-2.5 px-2.5 py-2 text-slate-700 hover:text-[#091E42] hover:bg-slate-50 rounded-lg transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <Bookmark className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
                           <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Saved Shortlists</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">Saved supplier offerings</span>
-                          </div>
-                        </Link>
-
-                        <Link
-                          href="/dashboard/notifications"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
-                          onClick={() => setIsUserMenuOpen(false)}
-                        >
-                          <Bell className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Notifications</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">System & order alerts</span>
+                            <span className="font-bold text-xs block">Saved Offerings</span>
+                            <span className="text-[10px] text-slate-400 block truncate">Supplier shortlists</span>
                           </div>
                         </Link>
                       </>
                     )}
 
-                    {/* Supplier Navigation Items */}
+                    {/* Supplier Links */}
                     {isSupplier && (
                       <>
                         <Link
                           href="/dashboard/supplier"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
+                          className="flex items-center gap-2.5 px-2.5 py-2 text-slate-700 hover:text-[#091E42] hover:bg-slate-50 rounded-lg transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <LayoutDashboard className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
                           <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Supplier Operations</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">Commercial dashboard</span>
+                            <span className="font-bold text-xs block">Supplier Operations</span>
+                            <span className="text-[10px] text-slate-400 block truncate">Commercial dashboard</span>
                           </div>
                         </Link>
 
                         <Link
                           href="/dashboard/supplier/products"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
+                          className="flex items-center gap-2.5 px-2.5 py-2 text-slate-700 hover:text-[#091E42] hover:bg-slate-50 rounded-lg transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <Package className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
                           <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Product Offerings</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">Catalog & inventory</span>
+                            <span className="font-bold text-xs block">Product Offerings</span>
+                            <span className="text-[10px] text-slate-400 block truncate">Catalog & inventory</span>
                           </div>
                         </Link>
 
                         <Link
                           href="/dashboard/supplier/rfqs"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
+                          className="flex items-center gap-2.5 px-2.5 py-2 text-slate-700 hover:text-[#091E42] hover:bg-slate-50 rounded-lg transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <FileText className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
                           <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">RFQ Inquiries</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">Incoming quote requests</span>
-                          </div>
-                        </Link>
-
-                        <Link
-                          href="/dashboard/supplier/orders"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
-                          onClick={() => setIsUserMenuOpen(false)}
-                        >
-                          <ShoppingBag className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Purchase Orders</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">Active order fulfillment</span>
+                            <span className="font-bold text-xs block">RFQ Inquiries</span>
+                            <span className="text-[10px] text-slate-400 block truncate">Incoming quote requests</span>
                           </div>
                         </Link>
 
                         <Link
                           href="/dashboard/supplier/verification"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
+                          className="flex items-center gap-2.5 px-2.5 py-2 text-slate-700 hover:text-[#091E42] hover:bg-slate-50 rounded-lg transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
-                          <ShieldCheck className="w-3.5 h-3.5 text-[#00875A] shrink-0" />
+                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                           <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Verification Status</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">KYC & documents</span>
-                          </div>
-                        </Link>
-
-                        <Link
-                          href="/dashboard/notifications"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
-                          onClick={() => setIsUserMenuOpen(false)}
-                        >
-                          <Bell className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Notifications</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">RFQ & inquiry alerts</span>
+                            <span className="font-bold text-xs block">Verification Status</span>
+                            <span className="text-[10px] text-slate-400 block truncate">KYC & statutory audits</span>
                           </div>
                         </Link>
                       </>
                     )}
 
-                    {/* Admin Navigation Items */}
+                    {/* Admin Links */}
                     {isAdmin && (
                       <>
                         <Link
                           href="/dashboard/admin/operations"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
+                          className="flex items-center gap-2.5 px-2.5 py-2 text-slate-700 hover:text-[#091E42] hover:bg-slate-50 rounded-lg transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <LayoutDashboard className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
                           <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Operations Console</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">Marketplace metrics</span>
+                            <span className="font-bold text-xs block">Operations Console</span>
+                            <span className="text-[10px] text-slate-400 block truncate">Marketplace health</span>
+                          </div>
+                        </Link>
+
+                        <Link
+                          href="/dashboard/admin/suppliers"
+                          className="flex items-center gap-2.5 px-2.5 py-2 text-slate-700 hover:text-[#091E42] hover:bg-slate-50 rounded-lg transition-colors"
+                          onClick={() => setIsUserMenuOpen(false)}
+                        >
+                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <div className="min-w-0 flex-1">
+                            <span className="font-bold text-xs block">Supplier Moderation</span>
+                            <span className="text-[10px] text-slate-400 block truncate">Due-diligence workspace</span>
                           </div>
                         </Link>
 
                         <Link
                           href="/dashboard/admin/catalog"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
+                          className="flex items-center gap-2.5 px-2.5 py-2 text-slate-700 hover:text-[#091E42] hover:bg-slate-50 rounded-lg transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <Layers className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
                           <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Master Catalog</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">Chemical monographs</span>
+                            <span className="font-bold text-xs block">Master Catalog</span>
+                            <span className="text-[10px] text-slate-400 block truncate">Monographs & offerings</span>
                           </div>
                         </Link>
 
                         <Link
-                          href="/dashboard/admin/suppliers/quality"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
-                          onClick={() => setIsUserMenuOpen(false)}
-                        >
-                          <ShieldCheck className="w-3.5 h-3.5 text-[#00875A] shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Supplier Verification</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">Quality audits & KYC</span>
-                          </div>
-                        </Link>
-
-                        <Link
-                          href="/dashboard/admin/transactions/rfqs"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
+                          href="/dashboard/admin/audit"
+                          className="flex items-center gap-2.5 px-2.5 py-2 text-slate-700 hover:text-[#091E42] hover:bg-slate-50 rounded-lg transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <FileText className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
                           <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Transactions & RFQs</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">Inquiries & orders</span>
-                          </div>
-                        </Link>
-
-                        <Link
-                          href="/dashboard/notifications"
-                          className="flex items-center gap-2 px-2.5 py-1.5 text-[#172B4D] hover:text-[#091E42] hover:bg-[#F4F5F7] rounded-lg transition-colors"
-                          onClick={() => setIsUserMenuOpen(false)}
-                        >
-                          <Bell className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <span className="font-semibold text-xs block">Notifications</span>
-                            <span className="text-[10px] text-[#5E6C84] block truncate">Platform oversight alerts</span>
+                            <span className="font-bold text-xs block">Audit Ledger</span>
+                            <span className="text-[10px] text-slate-400 block truncate">Governance logs</span>
                           </div>
                         </Link>
                       </>
                     )}
                   </div>
 
-                  {/* Sign Out Action */}
-                  <div className="pt-1">
+                  {/* Sign Out Button */}
+                  <div className="pt-1.5">
                     <button
                       type="button"
                       onClick={handleSignOut}
-                      className="w-full flex items-center gap-2 px-2.5 py-1.5 text-[#DC2626] hover:bg-[#FEF2F2] rounded-[6px] transition-colors text-left font-semibold text-xs cursor-pointer"
+                      className="w-full flex items-center gap-2 px-2.5 py-2 text-rose-700 hover:bg-rose-50 rounded-lg transition-colors text-left font-bold text-xs cursor-pointer"
                     >
                       <LogOut className="w-3.5 h-3.5 shrink-0" />
                       <span>Sign Out</span>
@@ -475,25 +466,25 @@ export function Navbar() {
             <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="h-9 px-3.5 text-xs font-medium text-[#0F172A] hover:bg-[#FAFAFA] rounded-[6px] border border-[#E4E4E7] transition-colors flex items-center justify-center shadow-xs"
+                className="h-9 px-3.5 text-xs font-bold text-slate-700 hover:text-[#091E42] hover:bg-slate-100/80 rounded-xl border border-slate-200 transition-colors flex items-center justify-center shadow-2xs"
               >
                 Sign In
               </Link>
               <Link
                 href="/register"
-                className="h-9 px-3.5 text-xs font-medium text-white bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] rounded-[6px] transition-colors flex items-center justify-center shadow-xs active:scale-[0.99]"
+                className="h-9 px-3.5 text-xs font-bold text-white bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] rounded-xl transition-colors flex items-center justify-center shadow-2xs active:scale-[0.99]"
               >
                 Register
               </Link>
             </div>
           ) : null}
 
-          {/* Mobile Drawer Toggle */}
+          {/* Mobile Drawer Trigger */}
           <div className="lg:hidden">
             <button
               type="button"
               onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className="h-9 w-9 flex items-center justify-center rounded-[6px] border border-[#E4E4E7] bg-white text-[#0F172A] hover:bg-[#FAFAFA]"
+              className="h-9 w-9 flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
               aria-label="Toggle mobile menu"
             >
               {isMobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -502,28 +493,44 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer */}
       {isMobileOpen && (
-        <div className="lg:hidden fixed inset-0 top-16 z-40 bg-[#0F172A]/40 backdrop-blur-[2px] flex justify-end">
-          <div className="bg-white w-[280px] h-[calc(100vh-64px)] p-4 overflow-y-auto space-y-4 shadow-tactile-modal border-l border-[#E4E4E7]">
-            {/* Search */}
-            <div>
+        <div className="lg:hidden fixed inset-0 top-16 z-40 bg-slate-900/40 backdrop-blur-xs flex justify-end">
+          <div className="bg-white w-[290px] h-[calc(100vh-64px)] p-4 overflow-y-auto space-y-4 shadow-tactile-modal border-l border-slate-200">
+            {/* Search & Quick Command Palette */}
+            <div className="space-y-2">
               <GlobalSearchBar
                 size="sm"
-                placeholder="Search chemicals, CAS, formula..."
+                placeholder="Search chemical, CAS..."
                 onSearchSubmitted={() => setIsMobileOpen(false)}
               />
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileOpen(false);
+                  handleOpenCommandPalette();
+                }}
+                className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 text-[11px] font-medium transition-colors cursor-pointer"
+              >
+                <span className="flex items-center gap-1.5">
+                  <Command className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Command Console</span>
+                </span>
+                <kbd className="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-white border border-slate-200 rounded text-slate-500">
+                  Ctrl+K
+                </kbd>
+              </button>
             </div>
 
-            <div className="space-y-0.5 border-b border-[#E4E4E7] pb-3">
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] block mb-1 font-mono px-2">
-                Marketplace
+            <div className="space-y-1 border-b border-slate-100 pb-3">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block px-2 mb-1">
+                Marketplace Directory
               </span>
               {publicNavLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="block px-2.5 py-1.5 rounded-[6px] text-xs font-medium text-[#0F172A] hover:bg-[#FAFAFA]"
+                  className="block px-2.5 py-2 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-50 hover:text-[#0052CC]"
                   onClick={() => setIsMobileOpen(false)}
                 >
                   {link.name}
@@ -534,7 +541,7 @@ export function Navbar() {
             <div className="pt-1">
               <Link
                 href={rfqHref}
-                className="w-full h-9 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-medium rounded-[6px] inline-flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.99]"
+                className="w-full h-9 bg-[#0052CC] hover:bg-[#0747A6] text-white text-xs font-bold uppercase tracking-wider rounded-xl inline-flex items-center justify-center gap-1.5 shadow-2xs"
                 onClick={() => setIsMobileOpen(false)}
               >
                 <span>Request Quote</span>

@@ -146,7 +146,7 @@ export default function EditSupplierOfferingPage({ params }: { params: Promise<{
           <ChevronLeft className="w-4 h-4 mr-1" />
           Back to Supplier Catalog
         </Link>
-        <div className="p-8 text-center bg-white rounded-3xl border border-rose-200 shadow-2xs">
+        <div className="p-8 text-center bg-white rounded-2xl border border-rose-200 shadow-sm">
           <AlertCircle className="w-8 h-8 text-rose-500 mx-auto mb-3" />
           <p className="text-slate-900 font-bold mb-1 text-sm">ACCESS DENIED / OFFERING NOT FOUND</p>
           <p className="text-xs text-slate-500">{error}</p>
@@ -200,7 +200,7 @@ export default function EditSupplierOfferingPage({ params }: { params: Promise<{
 
       {/* READ-ONLY CANONICAL MASTER PRODUCT IDENTITY */}
       {offering && (
-        <div className="p-5 bg-slate-50 border border-slate-200 rounded-3xl space-y-4 shadow-2xs">
+        <div className="p-5 bg-slate-50 border border-slate-200/90 rounded-2xl space-y-4 shadow-sm">
           <div className="flex items-center justify-between border-b border-slate-200/60 pb-3">
             <div className="flex items-center gap-2 text-xs font-extrabold text-slate-700">
               <Lock className="w-4 h-4 text-slate-400" />
@@ -244,7 +244,7 @@ export default function EditSupplierOfferingPage({ params }: { params: Promise<{
               <span className="text-[10px] font-bold text-slate-400 uppercase block">Your Offering Review</span>
               <div className={`flex items-center gap-1.5 font-bold mt-0.5 ${
                 offering.moderationStatus === "APPROVED" ? "text-emerald-700" :
-                offering.moderationStatus === "FLAGGED" ? "text-purple-700" :
+                offering.moderationStatus === "FLAGGED" ? "text-amber-800" :
                 offering.moderationStatus === "REJECTED" ? "text-rose-700" :
                 "text-amber-700"
               }`}>
@@ -276,7 +276,7 @@ export default function EditSupplierOfferingPage({ params }: { params: Promise<{
       )}
 
       {/* EDITABLE COMMERCIAL OFFERING FORM */}
-      <form onSubmit={handleSubmit} className="space-y-8 bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs">
+      <form onSubmit={handleSubmit} className="space-y-8 bg-white p-6 rounded-2xl border border-slate-200/90 shadow-tactile-card">
         <div className="space-y-6">
           <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2">
             <DollarSign className="w-4 h-4 text-blue-600" />

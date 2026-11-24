@@ -122,7 +122,7 @@ export default function AdminSettingsPage() {
       case "BUYER":
         return <Users className="w-4 h-4 text-blue-600" />;
       case "COMMUNICATION":
-        return <MessageSquare className="w-4 h-4 text-purple-600" />;
+        return <MessageSquare className="w-4 h-4 text-[#0052CC]" />;
       default:
         return <Sliders className="w-4 h-4 text-gray-600" />;
     }

@@ -52,7 +52,7 @@ export function MasterProductMergeModal({
         {/* Header */}
         <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
           <div className="flex items-center gap-2">
-            <GitMerge className="w-5 h-5 text-purple-600" />
+            <GitMerge className="w-5 h-5 text-[#0052CC]" />
             <h3 className="text-base font-bold text-slate-900">Controlled Master Product Merge</h3>
           </div>
           <button
@@ -144,7 +144,7 @@ export function MasterProductMergeModal({
               value={adminNotes}
               onChange={(e) => setAdminNotes(e.target.value)}
               placeholder="e.g. Merging duplicate CAS entries following chemical audit..."
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600"
+              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#0052CC]"
             />
           </div>
 
@@ -154,7 +154,7 @@ export function MasterProductMergeModal({
               type="checkbox"
               checked={confirmed}
               onChange={(e) => setConfirmed(e.target.checked)}
-              className="w-4 h-4 rounded text-purple-600 focus:ring-purple-500 mt-0.5"
+              className="w-4 h-4 rounded text-[#0052CC] focus:ring-blue-500 mt-0.5"
             />
             <span className="text-slate-800 font-semibold leading-tight">
               I explicitly confirm merging <strong className="font-bold">{sourceCode}</strong> into <strong className="font-bold">{targetCode}</strong>.
@@ -173,7 +173,7 @@ export function MasterProductMergeModal({
             <button
               type="submit"
               disabled={isLoading || !confirmed}
-              className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm disabled:opacity-50 flex items-center gap-1.5"
+              className="px-5 py-2 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white rounded-xl text-xs font-bold transition-colors shadow-sm disabled:opacity-50 flex items-center gap-1.5"
             >
               <GitMerge className="w-4 h-4" />
               {isLoading ? "Merging..." : "Confirm & Execute Merge"}

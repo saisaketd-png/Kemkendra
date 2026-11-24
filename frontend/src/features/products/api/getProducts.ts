@@ -40,9 +40,6 @@ export async function getProducts(params: ProductQueryParams = {}): Promise<Prod
     });
 
     if (!response.ok) {
-      if (process.env.NODE_ENV !== "production") {
-        console.error(`API error fetching master products: ${response.status}`);
-      }
       return { content: [], totalElements: 0, totalPages: 0, number: 0, size: params.size || 20 };
     }
 
@@ -76,9 +73,6 @@ export async function getProducts(params: ProductQueryParams = {}): Promise<Prod
       size: data.size || (params.size || 20),
     };
   } catch (error) {
-    if (process.env.NODE_ENV !== "production") {
-      console.error("Network error fetching master products:", error);
-    }
     return { content: [], totalElements: 0, totalPages: 0, number: 0, size: params.size || 20 };
   }
 }

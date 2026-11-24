@@ -78,10 +78,15 @@ public class PaymentController {
         User user = resolveUser(authentication);
         PaymentTrackingService.PaymentProofDownload download = paymentTrackingService.loadPaymentProof(paymentRecordId, user);
 
+        String safeName = download.fileName() != null ? download.fileName().replace("\"", "\\\"") : "payment_proof.bin";
+
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(download.contentType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + download.fileName() + "\"")
-                .header(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + safeName + "\"")
+                .header(HttpHeaders.CACHE_CONTROL, "private, no-cache, no-store, must-revalidate")
+                .header(HttpHeaders.PRAGMA, "no-cache")
+                .header("X-Content-Type-Options", "nosniff")
+                .header("Content-Security-Policy", "default-src 'none'; sandbox")
                 .body(download.resource());
     }
 

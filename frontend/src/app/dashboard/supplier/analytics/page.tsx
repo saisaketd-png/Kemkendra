@@ -186,7 +186,7 @@ export default function SupplierAnalyticsPage() {
               value={`${summary.averageResponseTimeHours} hrs`}
               subtitle="From RFQ to Quote"
               icon={Clock}
-              tone="purple"
+              tone="blue"
             />
             <KpiStatCard
               title="Fulfilled GMV"

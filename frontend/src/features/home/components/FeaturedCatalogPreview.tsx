@@ -97,25 +97,22 @@ export function FeaturedCatalogPreview({ products }: FeaturedCatalogPreviewProps
       : SAMPLE_PRODUCTS;
 
   return (
-    <section className="py-16 sm:py-20 bg-white border-b border-[#E4E4E7]">
+    <section className="py-16 sm:py-20 bg-[#F8F9FA] border-b border-[#E4E4E7]">
       <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
           <div>
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#0052CC] font-mono bg-[#EFF6FF] border border-[#BFDBFE] px-2.5 py-1 rounded-[4px]">
-              Marketplace Liquidity
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#0F172A] tracking-tight mt-2.5">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#0F172A] tracking-tight">
               Products in Demand
             </h2>
             <p className="text-xs sm:text-sm text-[#64748B] mt-1.5 max-w-2xl leading-relaxed">
-              Active sourcing monographs from verified manufacturers, complete with Certificates of Analysis (COA) and batch test records.
+              Active verified chemical listings from certified manufacturers, complete with Certificates of Analysis (COA) and batch test records.
             </p>
           </div>
 
           <Link
             href="/products"
-            className="h-9 px-4 bg-white border border-[#E4E4E7] hover:bg-[#FAFAFA] text-[#0F172A] text-xs font-medium rounded-[6px] transition-colors inline-flex items-center gap-1.5 shadow-xs shrink-0 self-start md:self-auto"
+            className="h-10 px-4 bg-white border border-[#CBD5E1] hover:bg-[#F8FAFC] text-[#0F172A] text-xs font-semibold rounded-[6px] transition-all inline-flex items-center gap-2 shadow-2xs shrink-0 self-start md:self-auto press-tactile"
           >
             <span>View Full Directory</span>
             <ArrowRight className="w-3.5 h-3.5 text-[#64748B]" />

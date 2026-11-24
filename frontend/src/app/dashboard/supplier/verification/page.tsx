@@ -338,19 +338,19 @@ export default function SupplierVerificationCenterPage() {
   return (
     <div className="max-w-[1400px] mx-auto space-y-6 pb-12">
       {/* 1. Header & Live Verification Status Banner */}
-      <div className="bg-white border border-[#DFE1E6] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-tactile-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono font-bold text-[#0052CC] bg-[#DEEBFF] px-2 py-0.5 rounded uppercase">
+            <span className="text-xs font-semibold text-[#0052CC] bg-blue-50 px-2.5 py-0.5 rounded-md border border-blue-200">
               Supplier Compliance
             </span>
-            <span className="text-xs text-[#7A869A]">•</span>
-            <span className="text-xs font-mono text-[#5E6C84]">Tier 1 Enterprise Due-Diligence</span>
+            <span className="text-xs text-slate-300">•</span>
+            <span className="text-xs text-[#64748B]">Tier 1 Enterprise Due-Diligence</span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-[#091E42] mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold text-[#091E42] mt-1 tracking-tight">
             Supplier Verification Center
           </h1>
-          <p className="text-xs sm:text-sm text-[#5E6C84] mt-0.5">
+          <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
             Complete the 6-step guided compliance verification to activate enterprise chemical trading.
           </p>
         </div>
@@ -358,24 +358,24 @@ export default function SupplierVerificationCenterPage() {
         <div className="flex items-center gap-3">
           {/* Status Badge */}
           <div className="text-right">
-            <div className="text-[10px] uppercase font-mono text-[#5E6C84] font-semibold">Verification Status</div>
+            <div className="text-[11px] font-semibold text-[#64748B]">Verification Status</div>
             <div className="flex items-center gap-1.5 mt-0.5 justify-end">
-              {vStatus === "VERIFIED" && <ShieldCheck className="w-4 h-4 text-[#00875A]" />}
+              {vStatus === "VERIFIED" && <ShieldCheck className="w-4 h-4 text-emerald-600" />}
               {vStatus === "PENDING" && <Clock className="w-4 h-4 text-[#0052CC]" />}
-              {vStatus === "UNDER_REVIEW" && <Clock className="w-4 h-4 text-[#FF8B00]" />}
-              {vStatus === "INFORMATION_REQUIRED" && <AlertTriangle className="w-4 h-4 text-[#FF8B00]" />}
-              {vStatus === "REJECTED" && <AlertCircle className="w-4 h-4 text-[#DE350B]" />}
-              {vStatus === "SUSPENDED" && <Lock className="w-4 h-4 text-[#DE350B]" />}
+              {vStatus === "UNDER_REVIEW" && <Clock className="w-4 h-4 text-amber-600" />}
+              {vStatus === "INFORMATION_REQUIRED" && <AlertTriangle className="w-4 h-4 text-amber-600" />}
+              {vStatus === "REJECTED" && <AlertCircle className="w-4 h-4 text-red-600" />}
+              {vStatus === "SUSPENDED" && <Lock className="w-4 h-4 text-red-600" />}
 
-              <span className={`text-xs font-bold font-mono px-2.5 py-1 rounded-lg ${
-                vStatus === "VERIFIED" ? "bg-[#E3FCEF] text-[#006644]" :
-                vStatus === "INFORMATION_REQUIRED" ? "bg-[#FFF0B3] text-[#974F0C]" :
-                vStatus === "UNDER_REVIEW" ? "bg-[#FFF0B3] text-[#974F0C]" :
-                vStatus === "PENDING" ? "bg-[#DEEBFF] text-[#0747A6]" :
-                vStatus === "REJECTED" || vStatus === "SUSPENDED" ? "bg-[#FFEBE6] text-[#DE350B]" :
-                "bg-[#F4F5F7] text-[#172B4D]"
+              <span className={`text-xs font-semibold px-2.5 py-1 rounded-lg border ${
+                vStatus === "VERIFIED" ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
+                vStatus === "INFORMATION_REQUIRED" ? "bg-amber-50 text-amber-800 border-amber-200" :
+                vStatus === "UNDER_REVIEW" ? "bg-amber-50 text-amber-800 border-amber-200" :
+                vStatus === "PENDING" ? "bg-blue-50 text-[#0052CC] border-blue-200" :
+                vStatus === "REJECTED" || vStatus === "SUSPENDED" ? "bg-red-50 text-red-700 border-red-200" :
+                "bg-slate-100 text-slate-700 border-slate-200"
               }`}>
-                {vStatus}
+                {vStatus === "INFORMATION_REQUIRED" ? "Action Required" : vStatus === "UNDER_REVIEW" ? "Under Review" : vStatus}
               </span>
             </div>
           </div>
@@ -384,7 +384,7 @@ export default function SupplierVerificationCenterPage() {
             <button
               onClick={handleSaveProgress}
               disabled={savingProgress}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-[#091E42] bg-white hover:bg-[#F4F5F7] border border-[#DFE1E6] rounded-xl transition-colors shadow-2xs cursor-pointer disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 h-9 px-3.5 text-xs font-semibold text-[#091E42] bg-white hover:bg-[#F8F9FA] border border-slate-200 rounded-lg transition-colors shadow-2xs cursor-pointer disabled:opacity-50 press-tactile"
             >
               <Save className="w-3.5 h-3.5 text-[#0052CC]" />
               <span>{savingProgress ? "Saving..." : "Save Progress"}</span>

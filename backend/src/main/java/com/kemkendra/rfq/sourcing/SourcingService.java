@@ -125,6 +125,7 @@ public class SourcingService {
         );
     }
 
+    @Autowired
     public SourcingService(
             SourcingRequestRepository sourcingRequestRepository,
             SourcingAssignmentRepository sourcingAssignmentRepository,

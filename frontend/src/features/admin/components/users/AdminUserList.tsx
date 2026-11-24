@@ -218,7 +218,7 @@ export function AdminUserList({
               type="button"
               onClick={() => handleOpenRoleModal(user)}
               disabled={isDeleted}
-              className="p-1.5 text-purple-600 hover:text-purple-800 hover:bg-purple-50 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              className="p-1.5 text-[#0052CC] hover:text-[#0747A6] hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               title="Change User Role"
             >
               <Shield className="w-4 h-4" />

@@ -93,7 +93,7 @@ export default function GlobalGovernanceAuditPage() {
       </div>
 
       {/* Audit Logs Table */}
-      <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-2xs">
+      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-tactile-card">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50/80 border-b border-slate-100 text-slate-500 font-bold uppercase tracking-wider text-[10px]">

@@ -5,26 +5,22 @@ import { Search, ChevronDown, ArrowRight } from "lucide-react";
 export function SearchHeader() {
   return (
     <section className="relative bg-[#0A1128] text-white border-b border-[#1E293B] overflow-hidden">
-      <div className="max-w-[1560px] mx-auto">
+      <div className="max-w-[1560px] mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[600px] lg:min-h-[660px]">
           
           {/* Left Column (~55% / 7 cols): Editorial Typography, Sourcing Search & Trust Strip */}
           <div className="lg:col-span-7 flex flex-col justify-between p-6 sm:p-10 lg:p-16 z-10">
             <div className="space-y-6 max-w-2xl">
-              {/* Eyebrow */}
-              <span className="text-xs font-semibold uppercase tracking-widest text-[#38BDF8] block">
-                Chemical Sourcing Platform
-              </span>
-
+              
               {/* Large Confident Editorial Headline */}
-              <h1 className="text-4xl sm:text-5xl lg:text-[56px] xl:text-[64px] font-bold tracking-tight text-white leading-[1.08]">
-                Source the chemicals <br />
-                your business needs.
+              <h1 className="text-4xl sm:text-5xl lg:text-[56px] xl:text-[64px] font-bold tracking-tight text-white leading-[1.08] pt-2">
+                Direct Chemical <br />
+                Procurement Exchange.
               </h1>
 
               {/* Concise Supporting Narrative */}
               <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-lg font-normal">
-                Discover chemical products, connect with verified manufacturers, and manage commercial procurement through one structured B2B marketplace.
+                Discover audited compendial APIs, pharmaceutical intermediates, and industrial solvents. Source directly from verified manufacturers under verified quality standards.
               </p>
 
               {/* Large Horizontal Marketplace Search Control */}
@@ -32,7 +28,7 @@ export function SearchHeader() {
                 <form
                   action="/products"
                   method="GET"
-                  className="bg-white rounded-[6px] p-2 flex flex-col sm:flex-row items-center gap-2 max-w-xl shadow-2xl border border-white/20"
+                  className="bg-white rounded-[8px] p-2 flex flex-col sm:flex-row items-center gap-2 max-w-xl shadow-2xl border border-white/20 transition-all focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-500/20"
                 >
                   {/* Category Dropdown */}
                   <div className="relative border-b sm:border-b-0 sm:border-r border-[#E4E4E7] flex items-center h-11 min-w-[150px] shrink-0 w-full sm:w-auto">
@@ -58,7 +54,7 @@ export function SearchHeader() {
                     <input
                       type="text"
                       name="search"
-                      placeholder="Search chemicals, CAS numbers, grades or product codes..."
+                      placeholder="Search chemicals, CAS numbers, grades or monographs..."
                       className="w-full bg-transparent text-xs text-[#0F172A] placeholder:text-[#64748B] focus:outline-none font-medium"
                     />
                   </div>
@@ -66,32 +62,60 @@ export function SearchHeader() {
                   {/* Search Action */}
                   <button
                     type="submit"
-                    className="w-full sm:w-auto h-11 px-6 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-semibold rounded-[4px] transition-all flex items-center justify-center gap-2 shrink-0 shadow-xs"
+                    className="w-full sm:w-auto h-11 px-6 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-semibold rounded-[6px] transition-all flex items-center justify-center gap-2 shrink-0 shadow-xs cursor-pointer press-tactile"
                   >
                     <span>Search</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </form>
 
-                <div className="pt-2 text-[11px] font-mono text-slate-400">
-                  Chemical name &middot; CAS number &middot; Grade &middot; Product code
+                {/* Trending Clean Text Links (NO boxy AI badges) */}
+                <div className="pt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400">
+                  <span className="text-slate-500 font-medium">Trending:</span>
+                  <Link
+                    href="/products?search=Paracetamol"
+                    className="hover:text-sky-300 transition-colors font-mono text-[11px]"
+                  >
+                    Paracetamol IP (103-90-2)
+                  </Link>
+                  <span className="text-slate-700">&bull;</span>
+                  <Link
+                    href="/products?search=Isopropyl+Alcohol"
+                    className="hover:text-sky-300 transition-colors font-mono text-[11px]"
+                  >
+                    IPA ≥ 99.8% (67-63-0)
+                  </Link>
+                  <span className="text-slate-700">&bull;</span>
+                  <Link
+                    href="/products?search=Ibuprofen"
+                    className="hover:text-sky-300 transition-colors font-mono text-[11px]"
+                  >
+                    Ibuprofen (15687-27-1)
+                  </Link>
+                  <span className="text-slate-700">&bull;</span>
+                  <Link
+                    href="/products?search=Methanol"
+                    className="hover:text-sky-300 transition-colors font-mono text-[11px]"
+                  >
+                    Methanol (67-56-1)
+                  </Link>
                 </div>
               </div>
 
               {/* Primary vs Secondary CTAs */}
-              <div className="flex flex-wrap items-center gap-4 pt-1">
+              <div className="flex flex-wrap items-center gap-4 pt-2">
                 <Link
                   href="/products"
-                  className="h-11 px-6 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-semibold rounded-[4px] transition-colors flex items-center justify-center gap-2 shadow-xs"
+                  className="h-11 px-6 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-semibold rounded-[6px] transition-all flex items-center justify-center gap-2 shadow-xs press-tactile"
                 >
-                  <span>Explore Marketplace</span>
+                  <span>Explore Open Catalog</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
                 <Link
-                  href="/rfq"
-                  className="h-11 px-6 bg-transparent hover:bg-white/5 border border-slate-700 text-slate-200 text-xs font-medium rounded-[4px] transition-colors flex items-center justify-center"
+                  href="/sourcing/request"
+                  className="h-11 px-6 bg-white/10 hover:bg-white/15 border border-white/20 text-white text-xs font-semibold rounded-[6px] transition-all flex items-center justify-center gap-2 press-tactile"
                 >
-                  <span>Request an RFQ</span>
+                  <span>Custom Sourcing Request</span>
                 </Link>
               </div>
             </div>
@@ -117,12 +141,12 @@ export function SearchHeader() {
               priority
               sizes="(max-width: 1024px) 100vw, 45vw"
               quality={82}
-              className="object-cover object-center brightness-95 contrast-105"
+              className="object-cover object-center brightness-95 contrast-105 transition-transform duration-700 hover:scale-105"
             />
             {/* Natural gradient blend: dissolves seamlessly into the left navy canvas */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A1128] via-transparent to-transparent lg:bg-gradient-to-r lg:from-[#0A1128] lg:via-[#0A1128]/20 lg:to-transparent pointer-events-none" />
 
-            {/* Understated Editorial Notation (integrated, subtle, not a floating UI card) */}
+            {/* Understated Editorial Notation */}
             <div className="absolute bottom-5 right-5 text-right font-mono text-[11px] text-slate-400/90 pointer-events-none hidden sm:block">
               <span className="text-slate-300 font-semibold block text-xs">High-Purity Compendial Assay</span>
               <span>Controlled Crystalline & Powder Spec</span>

@@ -31,17 +31,17 @@ export default function BuyerInvoicesPage() {
   const getStatusBadge = (status: InvoiceStatus) => {
     switch (status) {
       case "PAID":
-        return "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20";
+        return "bg-emerald-50 text-emerald-700 border-emerald-200/80";
       case "PARTIALLY_PAID":
-        return "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20";
+        return "bg-blue-50 text-blue-700 border-blue-200/80";
       case "ISSUED":
-        return "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20";
+        return "bg-amber-50 text-amber-800 border-amber-200/80";
       case "CANCELLED":
-        return "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20";
+        return "bg-rose-50 text-rose-700 border-rose-200/80";
       case "DISPUTED":
-        return "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20";
+        return "bg-orange-50 text-orange-800 border-orange-200/80";
       default:
-        return "bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20";
+        return "bg-slate-100 text-slate-700 border-slate-200";
     }
   };
 
@@ -49,21 +49,21 @@ export default function BuyerInvoicesPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-2xl font-bold text-[#091E42] tracking-tight">
             Buyer Invoices & Billing
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Official GST tax invoices received from verified chemical suppliers.
           </p>
         </div>
 
         {/* Filter */}
         <div className="flex items-center gap-2">
-          <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Status:</label>
+          <label className="text-xs font-semibold text-slate-600">Status:</label>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as any)}
-            className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 text-xs font-medium focus:ring-2 focus:ring-primary/20 outline-none transition"
+            className="h-9 px-3 rounded-xl border border-slate-300 bg-white text-slate-800 text-xs font-medium focus:border-[#0052CC] outline-none transition shadow-2xs"
           >
             <option value="ALL">All Invoices</option>
             <option value="ISSUED">Issued (Pending Payment)</option>
@@ -76,32 +76,32 @@ export default function BuyerInvoicesPage() {
       </div>
 
       {error && (
-        <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-sm">
+        <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium">
           {error}
         </div>
       )}
 
       {loading ? (
         <div className="p-12 text-center text-slate-500">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-2"></div>
-          <p className="text-sm">Loading your invoices...</p>
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-2 border-[#0052CC] border-t-transparent mb-2"></div>
+          <p className="text-xs font-medium">Loading your invoices...</p>
         </div>
       ) : invoices.length === 0 ? (
-        <div className="p-12 text-center rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50">
-          <svg className="w-12 h-12 text-slate-300 dark:text-slate-700 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="p-12 text-center rounded-2xl border border-slate-200/90 bg-white shadow-tactile-card">
+          <svg className="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <h3 className="text-base font-bold text-slate-900 dark:text-white">No Tax Invoices Found</h3>
+          <h3 className="text-base font-bold text-[#091E42]">No Tax Invoices Found</h3>
           <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1">
             When suppliers confirm your purchase orders and issue tax invoices, they will appear here.
           </p>
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-tactile-card">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 text-slate-500 font-semibold uppercase tracking-wider">
+                <tr className="border-b border-slate-200/90 bg-slate-50/80 text-slate-600 font-semibold">
                   <th className="py-3 px-4">Invoice #</th>
                   <th className="py-3 px-4">Supplier</th>
                   <th className="py-3 px-4">PO Ref</th>
@@ -113,41 +113,41 @@ export default function BuyerInvoicesPage() {
                   <th className="py-3 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-100">
                 {invoices.map((inv) => (
-                  <tr key={inv.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition">
-                    <td className="py-3.5 px-4 font-mono font-bold text-slate-900 dark:text-white">
+                  <tr key={inv.id} className="hover:bg-slate-50/60 transition-colors">
+                    <td className="py-3.5 px-4 font-mono font-bold text-slate-900">
                       {inv.invoiceNumber}
                     </td>
                     <td className="py-3.5 px-4">
-                      <p className="font-semibold text-slate-900 dark:text-white">{inv.supplierLegalName}</p>
+                      <p className="font-semibold text-slate-900">{inv.supplierLegalName}</p>
                       <p className="text-[11px] font-mono text-slate-500">GSTIN: {inv.supplierGstin || "N/A"}</p>
                     </td>
-                    <td className="py-3.5 px-4 font-mono text-slate-600 dark:text-slate-400">
+                    <td className="py-3.5 px-4 font-mono text-slate-600">
                       {inv.poNumber || "N/A"}
                     </td>
-                    <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400">
+                    <td className="py-3.5 px-4 text-slate-600">
                       <p>{inv.invoiceDate}</p>
                       <p className="text-[11px] text-slate-400">Due: {inv.dueDate}</p>
                     </td>
-                    <td className="py-3.5 px-4 text-right font-mono text-slate-700 dark:text-slate-300">
+                    <td className="py-3.5 px-4 text-right font-mono text-slate-700">
                       ₹{Number(inv.taxableAmount || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                     </td>
-                    <td className="py-3.5 px-4 text-right font-mono font-bold text-slate-900 dark:text-white">
+                    <td className="py-3.5 px-4 text-right font-mono font-bold text-slate-900">
                       ₹{Number(inv.grandTotal || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                     </td>
-                    <td className="py-3.5 px-4 text-right font-mono font-bold text-rose-600 dark:text-rose-400">
+                    <td className="py-3.5 px-4 text-right font-mono font-bold text-rose-600">
                       ₹{Number(inv.amountDue || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                     </td>
                     <td className="py-3.5 px-4 text-center">
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border uppercase tracking-wider ${getStatusBadge(inv.status)}`}>
+                      <span className={`px-2.5 py-0.5 rounded-lg text-xs font-semibold border ${getStatusBadge(inv.status)}`}>
                         {inv.status.replace("_", " ")}
                       </span>
                     </td>
                     <td className="py-3.5 px-4 text-right">
                       <Link
                         href={`/dashboard/buyer/invoices/${inv.id}`}
-                        className="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs font-semibold transition inline-block"
+                        className="px-3.5 py-1.5 rounded-xl bg-[#0052CC] hover:bg-[#0747A6] active:scale-[0.98] text-white text-xs font-semibold transition-colors inline-block shadow-2xs"
                       >
                         View Details
                       </Link>

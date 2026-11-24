@@ -25,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.kemkendra.identity.dto.LoginAuthResult;
+import com.kemkendra.security.ClientIpResolver;
 import com.kemkendra.security.cookie.AuthCookieService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -40,19 +41,22 @@ public class AuthController {
     private final com.kemkendra.identity.service.RefreshTokenService refreshTokenService;
     private final com.kemkendra.identity.UserRepository userRepository;
     private final AuthCookieService authCookieService;
+    private final ClientIpResolver clientIpResolver;
 
     public AuthController(UserService userService,
                           PasswordResetService passwordResetService,
                           EmailVerificationService emailVerificationService,
                           com.kemkendra.identity.service.RefreshTokenService refreshTokenService,
                           com.kemkendra.identity.UserRepository userRepository,
-                          AuthCookieService authCookieService) {
+                          AuthCookieService authCookieService,
+                          ClientIpResolver clientIpResolver) {
         this.userService = userService;
         this.passwordResetService = passwordResetService;
         this.emailVerificationService = emailVerificationService;
         this.refreshTokenService = refreshTokenService;
         this.userRepository = userRepository;
         this.authCookieService = authCookieService;
+        this.clientIpResolver = clientIpResolver;
     }
 
     @GetMapping("/me")
@@ -91,13 +95,7 @@ public class AuthController {
             @Valid @RequestBody LoginRequest request,
             jakarta.servlet.http.HttpServletRequest servletRequest) {
 
-        String ip = servletRequest.getHeader("X-Forwarded-For");
-        if (ip == null || ip.isBlank()) {
-            ip = servletRequest.getRemoteAddr();
-        } else if (ip.contains(",")) {
-            ip = ip.split(",")[0].trim();
-        }
-
+        String ip = clientIpResolver.resolveClientIp(servletRequest);
         String userAgent = servletRequest.getHeader("User-Agent");
         LoginAuthResult authResult = userService.login(request, ip, userAgent);
 
@@ -126,12 +124,7 @@ public class AuthController {
         String rawRefreshToken = authCookieService.extractRefreshToken(servletRequest)
                 .orElseThrow(() -> new org.springframework.security.authentication.BadCredentialsException("Refresh token cookie is missing or invalid"));
 
-        String ip = servletRequest.getHeader("X-Forwarded-For");
-        if (ip == null || ip.isBlank()) {
-            ip = servletRequest.getRemoteAddr();
-        } else if (ip.contains(",")) {
-            ip = ip.split(",")[0].trim();
-        }
+        String ip = clientIpResolver.resolveClientIp(servletRequest);
         String userAgent = servletRequest.getHeader("User-Agent");
 
         com.kemkendra.identity.dto.RefreshTokenRotateResult result =

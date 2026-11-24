@@ -33,7 +33,7 @@ export default function AdminInvoicesPage() {
       case "PAID":
         return "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20";
       case "PARTIALLY_PAID":
-        return "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20";
+        return "bg-sky-500/10 text-sky-700 dark:text-sky-400 border-sky-500/20";
       case "ISSUED":
         return "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20";
       case "CANCELLED":
