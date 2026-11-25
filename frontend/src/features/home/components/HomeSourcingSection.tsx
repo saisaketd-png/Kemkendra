@@ -39,13 +39,13 @@ export function HomeSourcingSection() {
           <div className="lg:col-span-5 space-y-6">
             <div>
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#0052CC] bg-blue-50 border border-blue-200/60 px-2.5 py-1 rounded-md inline-block">
-                Custom Chemical Sourcing Desk
+                Custom Chemical Sourcing & Bulk Procurement Desk
               </span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F172A] tracking-tight mt-3">
-                Can’t Find Your Compound? We Source It Direct.
+                Can’t Find Your Compound? Direct Factory Chemical Sourcing.
               </h2>
               <p className="text-xs sm:text-sm text-[#64748B] mt-3 leading-relaxed">
-                If your required pharmaceutical active, intermediate, or specialty reagent is not in the instant catalog, submit your specification below. Our technical desk matches your volume with primary audited synthesizers within 24 hours.
+                If your required Active Pharmaceutical Ingredient (API), Key Starting Material (KSM), custom synthesis intermediate, or high-purity laboratory solvent is not listed in our live catalog, submit your technical specification below. Our chemical procurement desk matches your target purity, CAS number, and pharmacopeial standards (USP, BP, EP, IP) with pre-audited chemical synthesis plants across Gujarat, Maharashtra, and Telangana within 24 hours.
               </p>
             </div>
 

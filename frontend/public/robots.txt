@@ -3,12 +3,18 @@
 
 User-agent: *
 Allow: /
+Allow: /sourcing
+Allow: /sourcing/*
+Allow: /chemicals
+Allow: /chemicals/*
 Allow: /products
 Allow: /products/*
 Allow: /categories
 Allow: /categories/*
 Allow: /suppliers
 Allow: /suppliers/*
+Allow: /about
+Allow: /contact
 Allow: /industries
 Allow: /resources
 Allow: /terms
@@ -24,6 +30,8 @@ Disallow: /admin/*
 Disallow: /login
 Disallow: /register
 Disallow: /register/*
+Disallow: /rfq/
+Disallow: /rfq/*
 Disallow: /api/
 Disallow: /verify-email
 Disallow: /reset-password
@@ -41,12 +49,18 @@ User-agent: Applebot-Extended
 User-agent: Meta-ExternalAgent
 User-agent: cohere-ai
 Allow: /
+Allow: /sourcing
+Allow: /sourcing/*
+Allow: /chemicals
+Allow: /chemicals/*
 Allow: /products
 Allow: /products/*
 Allow: /categories
 Allow: /categories/*
 Allow: /suppliers
 Allow: /suppliers/*
+Allow: /about
+Allow: /contact
 Allow: /industries
 Allow: /resources
 Allow: /terms
@@ -62,10 +76,11 @@ Disallow: /admin/*
 Disallow: /login
 Disallow: /register
 Disallow: /register/*
+Disallow: /rfq/
+Disallow: /rfq/*
 Disallow: /api/
 Disallow: /verify-email
 Disallow: /reset-password
 Disallow: /forgot-password
 
 Sitemap: https://kemkendra.online/sitemap.xml
-Host: https://kemkendra.online

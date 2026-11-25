@@ -13,14 +13,14 @@ export function SearchHeader() {
             <div className="space-y-6 max-w-2xl">
               
               {/* Large Confident Editorial Headline */}
-              <h1 className="text-4xl sm:text-5xl lg:text-[56px] xl:text-[64px] font-bold tracking-tight text-white leading-[1.08] pt-2">
-                Direct Chemical <br />
-                Procurement Exchange.
+              <h1 className="text-4xl sm:text-5xl lg:text-[54px] xl:text-[60px] font-bold tracking-tight text-white leading-[1.08] pt-2">
+                B2B Chemical Marketplace & <br />
+                Bulk Procurement Exchange.
               </h1>
 
-              {/* Concise Supporting Narrative */}
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-lg font-normal">
-                Discover audited compendial APIs, pharmaceutical intermediates, and industrial solvents. Source directly from verified manufacturers under verified quality standards.
+              {/* Concise Supporting Narrative with High-Value SEO Keywords */}
+              <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl font-normal">
+                Discover audited compendial Active Pharmaceutical Ingredients (APIs), pharmaceutical intermediates, and high-purity industrial solvents. Source directly from ISO 9001 and cGMP verified chemical manufacturers across India with instant RFQs and batch Certificates of Analysis (COA).
               </p>
 
               {/* Large Horizontal Marketplace Search Control */}
@@ -69,9 +69,9 @@ export function SearchHeader() {
                   </button>
                 </form>
 
-                {/* Trending Clean Text Links (NO boxy AI badges) */}
+                {/* Trending Clean Text Links with Key Chemical Search Terms */}
                 <div className="pt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400">
-                  <span className="text-slate-500 font-medium">Trending:</span>
+                  <span className="text-slate-500 font-medium">Popular Sourcing:</span>
                   <Link
                     href="/products?search=Paracetamol"
                     className="hover:text-sky-300 transition-colors font-mono text-[11px]"
@@ -87,17 +87,24 @@ export function SearchHeader() {
                   </Link>
                   <span className="text-slate-700">&bull;</span>
                   <Link
-                    href="/products?search=Ibuprofen"
-                    className="hover:text-sky-300 transition-colors font-mono text-[11px]"
-                  >
-                    Ibuprofen (15687-27-1)
-                  </Link>
-                  <span className="text-slate-700">&bull;</span>
-                  <Link
                     href="/products?search=Methanol"
                     className="hover:text-sky-300 transition-colors font-mono text-[11px]"
                   >
                     Methanol (67-56-1)
+                  </Link>
+                  <span className="text-slate-700">&bull;</span>
+                  <Link
+                    href="/products?search=Dichloromethane"
+                    className="hover:text-sky-300 transition-colors font-mono text-[11px]"
+                  >
+                    DCM / Methylene Chloride (75-09-2)
+                  </Link>
+                  <span className="text-slate-700">&bull;</span>
+                  <Link
+                    href="/products?search=Acetone"
+                    className="hover:text-sky-300 transition-colors font-mono text-[11px]"
+                  >
+                    Acetone Pure (67-64-1)
                   </Link>
                 </div>
               </div>

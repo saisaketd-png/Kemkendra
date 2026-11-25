@@ -292,10 +292,10 @@ export default function SourcingPage() {
 
                 <div className="space-y-3">
                   <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#091E42] tracking-tight leading-[1.12]">
-                    Custom Chemical Sourcing & Factory Allocation
+                    Custom Chemical Sourcing & Bulk Procurement Desk
                   </h1>
                   <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
-                    Direct institutional allocation for unlisted active pharmaceutical ingredients, synthesis intermediates, and bulk chemical process inputs from pre-audited global manufacturers.
+                    Direct factory allocation for compendial Active Pharmaceutical Ingredients (APIs), Key Starting Materials (KSMs), custom organic synthesis intermediates, and high-purity industrial solvents from pre-audited chemical synthesis manufacturers across India and global chemical corridors.
                   </p>
                 </div>
 
@@ -880,6 +880,124 @@ export default function SourcingPage() {
                   )}
                 </form>
               )}
+            </div>
+
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 5.5. SOURCING KNOWLEDGE BASE, BULK PACKAGING & REGULATORY FAQS */}
+        {/* ========================================================================= */}
+        <section className="py-16 sm:py-20 bg-white border-b border-slate-200">
+          <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+            
+            <div className="max-w-3xl space-y-2">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#0052CC] bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-md inline-block">
+                Technical Specifications & Logistics Standards
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-black text-[#091E42] tracking-tight">
+                Chemical Procurement Specifications, Bulk Packaging & Logistics
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Every sourcing inquiry routed through KemKendra is processed under strict compliance with international chemical safety standards, UN packaging certifications, and pharmacopeial monographs.
+              </p>
+            </div>
+
+            {/* Packaging & Transport Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              <div className="p-5 rounded-2xl border border-slate-200 bg-[#F8F9FA] space-y-2">
+                <div className="flex items-center gap-2 text-[#0052CC] font-bold text-xs">
+                  <Package className="w-4 h-4" />
+                  <span>ISO Tank Containers</span>
+                </div>
+                <strong className="text-sm text-[#091E42] block">20,000L to 26,000L</strong>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Bulk solvent transit for Isopropyl Alcohol, Methanol, Acetone, DCM, and industrial alcohols with top and bottom discharge valves.
+                </p>
+              </div>
+
+              <div className="p-5 rounded-2xl border border-slate-200 bg-[#F8F9FA] space-y-2">
+                <div className="flex items-center gap-2 text-emerald-600 font-bold text-xs">
+                  <Package className="w-4 h-4" />
+                  <span>IBC Totes (UN-Certified)</span>
+                </div>
+                <strong className="text-sm text-[#091E42] block">1,000 Liters Capacity</strong>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  HDPE intermediate bulk containers encased in galvanized steel cages for chemical liquid intermediates and specialty reagents.
+                </p>
+              </div>
+
+              <div className="p-5 rounded-2xl border border-slate-200 bg-[#F8F9FA] space-y-2">
+                <div className="flex items-center gap-2 text-purple-600 font-bold text-xs">
+                  <Package className="w-4 h-4" />
+                  <span>Tight-Head Drums</span>
+                </div>
+                <strong className="text-sm text-[#091E42] block">200L MS / HDPE Drums</strong>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Epoxy-lined mild steel and high-density polyethylene drums with tamper-evident caps for compendial excipients and solvents.
+                </p>
+              </div>
+
+              <div className="p-5 rounded-2xl border border-slate-200 bg-[#F8F9FA] space-y-2">
+                <div className="flex items-center gap-2 text-amber-600 font-bold text-xs">
+                  <Package className="w-4 h-4" />
+                  <span>UN-Rated Fiber Drums</span>
+                </div>
+                <strong className="text-sm text-[#091E42] block">25kg to 50kg Net Weight</strong>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Double-polyethylene lined fiber drums with silica desiccant pouches for crystalline APIs, powdered intermediates, and excipients.
+                </p>
+              </div>
+            </div>
+
+            {/* Sourcing FAQs */}
+            <div className="space-y-6 pt-4 border-t border-slate-100">
+              <div className="space-y-1">
+                <h3 className="text-xl font-black text-[#091E42] tracking-tight">
+                  Frequently Asked Questions (Chemical Sourcing Desk)
+                </h3>
+                <p className="text-xs text-slate-600">
+                  Detailed guidance on supplier allocation, analytical validation, pilot trials, and commercial execution.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs text-slate-600 leading-relaxed">
+                <div className="p-5 rounded-xl border border-slate-200 bg-[#F8F9FA] space-y-2">
+                  <h4 className="text-xs font-bold text-[#091E42]">
+                    How does KemKendra source hard-to-find or custom synthesis chemicals?
+                  </h4>
+                  <p>
+                    When you submit a sourcing inquiry with chemical structure, CAS number, purity threshold, and batch volume, our chemical engineering team cross-references our verified manufacturing network across Dahej, Ankleshwar, Vapi, and Hyderabad to match primary synthesizers capable of reaction execution without multi-tier broker markups.
+                  </p>
+                </div>
+
+                <div className="p-5 rounded-xl border border-slate-200 bg-[#F8F9FA] space-y-2">
+                  <h4 className="text-xs font-bold text-[#091E42]">
+                    What is the typical Minimum Order Quantity (MOQ)?
+                  </h4>
+                  <p>
+                    MOQs depend on compound classification. Commercial solvents typically require 200L drums or 1,000L IBC totes. For Active Pharmaceutical Ingredients (APIs) and advanced intermediates, MOQs start from 1kg–5kg for pilot trial batches up to commercial metric-ton allocations.
+                  </p>
+                </div>
+
+                <div className="p-5 rounded-xl border border-slate-200 bg-[#F8F9FA] space-y-2">
+                  <h4 className="text-xs font-bold text-[#091E42]">
+                    How are Certificates of Analysis (COA) validated?
+                  </h4>
+                  <p>
+                    All supplier quotations must include batch-specific COAs featuring HPLC/GC purity assays, Karl Fischer moisture content, residual solvent profiling (ICH Q3C), and heavy metal limits. Third-party NABL-accredited laboratory pre-shipment retesting is available upon request.
+                  </p>
+                </div>
+
+                <div className="p-5 rounded-xl border border-slate-200 bg-[#F8F9FA] space-y-2">
+                  <h4 className="text-xs font-bold text-[#091E42]">
+                    How does institutional escrow protect buyer funds?
+                  </h4>
+                  <p>
+                    Funds deposited for sourcing orders remain safeguarded in an institutional clearing escrow account. Payment is only disbursed to the manufacturing plant once pre-shipment quality inspection and destination goods receipt verification pass technical acceptance.
+                  </p>
+                </div>
+              </div>
             </div>
 
           </div>
