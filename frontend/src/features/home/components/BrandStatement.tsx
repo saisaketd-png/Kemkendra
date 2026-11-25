@@ -37,8 +37,8 @@ export function BrandStatement() {
   ];
 
   return (
-    <section className="py-16 sm:py-24 bg-[#F8F9FA] border-b border-slate-200/90 relative">
-      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-12 sm:py-24 bg-[#F8F9FA] border-b border-slate-200/90 relative w-full max-w-full overflow-hidden">
+      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* Section Header */}
         <div className="max-w-2xl space-y-2 mb-12">

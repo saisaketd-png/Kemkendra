@@ -4,11 +4,11 @@ import { ArrowRight, Check } from "lucide-react";
 
 export function TrustSection() {
   return (
-    <section className="py-20 sm:py-24 bg-slate-900 text-white border-b border-slate-800 relative overflow-hidden">
+    <section className="py-12 sm:py-24 bg-slate-900 text-white border-b border-slate-800 relative w-full max-w-full overflow-hidden">
       {/* Subtle blueprint grid underlay */}
       <div className="absolute inset-0 bg-grid-blueprint opacity-10 pointer-events-none" />
 
-      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         {/* Section Header (NO AI badge boxes) */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-6">
           <div className="space-y-3 max-w-2xl">

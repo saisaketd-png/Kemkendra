@@ -106,8 +106,8 @@ export function HomeSeoDirectory() {
   ];
 
   return (
-    <section className="py-16 sm:py-24 bg-white border-b border-slate-200">
-      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+    <section className="py-10 sm:py-20 bg-white border-b border-slate-200 w-full max-w-full overflow-hidden">
+      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16 w-full">
         
         {/* Section Header */}
         <div className="max-w-3xl space-y-3">

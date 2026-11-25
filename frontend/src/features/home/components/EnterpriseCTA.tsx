@@ -3,8 +3,8 @@ import { ArrowRight } from "lucide-react";
 
 export function EnterpriseCTA() {
   return (
-    <section className="py-12 sm:py-16 bg-[#0A1128] text-white border-b border-[#1E293B]">
-      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-10 sm:py-16 bg-[#0A1128] text-white border-b border-[#1E293B] w-full max-w-full overflow-hidden">
+      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center justify-between">
           
           {/* Left Column: Editorial Statement */}

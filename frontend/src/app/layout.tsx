@@ -84,7 +84,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="font-sans min-h-full flex flex-col bg-[#F8F9FA] text-[#0F172A] pb-16 lg:pb-0">
+      <body className="font-sans min-h-full w-full max-w-full overflow-x-hidden flex flex-col bg-[#F8F9FA] text-[#0F172A] pb-16 lg:pb-0">
         <ToastProvider>
           <OfflineBanner />
           <CommandPalette />

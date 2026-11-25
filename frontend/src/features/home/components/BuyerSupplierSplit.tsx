@@ -41,13 +41,13 @@ export function BuyerSupplierSplit() {
               {/* Bespoke RFQ Dossier Terminal Widget */}
               <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[10px] p-4 space-y-3 font-mono text-xs transition-colors group-hover:border-blue-200">
                 {/* Active RFQ Header */}
-                <div className="flex items-center justify-between text-[11px] text-[#64748B] border-b border-[#E2E8F0] pb-2">
-                  <span className="font-bold text-[#0F172A]">REQ-2024-8842 // PARACETAMOL IP</span>
-                  <span className="text-[#0052CC] font-semibold">3 BINDING OFFERS</span>
+                <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] text-[#64748B] border-b border-[#E2E8F0] pb-2">
+                  <span className="font-bold text-[#0F172A] truncate">REQ-2024-8842 // PARACETAMOL IP</span>
+                  <span className="text-[#0052CC] font-semibold shrink-0">3 BINDING OFFERS</span>
                 </div>
 
                 {/* Chemical Target Details */}
-                <div className="grid grid-cols-3 gap-2 py-1 text-[11px]">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 py-1 text-[11px]">
                   <div>
                     <span className="text-slate-400 block text-[10px]">CAS REGISTRY</span>
                     <strong className="text-[#0F172A]">103-90-2</strong>
@@ -155,13 +155,13 @@ export function BuyerSupplierSplit() {
               {/* Bespoke Manufacturer Batch Desk Terminal Widget */}
               <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[10px] p-4 space-y-3 font-mono text-xs transition-colors group-hover:border-emerald-200">
                 {/* Simulated Batch Release Header */}
-                <div className="flex items-center justify-between text-[11px] text-[#64748B] border-b border-[#E2E8F0] pb-2">
-                  <span className="font-bold text-[#0F172A]">PLANT 04 // GUJARAT SYNTHETICS</span>
-                  <span className="text-[#059669] font-semibold">QA APPROVED</span>
+                <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] text-[#64748B] border-b border-[#E2E8F0] pb-2">
+                  <span className="font-bold text-[#0F172A] truncate">PLANT 04 // GUJARAT SYNTHETICS</span>
+                  <span className="text-[#059669] font-semibold shrink-0">QA APPROVED</span>
                 </div>
 
                 {/* Analytical Release Metrics */}
-                <div className="grid grid-cols-3 gap-2 py-1 text-[11px]">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 py-1 text-[11px]">
                   <div>
                     <span className="text-slate-400 block text-[10px]">PRODUCTION LOT</span>
                     <strong className="text-[#0F172A]">#PCM-2411-B</strong>

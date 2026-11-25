@@ -30,8 +30,8 @@ export function ResourcesSection() {
   ];
 
   return (
-    <section className="py-20 sm:py-24 bg-[#F8F9FA] border-b border-[#E4E4E7]">
-      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-12 sm:py-24 bg-[#F8F9FA] border-b border-[#E4E4E7] w-full max-w-full overflow-hidden">
+      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-[#E4E4E7] pb-8">

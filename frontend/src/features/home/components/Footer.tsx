@@ -29,8 +29,8 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-[#091E42] text-slate-300 pt-12 pb-10 text-xs border-t border-slate-800 antialiased">
-      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <footer className="bg-[#091E42] text-slate-300 pt-12 pb-10 text-xs border-t border-slate-800 antialiased w-full max-w-full overflow-hidden">
+      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 space-y-12 w-full">
 
         {/* ========================================================================= */}
         {/* TOP CLEARINGHOUSE TRUST STRIP */}

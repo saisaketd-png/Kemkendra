@@ -163,11 +163,12 @@ export function Navbar() {
       <div className="max-w-[1560px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-4 lg:gap-6">
         
         {/* 1. LEFT: BRAND & PRIMARY DIRECTORY */}
-        <div className="flex items-center gap-5 lg:gap-7 shrink-0">
-          <div className="flex items-center gap-2.5">
-            <KemKendraLogo href="/" size="md" layout="horizontal" />
+        <div className="flex items-center gap-3 sm:gap-5 lg:gap-7 shrink-0">
+          <div className="flex items-center gap-2">
+            <KemKendraLogo href="/" size="sm" layout="horizontal" className="sm:hidden" />
+            <KemKendraLogo href="/" size="md" layout="horizontal" className="hidden sm:inline-flex" />
             {user && (
-              <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-200">
+              <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-200">
                 {isAdmin ? "Admin" : isSupplier ? "Supplier" : "Buyer"}
               </span>
             )}
@@ -463,16 +464,16 @@ export function Navbar() {
               )}
             </div>
           ) : mounted ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <Link
                 href="/login"
-                className="h-9 px-3.5 text-xs font-bold text-slate-700 hover:text-[#091E42] hover:bg-slate-100/80 rounded-xl border border-slate-200 transition-colors flex items-center justify-center shadow-2xs"
+                className="h-8 sm:h-9 px-2.5 sm:px-3.5 text-xs font-bold text-slate-700 hover:text-[#091E42] hover:bg-slate-100/80 rounded-xl border border-slate-200 transition-colors flex items-center justify-center shadow-2xs"
               >
                 Sign In
               </Link>
               <Link
                 href="/register"
-                className="h-9 px-3.5 text-xs font-bold text-white bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] rounded-xl transition-colors flex items-center justify-center shadow-2xs active:scale-[0.99]"
+                className="hidden sm:flex h-9 px-3.5 text-xs font-bold text-white bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] rounded-xl transition-colors items-center justify-center shadow-2xs active:scale-[0.99]"
               >
                 Register
               </Link>
@@ -484,7 +485,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className="h-9 w-9 flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+              className="h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-colors"
               aria-label="Toggle mobile menu"
             >
               {isMobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}

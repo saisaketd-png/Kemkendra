@@ -97,8 +97,8 @@ export function FeaturedCatalogPreview({ products }: FeaturedCatalogPreviewProps
       : SAMPLE_PRODUCTS;
 
   return (
-    <section className="py-16 sm:py-20 bg-[#F8F9FA] border-b border-[#E4E4E7]">
-      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-12 sm:py-20 bg-[#F8F9FA] border-b border-[#E4E4E7] w-full max-w-full overflow-hidden">
+      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
           <div>

@@ -32,8 +32,8 @@ export function HomeSourcingSection() {
   };
 
   return (
-    <section className="py-16 sm:py-24 bg-white border-b border-[#E4E4E7]">
-      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-10 sm:py-20 bg-white border-b border-[#E4E4E7] w-full max-w-full overflow-hidden">
+      <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* Left Column: Editorial Value Proposition & Tracking */}
           <div className="lg:col-span-5 space-y-6">

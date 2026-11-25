@@ -71,7 +71,7 @@ export async function CategoryShortcuts() {
             return (
               <div
                 key={cat.id}
-                className="py-6 sm:py-8 px-3 -mx-3 rounded-xl transition-all duration-200 hover:bg-white hover:shadow-2xs group"
+                className="py-6 sm:py-8 px-2 sm:px-3 sm:-mx-3 rounded-xl transition-all duration-200 hover:bg-white hover:shadow-2xs group"
               >
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center">
                   
