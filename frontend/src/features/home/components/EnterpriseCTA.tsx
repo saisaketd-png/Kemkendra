@@ -6,7 +6,7 @@ export function EnterpriseCTA() {
     <section className="py-10 sm:py-16 bg-[#0A1128] text-white border-b border-[#1E293B] w-full max-w-full overflow-hidden">
       <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center justify-between">
-          
+
           {/* Left Column: Editorial Statement */}
           <div className="lg:col-span-8 space-y-2">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
@@ -21,14 +21,14 @@ export function EnterpriseCTA() {
           <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start lg:items-end justify-start lg:justify-end gap-3 shrink-0">
             <Link
               href="/products"
-              className="h-10 px-6 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white font-semibold text-xs rounded-[6px] transition-all flex items-center justify-center gap-2 shadow-xs press-tactile"
+              className="h-10 px-6 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white font-semibold text-xs rounded-lg transition-all flex items-center justify-center gap-2 shadow-xs"
             >
               <span>Explore Marketplace</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
             <Link
               href="/sourcing/request"
-              className="h-10 px-5 bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs rounded-[6px] transition-all flex items-center justify-center gap-2 press-tactile"
+              className="h-10 px-5 bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs rounded-lg transition-all flex items-center justify-center gap-2"
             >
               <span>Custom Sourcing</span>
             </Link>

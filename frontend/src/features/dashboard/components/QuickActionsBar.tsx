@@ -57,12 +57,12 @@ export function QuickActionsBar({ role }: QuickActionsBarProps) {
     ];
 
     return (
-      <div className="bg-white border border-[#E4E4E7] rounded-[10px] p-4 shadow-xs">
+      <div className="bg-white border border-[#E4E4E7] rounded-xl p-4 shadow-2xs">
         <div className="flex items-center justify-between mb-3 border-b border-[#F1F5F9] pb-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#64748B] font-mono">
-            Supplier Quick Operations
+          <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Supplier Operations Shortcuts
           </span>
-          <span className="text-[11px] text-[#94A3B8]">Direct Actions</span>
+          <span className="text-xs text-slate-400">Direct Actions</span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
           {supplierActions.map((act) => {
@@ -71,14 +71,14 @@ export function QuickActionsBar({ role }: QuickActionsBarProps) {
               <Link
                 key={act.label}
                 href={act.href}
-                className={`p-2.5 rounded-[8px] text-xs font-medium flex flex-col items-center justify-center text-center gap-1.5 transition-all border ${
+                className={`p-2.5 rounded-lg text-xs font-medium flex flex-col items-center justify-center text-center gap-1.5 transition-all border ${
                   act.primary
-                    ? "bg-[#0052CC] text-white border-[#0052CC] hover:bg-[#0747A6] shadow-xs"
-                    : "bg-[#FAFAFA] hover:bg-white text-[#0F172A] border-[#E4E4E7] hover:border-[#0052CC]/50"
+                    ? "bg-[#0052CC] text-white border-[#0052CC] hover:bg-[#0747A6] shadow-2xs"
+                    : "bg-[#FAFAFA] hover:bg-white text-[#0F172A] border-[#E4E4E7] hover:border-[#0052CC]/40"
                 }`}
               >
                 <Icon className={`w-4 h-4 ${act.primary ? "text-white" : "text-[#0052CC]"}`} />
-                <span className="text-[11px] leading-tight font-semibold">{act.label}</span>
+                <span className="text-xs leading-tight font-semibold">{act.label}</span>
               </Link>
             );
           })}
@@ -123,12 +123,12 @@ export function QuickActionsBar({ role }: QuickActionsBarProps) {
   ];
 
   return (
-    <div className="bg-white border border-[#E4E4E7] rounded-[10px] p-4 shadow-xs">
+    <div className="bg-white border border-[#E4E4E7] rounded-xl p-4 shadow-2xs">
       <div className="flex items-center justify-between mb-3 border-b border-[#F1F5F9] pb-2">
-        <span className="text-xs font-bold uppercase tracking-wider text-[#64748B] font-mono">
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
           Procurement Quick Actions
         </span>
-        <span className="text-[11px] text-[#94A3B8]">Procurement Shortcuts</span>
+        <span className="text-xs text-slate-400">Direct Shortcuts</span>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         {buyerActions.map((act) => {
@@ -137,14 +137,14 @@ export function QuickActionsBar({ role }: QuickActionsBarProps) {
             <Link
               key={act.label}
               href={act.href}
-              className={`p-2.5 rounded-[8px] text-xs font-medium flex flex-col items-center justify-center text-center gap-1.5 transition-all border ${
+              className={`p-2.5 rounded-lg text-xs font-medium flex flex-col items-center justify-center text-center gap-1.5 transition-all border ${
                 act.primary
-                  ? "bg-[#0052CC] text-white border-[#0052CC] hover:bg-[#0747A6] shadow-xs"
-                  : "bg-[#FAFAFA] hover:bg-white text-[#0F172A] border-[#E4E4E7] hover:border-[#0052CC]/50"
+                  ? "bg-[#0052CC] text-white border-[#0052CC] hover:bg-[#0747A6] shadow-2xs"
+                  : "bg-[#FAFAFA] hover:bg-white text-[#0F172A] border-[#E4E4E7] hover:border-[#0052CC]/40"
               }`}
             >
               <Icon className={`w-4 h-4 ${act.primary ? "text-white" : "text-[#0052CC]"}`} />
-              <span className="text-[11px] leading-tight font-semibold">{act.label}</span>
+              <span className="text-xs leading-tight font-semibold">{act.label}</span>
             </Link>
           );
         })}

@@ -199,7 +199,7 @@ export default async function ProductsPage(props: {
               <ProductToolbar totalResults={totalElements} />
 
               {products.length === 0 ? (
-                <ProductEmptyState />
+                <ProductEmptyState searchQuery={queryParams.search} />
               ) : (
                 <section className="space-y-6" aria-label="Chemical Catalog entries">
                   <ProductCatalogTable products={products} />
@@ -209,85 +209,90 @@ export default async function ProductsPage(props: {
                     totalElements={totalElements}
                     currentCount={products.length}
                   />
+
+                  {/* Dedicated Sourcing & Custom Synthesis Section - Perfectly aligned with catalog */}
+                  <div className="bg-white rounded-xl border border-slate-200 p-6 sm:p-8 shadow-2xs space-y-6 mt-8">
+                    <div className="space-y-2">
+                      <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+                        Custom Chemical Sourcing &amp; Procurement
+                      </span>
+                      <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
+                        Can&apos;t find your chemical, purity grade, or required volume?
+                      </h2>
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-3xl">
+                        Our specialized Sourcing desk connects procurement and R&amp;D teams with certified synthesis plants, custom CMOs, and compendial standard repositories worldwide.
+                      </p>
+                    </div>
+
+                    {/* 4 Core Pillars */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                      <div className="p-4 rounded-lg bg-slate-50/70 border border-slate-200 space-y-2 hover:border-slate-300 transition-colors">
+                        <div className="w-8 h-8 rounded-md bg-blue-50 text-[#0052CC] flex items-center justify-center">
+                          <FlaskConical className="w-4 h-4" />
+                        </div>
+                        <h3 className="text-xs font-bold text-slate-900">Custom Synthesis</h3>
+                        <p className="text-xs text-slate-600 leading-relaxed">
+                          Multi-step synthesis routes from pilot milligram scales up to multi-ton commercial batch runs.
+                        </p>
+                      </div>
+
+                      <div className="p-4 rounded-lg bg-slate-50/70 border border-slate-200 space-y-2 hover:border-slate-300 transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0052CC] flex items-center justify-center">
+                          <Layers className="w-4 h-4" />
+                        </div>
+                        <h3 className="text-xs font-bold text-slate-900">Rare CAS &amp; Impurities</h3>
+                        <p className="text-xs text-slate-600 leading-relaxed">
+                          Hard-to-source reference standards, impurity profiles, degradation products, and deuterated compounds.
+                        </p>
+                      </div>
+
+                      <div className="p-4 rounded-lg bg-slate-50/70 border border-slate-200 space-y-2 hover:border-slate-300 transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0052CC] flex items-center justify-center">
+                          <FileCheck className="w-4 h-4" />
+                        </div>
+                        <h3 className="text-xs font-bold text-slate-900">Dossier &amp; Monograph</h3>
+                        <p className="text-xs text-slate-600 leading-relaxed">
+                          USP, EP, BP, JP, or internal monograph release specs accompanied by full CoA, NMR, and HPLC spectra.
+                        </p>
+                      </div>
+
+                      <div className="p-4 rounded-lg bg-slate-50/70 border border-slate-200 space-y-2 hover:border-slate-300 transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0052CC] flex items-center justify-center">
+                          <ShieldCheck className="w-4 h-4" />
+                        </div>
+                        <h3 className="text-xs font-bold text-slate-900">Escrow &amp; Audit Backing</h3>
+                        <p className="text-xs text-slate-600 leading-relaxed">
+                          Payment held securely until analytical confirmation at your receiving lab or partner testing site.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-slate-100">
+                      <Link
+                        href={
+                          queryParams.search
+                            ? `/sourcing?chemical=${encodeURIComponent(queryParams.search)}`
+                            : "/sourcing/request"
+                        }
+                        className="h-10 px-5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-semibold rounded-lg inline-flex items-center gap-2 shadow-2xs transition-colors cursor-pointer"
+                      >
+                        <span>{queryParams.search ? `Source "${queryParams.search}" via Desk` : "Submit Sourcing Request"}</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+
+                      <Link
+                        href="/sourcing"
+                        className="h-10 px-5 bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 text-xs font-semibold rounded-lg inline-flex items-center gap-2 shadow-2xs transition-colors"
+                      >
+                        <span>Learn About Sourcing</span>
+                      </Link>
+                    </div>
+                  </div>
                 </section>
               )}
             </div>
           </div>
-
-          {/* Dedicated Sourcing & Custom Synthesis Section */}
-          <section className="bg-white rounded-2xl border border-slate-200/90 p-8 sm:p-10 shadow-tactile-card overflow-hidden relative">
-            <div className="relative z-10 max-w-4xl space-y-6">
-              <div className="space-y-2">
-                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#0F172A]">
-                  Can&apos;t find your chemical, purity grade, or required volume?
-                </h2>
-                <p className="text-sm sm:text-base text-[#64748B] leading-relaxed">
-                  Our specialized Sourcing desk connects procurement and R&amp;D teams with certified synthesis plants, custom CMOs, and compendial standard repositories worldwide.
-                </p>
-              </div>
-
-              {/* 4 Core Pillars */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
-                <div className="p-4 rounded-xl bg-[#F8F9FA] border border-slate-200/80 space-y-2 hover:border-slate-300 transition-colors duration-150">
-                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0052CC] flex items-center justify-center">
-                    <FlaskConical className="w-4 h-4" />
-                  </div>
-                  <h3 className="text-xs font-bold text-[#0F172A]">Custom Synthesis</h3>
-                  <p className="text-xs text-[#64748B] leading-relaxed">
-                    Multi-step synthesis routes from pilot milligram scales up to multi-ton commercial batch runs.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-[#F8F9FA] border border-slate-200/80 space-y-2 hover:border-slate-300 transition-colors duration-150">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                    <Layers className="w-4 h-4" />
-                  </div>
-                  <h3 className="text-xs font-bold text-[#0F172A]">Rare CAS &amp; Impurities</h3>
-                  <p className="text-xs text-[#64748B] leading-relaxed">
-                    Hard-to-source reference standards, impurity profiles, degradation products, and deuterated compounds.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-[#F8F9FA] border border-slate-200/80 space-y-2 hover:border-slate-300 transition-colors duration-150">
-                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0052CC] flex items-center justify-center">
-                    <FileCheck className="w-4 h-4" />
-                  </div>
-                  <h3 className="text-xs font-bold text-[#0F172A]">Dossier &amp; Monograph Match</h3>
-                  <p className="text-xs text-[#64748B] leading-relaxed">
-                    USP, EP, BP, JP, or internal monograph release specs accompanied by full CoA, NMR, and HPLC spectra.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-[#F8F9FA] border border-slate-200/80 space-y-2 hover:border-slate-300 transition-colors duration-150">
-                  <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-                    <ShieldCheck className="w-4 h-4" />
-                  </div>
-                  <h3 className="text-xs font-bold text-[#0F172A]">Escrow &amp; Audit Backing</h3>
-                  <p className="text-xs text-[#64748B] leading-relaxed">
-                    Payment held securely until analytical confirmation at your receiving lab or partner testing site.
-                  </p>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-3">
-                <Link
-                  href="/sourcing/request"
-                  className="h-10 px-5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-2 shadow-xs transition-colors duration-150 press-tactile"
-                >
-                  <span>Submit Sourcing Request</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-
-                <Link
-                  href="/sourcing"
-                  className="h-10 px-5 bg-white hover:bg-slate-50 text-[#0F172A] border border-slate-300 text-xs sm:text-sm font-semibold rounded-lg inline-flex items-center gap-2 shadow-2xs transition-colors duration-150 press-tactile"
-                >
-                  <span>Learn About Sourcing</span>
-                </Link>
-              </div>
-            </div>
-          </section>
         </div>
       </main>
 

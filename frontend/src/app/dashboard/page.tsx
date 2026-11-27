@@ -86,7 +86,7 @@ export default function BuyerDashboardOverviewPage() {
         {/* Active RFQs */}
         <Link
           href="/dashboard/rfqs"
-          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-2xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-tactile-card block"
+          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-2xs block"
         >
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-semibold text-slate-500">
@@ -107,7 +107,7 @@ export default function BuyerDashboardOverviewPage() {
         {/* Quotes Received */}
         <Link
           href="/dashboard/rfqs?filter=QUOTED"
-          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-2xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-tactile-card block"
+          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-2xs block"
         >
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-semibold text-slate-500">
@@ -128,7 +128,7 @@ export default function BuyerDashboardOverviewPage() {
         {/* Purchase Orders */}
         <Link
           href="/dashboard/orders"
-          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-2xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-tactile-card block"
+          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-2xs block"
         >
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-semibold text-slate-500">
@@ -149,7 +149,7 @@ export default function BuyerDashboardOverviewPage() {
         {/* Open Disputes */}
         <Link
           href="/dashboard/buyer/disputes"
-          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-2xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-tactile-card block"
+          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-2xs block"
         >
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-semibold text-slate-500">
@@ -177,19 +177,19 @@ export default function BuyerDashboardOverviewPage() {
         {/* Left 2 Cols: Invoicing & Financial Health Overview */}
         <div className="lg:col-span-2 space-y-6">
           {/* Financial Summary Card */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-tactile-card space-y-5">
+          <div className="bg-white border border-slate-200/90 rounded-xl p-5 sm:p-6 shadow-2xs space-y-5">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0052CC] border border-blue-100 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0052CC] flex items-center justify-center">
                   <Receipt className="w-4 h-4" />
                 </div>
                 <h3 className="text-sm font-bold text-slate-900 tracking-tight">
-                  Invoicing & Commercial Settlements
+                  Invoicing &amp; Commercial Settlements
                 </h3>
               </div>
               <Link
                 href="/dashboard/buyer/invoices"
-                className="text-xs text-[#0052CC] hover:underline font-bold inline-flex items-center gap-1"
+                className="text-xs text-[#0052CC] hover:underline font-semibold inline-flex items-center gap-1"
               >
                 <span>View All Invoices</span>
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -197,11 +197,11 @@ export default function BuyerDashboardOverviewPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 space-y-1">
-                <span className="text-xs uppercase tracking-wider text-amber-800 font-bold block">
+              <div className="p-4 rounded-lg bg-slate-50/70 border border-slate-200 space-y-1">
+                <span className="text-xs uppercase tracking-wider text-slate-500 font-semibold block">
                   Outstanding Invoice Payable
                 </span>
-                <strong className="text-2xl font-extrabold font-mono text-amber-900 block">
+                <strong className="text-2xl font-bold font-mono text-slate-900 block">
                   {loading ? "—" : formatCurrency(data?.outstandingInvoiceAmount)}
                 </strong>
                 <p className="text-xs text-slate-500">
@@ -209,11 +209,11 @@ export default function BuyerDashboardOverviewPage() {
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200/80 space-y-1">
-                <span className="text-xs uppercase tracking-wider text-emerald-800 font-bold block">
+              <div className="p-4 rounded-lg bg-slate-50/70 border border-slate-200 space-y-1">
+                <span className="text-xs uppercase tracking-wider text-slate-500 font-semibold block">
                   Settled Invoices
                 </span>
-                <strong className="text-2xl font-extrabold font-mono text-emerald-800 block">
+                <strong className="text-2xl font-bold font-mono text-emerald-700 block">
                   {loading ? "—" : formatCurrency(data?.paidInvoiceAmount)}
                 </strong>
                 <p className="text-xs text-slate-500">
@@ -228,14 +228,14 @@ export default function BuyerDashboardOverviewPage() {
           </div>
 
           {/* Quick Navigation Sections */}
-          <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-5 sm:p-6 space-y-3.5">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">
+          <div className="bg-slate-50/80 border border-slate-200 rounded-xl p-5 sm:p-6 space-y-3.5">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
               Chemical Procurement Resources
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <Link
                 href="/products"
-                className="p-4 bg-white border border-slate-200/80 rounded-xl hover:border-[#0052CC] transition-colors flex items-center justify-between group shadow-2xs"
+                className="p-4 bg-white border border-slate-200 rounded-lg hover:border-[#0052CC] transition-colors flex items-center justify-between group shadow-2xs"
               >
                 <div>
                   <span className="text-xs font-bold text-slate-900 group-hover:text-[#0052CC] block">
@@ -250,7 +250,7 @@ export default function BuyerDashboardOverviewPage() {
 
               <Link
                 href="/suppliers"
-                className="p-4 bg-white border border-slate-200/80 rounded-xl hover:border-[#0052CC] transition-colors flex items-center justify-between group shadow-2xs"
+                className="p-4 bg-white border border-slate-200 rounded-lg hover:border-[#0052CC] transition-colors flex items-center justify-between group shadow-2xs"
               >
                 <div>
                   <span className="text-xs font-bold text-slate-900 group-hover:text-[#0052CC] block">
@@ -272,14 +272,14 @@ export default function BuyerDashboardOverviewPage() {
 
           {/* Notifications Widget */}
           {data?.recentNotifications && data.recentNotifications.length > 0 && (
-            <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-tactile-card space-y-3.5">
+            <div className="bg-white border border-slate-200/90 rounded-xl p-5 shadow-2xs space-y-3.5">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
                 <span className="text-xs font-bold text-slate-900">
                   Recent Platform Alerts
                 </span>
                 <Link
                   href="/dashboard/notifications"
-                  className="text-xs text-[#0052CC] hover:underline font-bold"
+                  className="text-xs text-[#0052CC] hover:underline font-semibold"
                 >
                   View All
                 </Link>
@@ -289,9 +289,9 @@ export default function BuyerDashboardOverviewPage() {
                   <Link
                     key={n.id}
                     href={n.targetRoute || "/dashboard/notifications"}
-                    className="block p-2.5 rounded-xl hover:bg-slate-50 transition-colors text-xs space-y-0.5"
+                    className="block p-2.5 rounded-lg hover:bg-slate-50 transition-colors text-xs space-y-0.5"
                   >
-                    <div className="font-bold text-slate-900 truncate">
+                    <div className="font-semibold text-slate-900 truncate">
                       {n.title}
                     </div>
                     <div className="text-xs text-slate-500 line-clamp-1">

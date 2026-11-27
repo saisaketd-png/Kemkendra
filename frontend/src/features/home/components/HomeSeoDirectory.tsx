@@ -110,12 +110,12 @@ export function HomeSeoDirectory() {
       <div className="max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16 w-full">
         
         {/* Section Header */}
-        <div className="max-w-3xl space-y-3">
-          <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0052CC] bg-blue-50 border border-blue-200/60 px-3 py-1 rounded-md inline-block">
-            B2B Chemical Procurement Knowledge Hub & Directory
+        <div className="max-w-3xl space-y-2">
+          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+            Chemical Procurement Knowledge Hub &amp; Directory
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-[#091E42] tracking-tight">
-            Comprehensive Chemical Sourcing, Technical Compliance & Industrial Corridors
+            Comprehensive Chemical Sourcing, Technical Compliance &amp; Industrial Corridors
           </h2>
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
             KemKendra bridges global chemical procurement officers, pharmaceutical manufacturers, and research institutions with audited primary chemical manufacturing plants across India.
@@ -194,7 +194,7 @@ export function HomeSeoDirectory() {
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#091E42]">{hub.city}</span>
-                  <span className="text-[10px] font-mono uppercase font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  <span className="text-[10px] uppercase font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
                     {hub.state}
                   </span>
                 </div>
@@ -207,9 +207,9 @@ export function HomeSeoDirectory() {
         </div>
 
         {/* 3. Technical Assurance & Quality Control Badges */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-[#091E42] text-white space-y-6">
+        <div className="p-6 sm:p-8 rounded-xl bg-[#091E42] text-white space-y-6">
           <div className="max-w-2xl space-y-1">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-blue-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-blue-400 block">
               Institutional Quality Standard
             </span>
             <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">

@@ -76,6 +76,28 @@ public class SourcingService {
         }
     }
 
+    private void notifyAdmins(NotificationType type, String title, String message, UUID requestId) {
+        if (notificationService == null || userRepository == null) return;
+        try {
+            List<User> admins = userRepository.findByRoleAndStatusAndDeletedAtIsNull(UserRole.ADMIN, UserStatus.ACTIVE);
+            for (User admin : admins) {
+                Notification n = notificationService.createNotification(
+                        admin.getId(),
+                        type,
+                        title,
+                        message,
+                        NotificationEntityType.SOURCING_REQUEST,
+                        requestId
+                );
+                if (n != null && emailNotificationService != null) {
+                    emailNotificationService.sendNotificationEmail(n);
+                }
+            }
+        } catch (Exception e) {
+            log.warn("Failed to dispatch sourcing notification {} for admins: {}", type, e.getMessage());
+        }
+    }
+
     public SourcingService(
             SourcingRequestRepository sourcingRequestRepository,
             SourcingAssignmentRepository sourcingAssignmentRepository,
@@ -213,6 +235,13 @@ public class SourcingService {
                 NotificationType.SOURCING_REQUEST_SUBMITTED,
                 "Sourcing Request Submitted: " + saved.getSourcingRequestReference(),
                 "Your chemical sourcing request for " + saved.getProductName() + " (" + saved.getTargetQuantity() + " " + saved.getUnit() + ") has been received by KemKendra. Our specialists are reviewing specifications.",
+                saved.getId()
+        );
+
+        notifyAdmins(
+                NotificationType.SOURCING_REQUEST_SUBMITTED,
+                "New Sourcing Request Submitted: " + saved.getSourcingRequestReference(),
+                "Buyer " + buyer.getEmail() + " submitted a chemical sourcing request for " + saved.getProductName() + " (" + saved.getTargetQuantity() + " " + saved.getUnit() + "). Destination: " + saved.getDeliveryLocation(),
                 saved.getId()
         );
 

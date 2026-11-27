@@ -10,7 +10,6 @@ import {
   ShieldCheck,
   ArrowRight,
   Clock,
-  Sparkles,
 } from "lucide-react";
 import { DashboardActivityItemDto } from "../types/dashboardTypes";
 
@@ -22,7 +21,7 @@ interface ActivityTimelineProps {
 export function ActivityTimeline({ activities, loading = false }: ActivityTimelineProps) {
   if (loading) {
     return (
-      <div className="bg-white border border-[#E4E4E7] rounded-[10px] p-5 space-y-4 animate-pulse">
+      <div className="bg-white border border-[#E4E4E7] rounded-xl p-5 space-y-4 animate-pulse">
         <div className="h-4 bg-slate-200 rounded w-1/3"></div>
         <div className="space-y-3">
           {[1, 2, 3, 4].map((i) => (
@@ -41,10 +40,10 @@ export function ActivityTimeline({ activities, loading = false }: ActivityTimeli
 
   if (!activities || activities.length === 0) {
     return (
-      <div className="bg-white border border-[#E4E4E7] rounded-[10px] p-6 text-center space-y-2 shadow-xs">
+      <div className="bg-white border border-[#E4E4E7] rounded-xl p-6 text-center space-y-2 shadow-2xs">
         <Clock className="w-8 h-8 text-slate-400 mx-auto" />
         <h4 className="text-xs font-semibold text-[#0F172A]">No Recent Activity</h4>
-        <p className="text-[11px] text-[#64748B]">
+        <p className="text-xs text-[#64748B]">
           New inquiries, purchase orders, invoices, and payment events will be logged here in real-time.
         </p>
       </div>
@@ -57,14 +56,14 @@ export function ActivityTimeline({ activities, loading = false }: ActivityTimeli
       case "QUOTATION":
         return <FileText className="w-3.5 h-3.5 text-[#0052CC]" />;
       case "ORDER":
-        return <Package className="w-3.5 h-3.5 text-[#00875A]" />;
+        return <Package className="w-3.5 h-3.5 text-emerald-600" />;
       case "INVOICE":
       case "PAYMENT":
-        return <Receipt className="w-3.5 h-3.5 text-[#6554C0]" />;
+        return <Receipt className="w-3.5 h-3.5 text-[#0052CC]" />;
       case "DISPUTE":
         return <MessageSquare className="w-3.5 h-3.5 text-amber-600" />;
       case "VERIFICATION":
-        return <ShieldCheck className="w-3.5 h-3.5 text-[#00875A]" />;
+        return <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />;
       default:
         return <Clock className="w-3.5 h-3.5 text-slate-500" />;
     }
@@ -91,12 +90,12 @@ export function ActivityTimeline({ activities, loading = false }: ActivityTimeli
   };
 
   return (
-    <div className="bg-white border border-[#E4E4E7] rounded-[10px] p-4 sm:p-5 shadow-xs space-y-4">
+    <div className="bg-white border border-[#E4E4E7] rounded-xl p-4 sm:p-5 shadow-2xs space-y-4">
       <div className="flex items-center justify-between border-b border-[#F1F5F9] pb-3">
         <h3 className="text-xs sm:text-sm font-bold text-[#0F172A] tracking-tight">
           Recent Activity Timeline
         </h3>
-        <span className="text-[11px] font-mono text-[#64748B]">Live Event Feed</span>
+        <span className="text-xs text-slate-500">Live Event Feed</span>
       </div>
 
       <div className="relative pl-6 space-y-4 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-200">

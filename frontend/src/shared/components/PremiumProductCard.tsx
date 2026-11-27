@@ -36,7 +36,7 @@ export function PremiumProductCard({ product }: PremiumProductCardProps) {
     : null;
 
   return (
-    <div className="group flex flex-col bg-white border border-[#E4E4E7] hover:border-[#0052CC] rounded-[12px] overflow-hidden transition-all shadow-tactile-card card-elevation">
+    <div className="group flex flex-col bg-white border border-[#E4E4E7] hover:border-[#0052CC] rounded-xl overflow-hidden transition-all shadow-tactile-card card-elevation">
       {/* 1. Technical Product Image / Chemical Structure */}
       <div className="relative h-48 bg-[#FAFAFA] border-b border-[#E4E4E7] flex items-center justify-center p-4 overflow-hidden">
         {resolvedImageUrl ? (
@@ -59,7 +59,7 @@ export function PremiumProductCard({ product }: PremiumProductCardProps) {
       {/* 2. Technical Metadata & Specifications */}
       <div className="p-5 flex-1 flex flex-col justify-between space-y-3.5">
         <div className="space-y-1.5">
-          <div className="flex items-center justify-between text-xs font-mono">
+          <div className="flex items-center justify-between text-xs">
             <span className="text-[#0052CC] font-semibold">
               {product.category ? product.category.replace(/_/g, " ") : "Specialty Chemical"}
             </span>
@@ -70,26 +70,26 @@ export function PremiumProductCard({ product }: PremiumProductCardProps) {
 
           <Link
             href={`/products/${product.id}`}
-            className="font-bold text-base text-[#0F172A] group-hover:text-[#0052CC] transition-colors line-clamp-1 uppercase tracking-tight block"
+            className="font-bold text-base text-[#0F172A] group-hover:text-[#0052CC] transition-colors line-clamp-1 tracking-tight block"
           >
             {product.name}
           </Link>
-          <div className="text-xs font-mono text-[#64748B]">
-            CAS: <strong className="text-[#0F172A] font-semibold">{product.casNumber}</strong>
+          <div className="text-xs text-[#64748B]">
+            CAS: <strong className="text-[#0F172A] font-semibold font-mono">{product.casNumber}</strong>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-2 py-2.5 border-y border-[#F1F5F9] text-xs">
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] block font-mono">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] block">
               Purity Spec
             </span>
-            <strong className="text-[#059669] font-semibold text-xs mt-0.5 block">
+            <strong className="text-[#059669] font-semibold text-xs mt-0.5 block font-mono">
               {product.purity || "99.0%"}
             </strong>
           </div>
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] block font-mono">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B] block">
               Lot MOQ
             </span>
             <strong className="text-[#0F172A] font-semibold font-mono text-xs mt-0.5 block">
@@ -101,7 +101,7 @@ export function PremiumProductCard({ product }: PremiumProductCardProps) {
         <div className="pt-2 flex items-center justify-between gap-2">
           <Link
             href={`/rfq?productId=${product.id}&productName=${encodeURIComponent(product.name)}`}
-            className="px-3 py-1.5 bg-[#0052CC] hover:bg-[#0747A6] text-white rounded-[6px] text-xs font-semibold transition-all inline-flex items-center gap-1.5 shadow-xs press-tactile"
+            className="px-3 py-1.5 bg-[#0052CC] hover:bg-[#0747A6] text-white rounded-md text-xs font-semibold transition-all inline-flex items-center gap-1.5 shadow-xs"
           >
             <span>Quick RFQ</span>
             <ArrowRight className="w-3 h-3" />
@@ -110,7 +110,7 @@ export function PremiumProductCard({ product }: PremiumProductCardProps) {
             href={`/products/${product.id}`}
             className="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-[#0052CC] transition-colors"
           >
-            <span>Specs & COA</span>
+            <span>Specs &amp; COA</span>
             <ArrowRight className="w-3 h-3" />
           </Link>
         </div>

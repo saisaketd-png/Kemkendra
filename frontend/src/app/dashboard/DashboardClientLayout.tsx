@@ -474,7 +474,7 @@ export default function DashboardClientLayout({
               size="md"
               layout="horizontal"
             />
-            <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-mono font-semibold uppercase tracking-wider bg-[#F4F4F5] text-[#0F172A] border border-[#E4E4E7]">
+            <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200">
               {isAdmin ? "Admin" : isSupplier ? "Supplier" : "Buyer"}
             </span>
           </div>
@@ -484,35 +484,35 @@ export default function DashboardClientLayout({
         <div className="flex items-center gap-2.5 sm:gap-3">
           <Link
             href="/products"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-[#0052CC] hover:underline px-2.5 py-1.5 rounded-[6px] hover:bg-[#F4F4F5] transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-[#0052CC] hover:underline px-2.5 py-1.5 rounded-md hover:bg-slate-100 transition-colors"
           >
             <FlaskConical className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Catalog</span>
-            <ArrowUpRight className="w-3 h-3 text-[#64748B]" />
+            <ArrowUpRight className="w-3 h-3 text-slate-500" />
           </Link>
 
-          <div className="h-4 w-px bg-[#E4E4E7]" />
+          <div className="h-4 w-px bg-slate-200" />
 
           <NotificationBell isSupplier={isSupplier} />
 
-          <div className="h-4 w-px bg-[#E4E4E7]" />
+          <div className="h-4 w-px bg-slate-200" />
 
           {/* User Account / Role Menu */}
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="flex flex-col items-end text-right">
-              <span className="text-xs font-semibold font-mono text-[#0F172A] leading-tight max-w-[100px] sm:max-w-[140px] truncate">
+              <span className="text-xs font-semibold text-slate-900 leading-tight max-w-[100px] sm:max-w-[140px] truncate">
                 {userDisplayName}
               </span>
-              <span className="text-[10px] font-mono text-[#64748B] uppercase">
+              <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
                 {user.role}
               </span>
             </div>
 
-            <div className="h-4 w-px bg-[#E4E4E7]" />
+            <div className="h-4 w-px bg-slate-200" />
 
             <Link
               href="/dashboard/settings"
-              className="p-1.5 text-[#64748B] hover:text-[#0052CC] hover:bg-[#F4F4F5] rounded-[6px] transition-colors"
+              className="p-1.5 text-slate-500 hover:text-[#0052CC] hover:bg-slate-100 rounded-md transition-colors"
               title="Account Settings"
               aria-label="Account Settings"
             >
@@ -521,7 +521,7 @@ export default function DashboardClientLayout({
 
             <button
               onClick={handleSignOut}
-              className="p-1.5 text-[#64748B] hover:text-[#DC2626] hover:bg-[#FEF2F2] rounded-[6px] transition-colors cursor-pointer"
+              className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors cursor-pointer"
               title="Sign Out"
               aria-label="Sign Out"
             >
@@ -575,16 +575,16 @@ export default function DashboardClientLayout({
                         href={item.href}
                         onClick={() => setSidebarOpen(false)}
                         aria-label={itemAriaLabel}
-                        className={`group flex items-center justify-between px-3 h-9 rounded-[6px] text-xs font-medium transition-colors ${
+                        className={`group flex items-center justify-between px-3 h-9 rounded-md text-xs font-medium transition-colors ${
                           isActive
-                            ? "bg-[#F4F4F5] text-[#0F172A] font-semibold"
-                            : "text-[#475569] hover:bg-[#FAFAFA] hover:text-[#0F172A]"
+                            ? "bg-slate-100 text-slate-900 font-semibold"
+                            : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                         }`}
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
                           <Icon
                             className={`w-4 h-4 shrink-0 ${
-                              isActive ? "text-[#0052CC]" : "text-[#64748B] group-hover:text-[#0F172A]"
+                              isActive ? "text-[#0052CC]" : "text-slate-400 group-hover:text-slate-900"
                             }`}
                           />
                           <span className="truncate">{item.name}</span>
@@ -593,20 +593,20 @@ export default function DashboardClientLayout({
                         {/* Unread Counter Badge */}
                         {isNotificationItem && unreadCount > 0 ? (
                           <span
-                            className={`inline-flex items-center justify-center min-w-[18px] h-4.5 px-1 text-[10px] font-semibold font-mono rounded-[4px] transition-colors ${
+                            className={`inline-flex items-center justify-center min-w-[18px] h-4.5 px-1 text-[10px] font-semibold rounded transition-colors ${
                               isActive
                                 ? "bg-[#0052CC] text-white"
-                                : "bg-[#E4E4E7] text-[#0F172A]"
+                                : "bg-slate-200 text-slate-800"
                             }`}
                           >
                             {unreadCount > 99 ? "99+" : unreadCount}
                           </span>
                         ) : item.badge ? (
                           <span
-                            className={`text-[9px] font-mono font-semibold px-1.5 py-0.2 rounded-[4px] border uppercase ${
+                            className={`text-[9px] font-semibold px-1.5 py-0.5 rounded border uppercase ${
                               isActive
-                                ? "bg-white text-[#0F172A] border-[#E4E4E7]"
-                                : "bg-[#F4F4F5] text-[#64748B] border-[#E4E4E7]"
+                                ? "bg-white text-slate-900 border-slate-200"
+                                : "bg-slate-100 text-slate-600 border-slate-200"
                             }`}
                           >
                             {item.badge}

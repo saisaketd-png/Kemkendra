@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   Search,
   FlaskConical,
@@ -12,6 +13,8 @@ import {
   ArrowRight,
   Loader2,
   X,
+  Sparkles,
+  AlertCircle,
 } from "lucide-react";
 import { getSearchSuggestions } from "../api/searchApi";
 import { SearchSuggestionResponse } from "../types/searchTypes";
@@ -24,7 +27,9 @@ interface GlobalSearchBarProps {
   size?: "sm" | "md" | "lg";
   autoFocus?: boolean;
   showShortcut?: boolean;
+  targetUrl?: string; // e.g. "/products" or "/search"
   onSearchSubmitted?: (query: string) => void;
+  onSelectSuggestion?: (item: SearchSuggestionResponse) => void;
 }
 
 export function GlobalSearchBar({
@@ -35,7 +40,9 @@ export function GlobalSearchBar({
   size = "md",
   autoFocus = false,
   showShortcut = false,
+  targetUrl = "/products",
   onSearchSubmitted,
+  onSelectSuggestion,
 }: GlobalSearchBarProps) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
@@ -76,7 +83,7 @@ export function GlobalSearchBar({
   // Debounced suggestion fetch
   useEffect(() => {
     const trimmed = query.trim();
-    if (trimmed.length < 2) {
+    if (trimmed.length < 1) {
       setSuggestions([]);
       setIsOpen(false);
       setIsLoading(false);
@@ -99,7 +106,7 @@ export function GlobalSearchBar({
       } finally {
         setIsLoading(false);
       }
-    }, 250);
+    }, 200);
 
     return () => {
       if (debounceTimerRef.current) {
@@ -118,14 +125,20 @@ export function GlobalSearchBar({
       onSearchSubmitted(trimmed);
     }
     startTransition(() => {
-      router.push(`/search?q=${encodeURIComponent(trimmed)}`);
+      if (targetUrl === "/products") {
+        router.push(`/products?search=${encodeURIComponent(trimmed)}`);
+      } else {
+        router.push(`${targetUrl}?q=${encodeURIComponent(trimmed)}`);
+      }
     });
   };
 
   const handleSelectSuggestion = (suggestion: SearchSuggestionResponse) => {
     setIsOpen(false);
     setQuery(suggestion.title);
-    if (onSearchSubmitted) {
+    if (onSelectSuggestion) {
+      onSelectSuggestion(suggestion);
+    } else if (onSearchSubmitted) {
       onSearchSubmitted(suggestion.title);
     }
     startTransition(() => {
@@ -205,14 +218,14 @@ export function GlobalSearchBar({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => {
-            if (suggestions.length > 0) setIsOpen(true);
+            if (query.trim().length >= 1) setIsOpen(true);
           }}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           autoFocus={autoFocus}
           autoComplete="off"
           spellCheck={false}
-          className={`w-full bg-[#FAFAFA] hover:bg-white focus:bg-white border border-[#E4E4E7] rounded-[8px] focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC] transition-colors text-[#0F172A] placeholder:text-[#94A3B8] font-normal shadow-xs ${sizeClasses[size]} ${inputClassName}`}
+          className={`w-full bg-[#FAFAFA] hover:bg-white focus:bg-white border border-[#E4E4E7] rounded-xl focus:outline-none focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC] transition-colors text-[#0F172A] placeholder:text-[#94A3B8] font-normal shadow-xs ${sizeClasses[size]} ${inputClassName}`}
         />
 
         <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
@@ -256,14 +269,14 @@ export function GlobalSearchBar({
 
       {/* Autocomplete suggestions dropdown */}
       {isOpen && (
-        <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-[8px] border border-[#E4E4E7] shadow-tactile-modal z-50 overflow-hidden divide-y divide-[#F1F5F9] animate-in fade-in-50 zoom-in-98 duration-100">
+        <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl border border-slate-200/90 shadow-tactile-modal z-50 overflow-hidden divide-y divide-slate-100 animate-in fade-in-50 zoom-in-98 duration-100">
           {suggestions.length > 0 ? (
             <div className="py-1">
-              <div className="px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-[#64748B] font-semibold flex items-center justify-between">
-                <span>Suggestions</span>
-                <span>Use ↑↓ to navigate, Enter to select</span>
+              <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold flex items-center justify-between bg-slate-50 border-b border-slate-100">
+                <span>Matching Chemical Suggestions</span>
+                <span className="hidden sm:inline">Use ↑↓ to navigate, Enter to select</span>
               </div>
-              <ul className="max-h-[340px] overflow-y-auto">
+              <ul className="max-h-[300px] overflow-y-auto divide-y divide-slate-50">
                 {suggestions.map((item, idx) => {
                   const isSelected = idx === selectedIndex;
                   return (
@@ -272,72 +285,96 @@ export function GlobalSearchBar({
                         type="button"
                         onClick={() => handleSelectSuggestion(item)}
                         onMouseEnter={() => setSelectedIndex(idx)}
-                        className={`w-full text-left px-3 py-2 flex items-center justify-between gap-3 text-xs transition-colors ${
-                          isSelected ? "bg-[#EFF6FF] text-[#0052CC]" : "hover:bg-[#F8FAFC] text-[#0F172A]"
+                        className={`w-full text-left px-3.5 py-2.5 flex items-center justify-between gap-3 text-xs transition-colors cursor-pointer ${
+                          isSelected ? "bg-blue-50/80 text-[#0052CC]" : "hover:bg-slate-50 text-[#0F172A]"
                         }`}
                       >
                         <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                          <div
-                            className={`w-6 h-6 rounded-[4px] flex items-center justify-center shrink-0 ${
-                              isSelected ? "bg-white" : "bg-[#F1F5F9]"
-                            }`}
-                          >
+                          <div className="p-1 rounded bg-slate-100 shrink-0">
                             {getIconForType(item.type)}
                           </div>
                           <div className="min-w-0 flex-1">
-                            <div className="flex items-center gap-1.5 flex-wrap">
-                              <span className="font-semibold truncate leading-tight">
-                                {item.title}
-                              </span>
-                              {item.badge && (
-                                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-100 text-[#475569] border border-[#E2E8F0] uppercase">
-                                  {item.badge}
-                                </span>
-                              )}
-                            </div>
+                            <span className="font-bold block truncate text-xs text-slate-900">
+                              {item.title}
+                            </span>
                             {item.subtitle && (
-                              <p className="text-[11px] text-[#64748B] truncate mt-0.5">
+                              <span className="text-[10px] text-slate-500 font-mono block truncate">
                                 {item.subtitle}
-                              </p>
+                              </span>
                             )}
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-1 shrink-0 text-[#94A3B8]">
-                          <span className="text-[10px] font-mono uppercase">
-                            {item.matchedField || item.type}
-                          </span>
-                          <ArrowRight className="w-3 h-3" />
+                        <div className="flex items-center gap-2 shrink-0">
+                          {item.badge && (
+                            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-semibold uppercase">
+                              {item.badge}
+                            </span>
+                          )}
+                          <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
                         </div>
                       </button>
                     </li>
                   );
                 })}
               </ul>
-              <div className="p-2 bg-[#FAFAFA] border-t border-[#E4E4E7] flex items-center justify-between text-xs">
+
+              {/* Bottom Direct Actions */}
+              <div className="p-2.5 bg-slate-50 border-t border-slate-100 space-y-1.5 text-xs">
                 <button
                   type="button"
                   onClick={() => handleSubmit()}
-                  className="text-[#0052CC] hover:underline font-medium inline-flex items-center gap-1"
+                  className="w-full text-left text-[#0052CC] hover:underline font-semibold inline-flex items-center gap-1.5 py-1 px-1"
                 >
-                  <Search className="w-3.5 h-3.5" />
-                  <span>See all catalog results for &quot;{query.trim()}&quot;</span>
+                  <Search className="w-3.5 h-3.5 shrink-0" />
+                  <span>See all catalog results for &quot;{query.trim()}&quot; &rarr;</span>
                 </button>
+
+                <Link
+                  href={`/sourcing?chemical=${encodeURIComponent(query.trim())}`}
+                  onClick={() => setIsOpen(false)}
+                  className="w-full text-left text-emerald-700 hover:text-emerald-800 hover:underline font-semibold inline-flex items-center gap-1.5 py-1 px-1"
+                >
+                  <Sparkles className="w-3.5 h-3.5 shrink-0 text-emerald-600" />
+                  <span>Didn&apos;t find your exact chemical? Source via KemKendra Desk &rarr;</span>
+                </Link>
               </div>
             </div>
-          ) : query.trim().length >= 2 && !isLoading ? (
-            <div className="p-4 text-center">
-              <p className="text-xs text-[#64748B]">
-                No direct keyword matches found for &quot;{query.trim()}&quot;
-              </p>
-              <button
-                type="button"
-                onClick={() => handleSubmit()}
-                className="mt-2 text-xs text-[#0052CC] font-semibold hover:underline inline-flex items-center gap-1"
-              >
-                <span>Search catalog for &quot;{query.trim()}&quot; anyway</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+          ) : query.trim().length >= 1 && !isLoading ? (
+            /* NO CHEMICALS FOUND IN DROPDOWN -> INSTANT SOURCING OPTION */
+            <div className="p-4 bg-white space-y-3">
+              <div className="flex items-start gap-3 p-3 rounded-xl bg-blue-50/70 border border-blue-200/80">
+                <div className="w-8 h-8 rounded-lg bg-blue-100 text-[#0052CC] flex items-center justify-center shrink-0 mt-0.5">
+                  <FlaskConical className="w-4 h-4" />
+                </div>
+                <div className="space-y-1 min-w-0 flex-1">
+                  <span className="text-xs font-bold text-[#091E42] block">
+                    No catalog match for &quot;{query.trim()}&quot;
+                  </span>
+                  <p className="text-[11px] text-slate-600 leading-relaxed">
+                    Don’t worry! We can source custom synthesis compounds, rare CAS numbers, and bulk volumes directly from 120+ audited factories.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center gap-2">
+                <Link
+                  href={`/sourcing?chemical=${encodeURIComponent(query.trim())}`}
+                  onClick={() => setIsOpen(false)}
+                  className="w-full flex-1 h-9 px-4 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
+                >
+                  <span>Source &quot;{query.trim()}&quot; with KemKendra</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={() => handleSubmit()}
+                  className="w-full sm:w-auto h-9 px-3 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+                >
+                  Search anyway
+                </button>
+              </div>
             </div>
           ) : null}
         </div>

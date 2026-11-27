@@ -81,28 +81,28 @@ export default function SupplierDashboardOverviewPage() {
 
       {/* 2. Verification Status Alert Banner */}
       {!loading && !isVerified && (
-        <div className="p-5 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-tactile-card">
+        <div className="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
           <div className="flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-amber-50 text-amber-700 border border-amber-200 flex items-center justify-center shrink-0">
               <ShieldAlert className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-amber-900">
+                <span className="text-sm font-bold text-slate-900">
                   Verification Status: {status}
                 </span>
-                <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md bg-amber-200/70 text-amber-900">
+                <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 border border-amber-200">
                   Action Recommended
                 </span>
               </div>
-              <p className="text-xs text-amber-800/90 mt-1">
+              <p className="text-xs text-slate-600 mt-0.5">
                 Complete compliance verification and KYC to unlock verified supplier badges, priority ranking, and unlimited quote responses.
               </p>
             </div>
           </div>
           <Link
             href="/dashboard/supplier/verification"
-            className="h-9 px-4 text-xs font-bold text-white bg-amber-800 hover:bg-amber-900 rounded-lg transition-colors inline-flex items-center justify-center gap-1.5 shrink-0 shadow-2xs active:scale-[0.98]"
+            className="h-9 px-4 text-xs font-semibold text-white bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#003884] rounded-lg transition-colors inline-flex items-center justify-center gap-1.5 shrink-0 shadow-2xs"
           >
             <span>Submit Verification</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -121,7 +121,7 @@ export default function SupplierDashboardOverviewPage() {
         {/* Catalog Offerings */}
         <Link
           href="/dashboard/supplier/products"
-          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-2xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-tactile-card block"
+          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-2xs block"
         >
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-semibold text-slate-500">
@@ -142,7 +142,7 @@ export default function SupplierDashboardOverviewPage() {
         {/* Incoming RFQs */}
         <Link
           href="/dashboard/supplier/rfqs"
-          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-2xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-tactile-card block"
+          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-2xs block"
         >
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-semibold text-slate-500">
@@ -167,7 +167,7 @@ export default function SupplierDashboardOverviewPage() {
         {/* Orders in Fulfillment */}
         <Link
           href="/dashboard/supplier/orders"
-          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-2xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-tactile-card block"
+          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-2xs block"
         >
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-semibold text-slate-500">
@@ -188,7 +188,7 @@ export default function SupplierDashboardOverviewPage() {
         {/* Open Disputes */}
         <Link
           href="/dashboard/supplier/disputes"
-          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-2xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-tactile-card block"
+          className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-xl hover:border-[#0052CC] transition-[border-color,box-shadow] duration-150 group shadow-2xs block"
         >
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-semibold text-slate-500">
@@ -216,7 +216,7 @@ export default function SupplierDashboardOverviewPage() {
         {/* Left 2 Cols: Invoicing & Payment Settlements */}
         <div className="lg:col-span-2 space-y-6">
           {/* Financial Settlement Card */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-tactile-card space-y-5">
+          <div className="bg-white border border-slate-200/90 rounded-xl p-5 sm:p-6 shadow-2xs space-y-5">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0052CC] border border-blue-100 flex items-center justify-center">
@@ -236,16 +236,16 @@ export default function SupplierDashboardOverviewPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 space-y-1">
+              <div className="p-4 rounded-lg bg-slate-50/70 border border-slate-200 space-y-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-wider text-amber-800 font-bold block">
+                  <span className="text-xs uppercase tracking-wider text-slate-500 font-semibold block">
                     Outstanding Receivables
                   </span>
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-amber-100 text-amber-800">
+                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
                     {data?.outstandingInvoices || 0} invoices
                   </span>
                 </div>
-                <strong className="text-2xl font-extrabold font-mono text-amber-900 block mt-1">
+                <strong className="text-2xl font-bold font-mono text-slate-900 block mt-1">
                   {loading ? "—" : formatCurrency(data?.outstandingInvoiceAmount)}
                 </strong>
                 <p className="text-xs text-slate-500">
@@ -253,16 +253,16 @@ export default function SupplierDashboardOverviewPage() {
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200/80 space-y-1">
+              <div className="p-4 rounded-lg bg-slate-50/70 border border-slate-200 space-y-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-wider text-emerald-800 font-bold block">
+                  <span className="text-xs uppercase tracking-wider text-slate-500 font-semibold block">
                     Confirmed Payments
                   </span>
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800">
+                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
                     {data?.confirmedPayments || 0} settled
                   </span>
                 </div>
-                <strong className="text-2xl font-extrabold font-mono text-emerald-800 block mt-1">
+                <strong className="text-2xl font-bold font-mono text-emerald-700 block mt-1">
                   {loading ? "—" : formatCurrency(data?.confirmedPaymentAmount)}
                 </strong>
                 <p className="text-xs text-slate-500">
@@ -277,18 +277,18 @@ export default function SupplierDashboardOverviewPage() {
           </div>
 
           {/* Catalog & Verification Quick Links */}
-          <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-5 sm:p-6 space-y-3.5">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">
-              Manufacturer Tools & Compliance
+          <div className="bg-slate-50/80 border border-slate-200 rounded-xl p-5 sm:p-6 space-y-3.5">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Manufacturer Tools &amp; Compliance
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <Link
                 href="/dashboard/supplier/verification"
-                className="p-4 bg-white border border-slate-200/80 rounded-xl hover:border-[#0052CC] transition-colors flex items-center justify-between group shadow-2xs"
+                className="p-4 bg-white border border-slate-200 rounded-lg hover:border-[#0052CC] transition-colors flex items-center justify-between group shadow-2xs"
               >
                 <div>
                   <span className="text-xs font-bold text-slate-900 group-hover:text-[#0052CC] block">
-                    KYC & Due Diligence
+                    KYC &amp; Due Diligence
                   </span>
                   <span className="text-xs text-slate-500">
                     Manage manufacturing licenses and audit evidence
@@ -299,11 +299,11 @@ export default function SupplierDashboardOverviewPage() {
 
               <Link
                 href="/dashboard/supplier/documents"
-                className="p-4 bg-white border border-slate-200/80 rounded-xl hover:border-[#0052CC] transition-colors flex items-center justify-between group shadow-2xs"
+                className="p-4 bg-white border border-slate-200 rounded-lg hover:border-[#0052CC] transition-colors flex items-center justify-between group shadow-2xs"
               >
                 <div>
                   <span className="text-xs font-bold text-slate-900 group-hover:text-[#0052CC] block">
-                    COA & MSDS Vault
+                    COA &amp; MSDS Vault
                   </span>
                   <span className="text-xs text-slate-500">
                     Upload batch certificates and safety data sheets
@@ -321,14 +321,14 @@ export default function SupplierDashboardOverviewPage() {
 
           {/* Notifications Widget */}
           {data?.recentNotifications && data.recentNotifications.length > 0 && (
-            <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-tactile-card space-y-3.5">
+            <div className="bg-white border border-slate-200/90 rounded-xl p-5 shadow-2xs space-y-3.5">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
                 <span className="text-xs font-bold text-slate-900">
                   Recent Supplier Alerts
                 </span>
                 <Link
                   href="/dashboard/notifications"
-                  className="text-xs text-[#0052CC] hover:underline font-bold"
+                  className="text-xs text-[#0052CC] hover:underline font-semibold"
                 >
                   View All
                 </Link>
@@ -338,9 +338,9 @@ export default function SupplierDashboardOverviewPage() {
                   <Link
                     key={n.id}
                     href={n.targetRoute || "/dashboard/notifications"}
-                    className="block p-2.5 rounded-xl hover:bg-slate-50 transition-colors text-xs space-y-0.5"
+                    className="block p-2.5 rounded-lg hover:bg-slate-50 transition-colors text-xs space-y-0.5"
                   >
-                    <div className="font-bold text-slate-900 truncate">
+                    <div className="font-semibold text-slate-900 truncate">
                       {n.title}
                     </div>
                     <div className="text-xs text-slate-500 line-clamp-1">

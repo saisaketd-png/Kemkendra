@@ -471,20 +471,20 @@ export default function BuyerSourcingDetailPage({ params }: { params: Promise<{ 
 
                   {/* Commercial Terms & Conditions */}
                   {proposal.termsAndConditions && (
-                    <div className="p-4 bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] text-xs space-y-1">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#64748B] block">
-                        Commercial & Escrow Terms
+                    <div className="p-4 bg-slate-50/70 border border-slate-200 rounded-lg text-xs space-y-1">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 block">
+                        Commercial &amp; Escrow Terms
                       </span>
-                      <p className="text-[#475569] leading-relaxed">{proposal.termsAndConditions}</p>
+                      <p className="text-slate-600 leading-relaxed">{proposal.termsAndConditions}</p>
                     </div>
                   )}
 
                   {/* Inquiries Thread & Clarification Form */}
-                  <div className="border-t border-[#F1F5F9] pt-4 space-y-3">
+                  <div className="border-t border-slate-100 pt-4 space-y-3">
                     <div className="flex items-center justify-between">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-[#0F172A] flex items-center gap-1.5">
+                      <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                         <MessageSquare className="w-4 h-4 text-[#0052CC]" />
-                        <span>Clarifications & Procurement Inquiry Desk</span>
+                        <span>Clarifications &amp; Procurement Inquiry Desk</span>
                       </h4>
                       <button
                         type="button"
@@ -500,11 +500,11 @@ export default function BuyerSourcingDetailPage({ params }: { params: Promise<{ 
                     </div>
 
                     {proposal.buyerFeedback && (
-                      <div className="p-3.5 bg-[#FEFCE8] border border-[#FEF08A] rounded-[8px] text-xs space-y-1">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#854D0E] block">
+                      <div className="p-3.5 bg-amber-50/70 border border-amber-200 rounded-lg text-xs space-y-1">
+                        <span className="text-xs font-semibold uppercase tracking-wider text-amber-800 block">
                           Inquiry History
                         </span>
-                        <p className="text-[#713F12] whitespace-pre-line font-mono text-[11px] leading-relaxed">
+                        <p className="text-amber-900 whitespace-pre-line text-xs leading-relaxed">
                           {proposal.buyerFeedback}
                         </p>
                       </div>
@@ -513,14 +513,14 @@ export default function BuyerSourcingDetailPage({ params }: { params: Promise<{ 
                     {activeClarificationProposalId === proposal.id && (
                       <form
                         onSubmit={(e) => handleSubmitClarification(e, proposal.id)}
-                        className="p-4 bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] space-y-3 text-xs"
+                        className="p-4 bg-slate-50/70 border border-slate-200 rounded-lg space-y-3 text-xs"
                       >
-                        <span className="font-bold text-[#0F172A] block">
+                        <span className="font-semibold text-slate-900 block">
                           Ask a Question or Request Price / Specification Adjustment
                         </span>
 
                         {clarificationSuccess && (
-                          <div className="p-2.5 bg-[#DCFCE7] border border-[#BBF7D0] text-[#15803D] rounded flex items-center gap-2">
+                          <div className="p-2.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-md flex items-center gap-2">
                             <Check className="w-4 h-4" />
                             <span>{clarificationSuccess}</span>
                           </div>

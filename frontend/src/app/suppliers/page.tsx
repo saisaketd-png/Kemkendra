@@ -103,8 +103,8 @@ export default async function SuppliersPage(props: {
             title="Supplier Directory"
             description="Discover verified chemical manufacturers, primary synthetic labs, and audited distributors for institutional procurement."
             badge={
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-[#0052CC] border border-blue-200">
-                <ShieldCheck className="w-3.5 h-3.5" /> Verified Supplier Network
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-800 border border-slate-200">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#0052CC]" /> Verified Supplier Network
               </span>
             }
           />
@@ -161,20 +161,20 @@ export default async function SuppliersPage(props: {
                               pathname: "/suppliers",
                               query: { ...searchParams, page: currentPage - 1 },
                             }}
-                            className="p-2 bg-white border border-[#E2E8F0] rounded-xl hover:bg-[#F8FAFC] text-[#0F172A] transition-colors shadow-2xs"
+                            className="p-2 bg-white border border-[#E2E8F0] rounded-lg hover:bg-[#F8FAFC] text-[#0F172A] transition-colors shadow-2xs"
                           >
                             <ChevronLeft className="w-4 h-4" />
                           </Link>
                         ) : (
                           <button
                             disabled
-                            className="p-2 bg-white border border-[#E2E8F0] text-[#CBD5E1] rounded-xl cursor-not-allowed"
+                            className="p-2 bg-white border border-[#E2E8F0] text-[#CBD5E1] rounded-lg cursor-not-allowed"
                           >
                             <ChevronLeft className="w-4 h-4" />
                           </button>
                         )}
 
-                        <span className="text-xs font-bold text-[#475569] px-4">
+                        <span className="text-xs font-semibold text-[#475569] px-4">
                           Page {currentPage + 1} of {totalPages}
                         </span>
 
@@ -184,14 +184,14 @@ export default async function SuppliersPage(props: {
                               pathname: "/suppliers",
                               query: { ...searchParams, page: currentPage + 1 },
                             }}
-                            className="p-2 bg-white border border-[#E2E8F0] rounded-xl hover:bg-[#F8FAFC] text-[#0F172A] transition-colors shadow-2xs"
+                            className="p-2 bg-white border border-[#E2E8F0] rounded-lg hover:bg-[#F8FAFC] text-[#0F172A] transition-colors shadow-2xs"
                           >
                             <ChevronRight className="w-4 h-4" />
                           </Link>
                         ) : (
                           <button
                             disabled
-                            className="p-2 bg-white border border-[#E2E8F0] text-[#CBD5E1] rounded-xl cursor-not-allowed"
+                            className="p-2 bg-white border border-[#E2E8F0] text-[#CBD5E1] rounded-lg cursor-not-allowed"
                           >
                             <ChevronRight className="w-4 h-4" />
                           </button>

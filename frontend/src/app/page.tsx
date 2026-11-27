@@ -170,7 +170,7 @@ export default async function HomePage() {
   };
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[#F8F9FA] font-sans text-[#0F172A] antialiased">
+    <div className="min-h-screen w-full max-w-full overflow-x-clip flex flex-col bg-[#F8F9FA] font-sans text-[#0F172A] antialiased">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationJsonLd) }}

@@ -165,8 +165,7 @@ export function Navbar() {
         {/* 1. LEFT: BRAND & PRIMARY DIRECTORY */}
         <div className="flex items-center gap-3 sm:gap-5 lg:gap-7 shrink-0">
           <div className="flex items-center gap-2">
-            <KemKendraLogo href="/" size="sm" layout="horizontal" className="sm:hidden" />
-            <KemKendraLogo href="/" size="md" layout="horizontal" className="hidden sm:inline-flex" />
+            <KemKendraLogo href="/" size="md" layout="horizontal" />
             {user && (
               <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-200">
                 {isAdmin ? "Admin" : isSupplier ? "Supplier" : "Buyer"}
@@ -480,15 +479,20 @@ export function Navbar() {
             </div>
           ) : null}
 
-          {/* Mobile Drawer Trigger */}
-          <div className="lg:hidden">
+          {/* Mobile Drawer Trigger (Hamburger Menu) */}
+          <div className="lg:hidden flex items-center">
             <button
               type="button"
               onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className="h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-colors"
-              aria-label="Toggle mobile menu"
+              className="h-8.5 w-8.5 sm:h-9 sm:w-9 flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-800 hover:bg-slate-100 hover:text-slate-900 active:bg-slate-200 transition-colors shadow-2xs cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#0052CC]/30 shrink-0"
+              aria-label="Toggle navigation menu"
+              aria-expanded={isMobileOpen}
             >
-              {isMobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              {isMobileOpen ? (
+                <X className="w-5 h-5 text-slate-800 stroke-[2.2]" />
+              ) : (
+                <Menu className="w-5 h-5 text-slate-800 stroke-[2.2]" />
+              )}
             </button>
           </div>
         </div>
@@ -496,8 +500,14 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {isMobileOpen && (
-        <div className="lg:hidden fixed inset-0 top-16 z-40 bg-slate-900/40 backdrop-blur-xs flex justify-end">
-          <div className="bg-white w-[290px] h-[calc(100vh-64px)] p-4 overflow-y-auto space-y-4 shadow-tactile-modal border-l border-slate-200">
+        <div
+          className="lg:hidden fixed inset-0 top-16 z-40 bg-slate-900/50 backdrop-blur-xs flex justify-end"
+          onClick={() => setIsMobileOpen(false)}
+        >
+          <div
+            className="bg-white w-[300px] max-w-[85vw] h-[calc(100vh-64px)] p-4 overflow-y-auto space-y-4 shadow-tactile-modal border-l border-slate-200"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Search & Quick Command Palette */}
             <div className="space-y-2">
               <GlobalSearchBar
@@ -522,6 +532,26 @@ export function Navbar() {
                 </kbd>
               </button>
             </div>
+
+            {/* Quick Auth actions for mobile if not signed in */}
+            {mounted && !user && (
+              <div className="grid grid-cols-2 gap-2 pb-2 border-b border-slate-100">
+                <Link
+                  href="/login"
+                  onClick={() => setIsMobileOpen(false)}
+                  className="h-9 px-3 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 transition-colors flex items-center justify-center text-center"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setIsMobileOpen(false)}
+                  className="h-9 px-3 text-xs font-bold text-white bg-[#0052CC] hover:bg-[#0747A6] rounded-xl transition-colors flex items-center justify-center text-center shadow-2xs"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
 
             <div className="space-y-1 border-b border-slate-100 pb-3">
               <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block px-2 mb-1">

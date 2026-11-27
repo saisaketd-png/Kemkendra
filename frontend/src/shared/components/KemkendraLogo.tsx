@@ -57,11 +57,11 @@ export function KemKendraLogo({
 
   // Height configurations optimized for crisp display in all navbars and cards
   const heightClasses = {
-    xs: "h-7",
-    sm: "h-8 sm:h-9",
-    md: "h-9 sm:h-11",
-    lg: "h-12 sm:h-14",
-    xl: "h-16 sm:h-20",
+    xs: "h-6 sm:h-7",
+    sm: "h-7 sm:h-8.5",
+    md: "h-8 sm:h-10",
+    lg: "h-11 sm:h-13",
+    xl: "h-14 sm:h-18",
   };
 
   const imageDimensions = {
@@ -87,7 +87,7 @@ export function KemKendraLogo({
 
   const content = (
     <div
-      className={`inline-flex items-center gap-2 group select-none ${className}`}
+      className={`inline-flex items-center gap-2 group select-none ${href ? "" : className}`}
       onClick={onClick}
     >
       <div className={`relative ${currentHeightClass} flex items-center justify-center transition-transform duration-200 group-hover:scale-[1.02]`}>
@@ -113,7 +113,10 @@ export function KemKendraLogo({
 
   if (href) {
     return (
-      <Link href={href} className="focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-lg inline-flex items-center">
+      <Link
+        href={href}
+        className={`focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0052CC] rounded-lg inline-flex items-center shrink-0 ${className}`}
+      >
         {content}
       </Link>
     );

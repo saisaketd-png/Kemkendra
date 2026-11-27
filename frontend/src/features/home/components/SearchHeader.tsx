@@ -157,7 +157,7 @@ export function SearchHeader() {
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 45vw"
-              quality={82}
+              quality={75}
               className="object-cover object-center brightness-95 contrast-105 transition-transform duration-700 hover:scale-105"
             />
             {/* Natural gradient blend */}

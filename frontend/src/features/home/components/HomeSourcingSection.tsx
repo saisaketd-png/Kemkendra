@@ -38,10 +38,10 @@ export function HomeSourcingSection() {
           {/* Left Column: Editorial Value Proposition & Tracking */}
           <div className="lg:col-span-5 space-y-6">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#0052CC] bg-blue-50 border border-blue-200/60 px-2.5 py-1 rounded-md inline-block">
-                Custom Chemical Sourcing & Bulk Procurement Desk
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+                Custom Chemical Sourcing &amp; Bulk Procurement
               </span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F172A] tracking-tight mt-3">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F172A] tracking-tight mt-2">
                 Can’t Find Your Compound? Direct Factory Chemical Sourcing.
               </h2>
               <p className="text-xs sm:text-sm text-[#64748B] mt-3 leading-relaxed">
@@ -50,9 +50,9 @@ export function HomeSourcingSection() {
             </div>
 
             {/* Core Verification Features */}
-            <div className="space-y-3.5 pt-2">
-              <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#F8F9FA] border border-slate-200">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200 text-[#0052CC] flex items-center justify-center shrink-0 mt-0.5">
+            <div className="space-y-3 pt-1">
+              <div className="flex items-start gap-3 p-3.5 rounded-lg bg-[#F8F9FA] border border-slate-200">
+                <div className="w-8 h-8 rounded-md bg-blue-50 text-[#0052CC] flex items-center justify-center shrink-0 mt-0.5">
                   <ShieldCheck className="w-4 h-4" />
                 </div>
                 <div>
@@ -63,20 +63,20 @@ export function HomeSourcingSection() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#F8F9FA] border border-slate-200">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200 text-[#0052CC] flex items-center justify-center shrink-0 mt-0.5">
+              <div className="flex items-start gap-3 p-3.5 rounded-lg bg-[#F8F9FA] border border-slate-200">
+                <div className="w-8 h-8 rounded-md bg-blue-50 text-[#0052CC] flex items-center justify-center shrink-0 mt-0.5">
                   <FileCheck2 className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-[#0F172A]">Batch CoA & Compendial Release</h4>
+                  <h4 className="text-xs font-bold text-[#0F172A]">Batch CoA &amp; Compendial Release</h4>
                   <p className="text-[11px] text-[#64748B] mt-0.5 leading-relaxed">
                     Lot-specific HPLC/NMR titration, 16-section GHS SDS, and technical release documents provided with every quotation.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#F8F9FA] border border-slate-200">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200 text-[#0052CC] flex items-center justify-center shrink-0 mt-0.5">
+              <div className="flex items-start gap-3 p-3.5 rounded-lg bg-[#F8F9FA] border border-slate-200">
+                <div className="w-8 h-8 rounded-md bg-blue-50 text-[#0052CC] flex items-center justify-center shrink-0 mt-0.5">
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
